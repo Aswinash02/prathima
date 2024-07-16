@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class MyTheme {
   /*configurable colors stars*/
   static const Color accent_color = Color(0xFF409CFF);
+  static const Color mainColor = Color(0xFF000078);
+  static const Color blueColor = Color(0xFF409CFF);
   static const Color accent_color_shadow =
   Color.fromRGBO(229, 65, 28, .40); // this color is a dropshadow of
   static Color soft_accent_color = Color.fromRGBO(254, 234, 209, 1);

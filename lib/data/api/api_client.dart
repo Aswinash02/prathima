@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class ApiHelper {
+class ApiClient extends GetxService{
+  final String baseUrl;
+  ApiClient({required this.baseUrl});
+
   static Future<http.Response> get({
     required String url,
     Map<String, String>? headers,

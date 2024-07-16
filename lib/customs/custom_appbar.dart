@@ -3,32 +3,42 @@ import 'custom_text.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
-      {super.key, this.leading, required this.title, this.actions});
+      {super.key,
+      this.leading,
+      required this.title,
+      this.actions,
+      this.backgroundColor,
+      this.titleColor,
+      this.centerTitle,
+      this.automaticallyImplyLeading});
 
   final Widget? leading;
   final String title;
   final List<Widget>? actions;
+  final Color? backgroundColor;
+  final Color? titleColor;
+  final bool? centerTitle;
+  final bool? automaticallyImplyLeading;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-      child: AppBar(
-        leading: leading,
-        centerTitle: true,
-        title: CustomText(
-          text: title,
-          fontWeight: FontWeight.w800,
-          fontSize: 18,
-        ),
-        actions: actions,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        elevation: 0,
+    return AppBar(
+      leading: leading,
+      centerTitle: centerTitle ?? false,
+      title: CustomText(
+        text: title,
+        fontWeight: FontWeight.w700,
+        fontSize: 20,
+        color: titleColor ?? Colors.white,
       ),
+      actions: actions,
+      backgroundColor: backgroundColor ?? Colors.white,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? true,
+      iconTheme: IconThemeData(color: titleColor ?? Colors.white),
+      elevation: 0,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

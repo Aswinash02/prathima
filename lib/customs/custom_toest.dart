@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:toast/toast.dart';

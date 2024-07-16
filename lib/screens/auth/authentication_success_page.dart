@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
+import 'package:prathima_loan_app/helpers/route_helper.dart';
 
 import '../../customs/custom_appbar.dart';
 import '../../customs/custom_button.dart';
 import '../../utils/colors.dart';
-
 
 class AuthSuccessPage extends StatefulWidget {
   const AuthSuccessPage({super.key});
@@ -19,38 +20,34 @@ class _AuthSuccessPageState extends State<AuthSuccessPage> {
     return Scaffold(
         appBar: CustomAppBar(
           title: '',
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back),
-          ),
+          titleColor: Colors.black,
+          automaticallyImplyLeading: true,
         ),
         body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(top: 100),
+                padding: const EdgeInsets.only(top: 100),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image(
+                    const Image(
                       image: AssetImage(
                         "assets/success_icon.png",
                       ),
                       height: 106,
                       width: 106,
                     ),
-                    CustomText(
+                    const CustomText(
                       text: "Success!",
                       fontWeight: FontWeight.w700,
                       fontSize: 22,
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: EdgeInsets.only(top: 10.0),
                           child: CustomText(
                             text:
                                 "Congratulations! You have been\n    successfully authenticated",
@@ -64,22 +61,16 @@ class _AuthSuccessPageState extends State<AuthSuccessPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 40.0),
-                      child: CustomButton(
-                        text: 'Continue',
+                      child:  CustomButton(
+                        text: "Continue",
+                        fontSize: 16,
                         onPressed: () {
-                          // Define what happens when the button is pressed
-                          print('Button Pressed');
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AuthSuccessPage()));
+                          Get.offAllNamed(RouteHelper.home);
                         },
-                        textColor: Colors.white,
-                        borderRadius: 12.0,
-                        padding: 20.0,
-                        horizontalPadding: 80,
-                        fontSize: 18.0,
-                      ),
+                        borderRadius: 20,
+                        horizontalPadding: 90,
+                        padding: 10,
+                      )
                     ),
                   ],
                 ),

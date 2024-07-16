@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/data/repository/auth_repository.dart';
 
-class AuthController extends GetxController{
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+class AuthController extends GetxController implements GetxService {
+  final AuthRepository authRepository;
 
-  TextEditingController get phoneController => _phoneController;
-  TextEditingController get emailController => _emailController;
+  AuthController({required this.authRepository});
+
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 }
