@@ -5,13 +5,14 @@ import 'package:prathima_loan_app/utils/colors.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
       {super.key,
-       this.controller,
-       this.hintText,
+      this.controller,
+      this.hintText,
       this.keyboardType,
       this.readOnly,
       this.hintTextColor,
       this.inputFormatters,
-      this.maxLines});
+      this.maxLines,
+      this.onChanged});
 
   final TextEditingController? controller;
   final String? hintText;
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
   final bool? readOnly;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,8 @@ class CustomTextField extends StatelessWidget {
       cursorColor: MyTheme.grey_153,
       keyboardType: keyboardType ?? TextInputType.text,
       maxLines: maxLines ?? 1,
+      textAlign: TextAlign.left,
+      textDirection: TextDirection.rtl,
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
@@ -58,6 +62,7 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
       ),
+      onChanged: onChanged,
     );
   }
 }

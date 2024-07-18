@@ -6,6 +6,7 @@ import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/input_decorations.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
+import 'package:prathima_loan_app/screens/auth/signup_screen.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 import 'otp_verification_page.dart';
@@ -94,12 +95,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ),
+
                     const Row(
                       children: [
                         Padding(
                           padding: EdgeInsets.only(bottom: 4.0),
                           child: Text(
-                            "Phone",
+                            "Password",
                             style: TextStyle(
                                 color: MyTheme.accent_color,
                                 fontWeight: FontWeight.w600),
@@ -109,21 +111,75 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
-                      child: SizedBox(
-                        height: 36,
-                        child: TextField(
-                          controller: authController.phoneController,
-                          autofocus: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "Enter Mobile No."),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                            // Allow only digits
-                          ],
-                          keyboardType: TextInputType.phone,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            height: 36,
+                            child: TextField(
+                              controller: authController.passwordController,
+                              autofocus: false,
+                              obscureText: !authController.showPassword,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              decoration:
+                                  InputDecorations.buildInputDecoration_1(
+                                          hint_text: "• • • • • • • •")
+                                      .copyWith(
+                                          suffixIcon: InkWell(
+                                onTap: () {
+                                  authController.showPassword =
+                                      !authController.showPassword;
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  authController.showPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: MyTheme.accent_color,
+                                ),
+                              )),
+                            ),
+                          ),
+                          const Text(
+                            "Password Must Contain atleast 8 Characters",
+                            style: TextStyle(
+                                color: MyTheme.textfield_grey,
+                                fontStyle: FontStyle.italic),
+                          )
+                        ],
                       ),
                     ),
+                    // const Row(
+                    //   children: [
+                    //     Padding(
+                    //       padding: EdgeInsets.only(bottom: 4.0),
+                    //       child: Text(
+                    //         "Phone",
+                    //         style: TextStyle(
+                    //             color: MyTheme.accent_color,
+                    //             fontWeight: FontWeight.w600),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(bottom: 8.0),
+                    //   child: SizedBox(
+                    //     height: 36,
+                    //     child: TextField(
+                    //       controller: authController.phoneController,
+                    //       autofocus: false,
+                    //       decoration: InputDecorations.buildInputDecoration_1(
+                    //           hint_text: "Enter Mobile No."),
+                    //       inputFormatters: [
+                    //         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    //         // Allow only digits
+                    //       ],
+                    //       keyboardType: TextInputType.phone,
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -131,23 +187,49 @@ class _SignInScreenState extends State<SignInScreen> {
                       text: "Continue",
                       // fontSize: 16,
                       onTap: () {
-                        Get.toNamed(RouteHelper.verificationOtp);
+                        authController.login();
+                        // Get.toNamed(RouteHelper.verificationOtp);
                       },
                       // borderRadius: 20,
                       // horizontalPadding: 90,
                       // padding: 10,
-                    )
-                    // CustomButton(
-                    //   text: 'Continue',
-                    //   onPressed: () {
-                    //     Get.toNamed(RouteHelper.verificationOtp);
-                    //   },
-                    //   textColor: Colors.white,
-                    //   borderRadius: 12.0,
-                    //   padding: 20.0,
-                    //   horizontalPadding: 100,
-                    //   fontSize: 18.0,
-                    // ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Center(
+                            child: Text(
+                          "Already Have an account?",
+                          style:
+                              TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                        )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const SignupScreen();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

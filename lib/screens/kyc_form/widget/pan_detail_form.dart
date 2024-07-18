@@ -41,7 +41,12 @@ class PanDetailForm extends StatelessWidget {
           const SizedBox(height: 2),
           CustomTextField(
               controller: kycController.panNumberController,
-              hintText: "Enter PAN Card Number"),
+              hintText: "Enter PAN Card Number",
+            onChanged: (String value){
+                kycController.panNumberController.text = value;
+                print("Pan Card Data ==============>${kycController.panNumberController.text}");
+            },
+          ),
           SizedBox(
             height: 10,
           ),
