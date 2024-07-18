@@ -24,11 +24,17 @@ class ProfileOption extends StatelessWidget {
             onTap: onTap,
             child: Row(
               children: [
-                CustomIcon(
-                  icon: icon,
-                  height: 40,
-                  width: 40,
-                  color: MyTheme.mainColor,
+                Container(
+                  child: CustomIcon(
+                    icon: icon,
+                    height: 25,
+                    width: 25,
+                    color: MyTheme.mainColor,
+                  ),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: MyTheme.mainColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8)),
                 ),
                 const SizedBox(
                   width: 15,

@@ -5,8 +5,8 @@ import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 
-class LoanApprovedCard extends StatelessWidget {
-  const LoanApprovedCard({super.key});
+class KycFailureCard extends StatelessWidget {
+  const KycFailureCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +31,12 @@ class LoanApprovedCard extends StatelessWidget {
             child: SingleChildScrollView(
                 child: Column(
               children: [
-                const Image(image: AssetImage("assets/img/success_img.png")),
+                const Image(image: AssetImage("assets/img/failure_img.png")),
                 const SizedBox(
                   height: 10,
                 ),
                 const CustomText(
-                  text: "congratulations",
+                  text: "Loan Rejected",
                   fontWeight: FontWeight.w700,
                   fontSize: 17,
                 ),
@@ -45,11 +45,11 @@ class LoanApprovedCard extends StatelessWidget {
                 ),
                 const CustomText(
                   text:
-                      "Thanks for submitting your document we’ll verify it and Credit Your Loan Amount "
-                      "After Physical Verification Done Which Done With in 24 Hours",
+                      "Thanks for submitting your document we’ll verify it and"
+                      " complete your KYC as soon as possible",
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
-                  maxLines: 5,
+                  maxLines: 2,
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(

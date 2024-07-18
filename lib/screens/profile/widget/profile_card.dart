@@ -22,7 +22,9 @@ class ProfileCard extends StatelessWidget {
               height: 50,
               width: 50,
               decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.red),
+                  image: DecorationImage(
+                      image: AssetImage("assets/icon/profile_icon.png")),
+                  shape: BoxShape.circle),
             ),
             const SizedBox(
               width: 10,

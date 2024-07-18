@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: CustomIcon(
-              icon: "assets/icon/profile_icon.png",
+              icon: "assets/icon/loan_history_icon.png",
               height: 25,
               width: 25,
               color: _selectedIndex == 3 ? MyTheme.mainColor : MyTheme.grey_153,
@@ -72,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: MyTheme.mainColor,
-        unselectedItemColor: MyTheme.medium_grey,
+        unselectedItemColor: MyTheme.grey_153,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         onTap: _onItemTapped,

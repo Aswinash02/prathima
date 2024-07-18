@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prathima_loan_app/customs/custom_appbar.dart';
+import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
-
-
 
 class AuthSuccessPage extends StatefulWidget {
   const AuthSuccessPage({super.key});
@@ -60,19 +58,15 @@ class _AuthSuccessPageState extends State<AuthSuccessPage> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.only(top: 40.0),
-                      child:  CustomButton(
-                        text: "Continue",
-                        // fontSize: 16,
-                        onTap: () {
-                          Get.offAllNamed(RouteHelper.home);
-                        },
-                        // borderRadius: 20,
-                        // horizontalPadding: 90,
-                        // padding: 10,
-                      )
-                    ),
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: CustomButton(
+                          text: "Continue",
+                          onTap: () {
+                            Get.offAllNamed(RouteHelper.home);
+                          },
+                        )),
                   ],
                 ),
               ),

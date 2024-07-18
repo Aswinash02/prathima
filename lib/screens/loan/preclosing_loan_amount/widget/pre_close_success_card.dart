@@ -5,8 +5,8 @@ import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 
-class LoanApprovedCard extends StatelessWidget {
-  const LoanApprovedCard({super.key});
+class PreCloseSuccessCard extends StatelessWidget {
+  const PreCloseSuccessCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class LoanApprovedCard extends StatelessWidget {
                   height: 10,
                 ),
                 const CustomText(
-                  text: "congratulations",
+                  text: "PreClosed Successfilly",
                   fontWeight: FontWeight.w700,
                   fontSize: 17,
                 ),
@@ -45,8 +45,8 @@ class LoanApprovedCard extends StatelessWidget {
                 ),
                 const CustomText(
                   text:
-                      "Thanks for submitting your document we’ll verify it and Credit Your Loan Amount "
-                      "After Physical Verification Done Which Done With in 24 Hours",
+                      "Thanks for submitting your document we’ll verify it and "
+                      "complete your KYC as soon as possible",
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
                   maxLines: 5,

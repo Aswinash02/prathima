@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prathima_loan_app/customs/custom_appbar.dart';
+import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/screens/profile/widget/profile_text_row.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 

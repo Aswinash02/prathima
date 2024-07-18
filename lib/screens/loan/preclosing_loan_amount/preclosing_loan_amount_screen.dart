@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/loan_controller.dart';
-import 'package:prathima_loan_app/customs/custom_appbar.dart';
+import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
@@ -40,17 +40,16 @@ class PreClosingLoanAmountScreen extends StatelessWidget {
               paymentMode(mode: "Net Banking", value: "Net Banking"),
               const Spacer(),
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: GetBuilder<LoanController>(builder: (controller) {
                   return CustomButton(
                     text: "Proceed",
-                    color: controller.selectedMode == ''
-                        ? MyTheme.font_grey
-                        : MyTheme.mainColor,
+                    // color: controller.selectedMode == ''
+                    //     ? MyTheme.font_grey
+                    //     : MyTheme.mainColor,
                     onTap: controller.selectedMode == ''
                         ? null
                         : () {
-                      print('controller.selectedMode ${controller.selectedMode}');
                             Get.toNamed(RouteHelper.getCreditOrDebitCardFormRoute(controller.selectedMode));
                           },
                   );

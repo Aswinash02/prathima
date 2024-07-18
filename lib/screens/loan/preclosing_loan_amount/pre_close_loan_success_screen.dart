@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
-import 'package:prathima_loan_app/screens/loan_agreement_screen/widget/loan_agreement_card.dart';
+import 'package:prathima_loan_app/screens/loan_approved/widget/loan_approved_card.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/ui_widget.dart';
 
-class LoanAgreementScreen extends StatelessWidget {
-  const LoanAgreementScreen({super.key});
+class PreCloseLoanSuccessScreen extends StatelessWidget {
+  const PreCloseLoanSuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
         backgroundColor: MyTheme.mainColor,
-        title: "Loan Agreement",
+        title: "Loan Approved",
       ),
       body: Stack(
         children: [
@@ -21,11 +21,7 @@ class LoanAgreementScreen extends StatelessWidget {
               uiWidget(),
             ],
           ),
-          const Positioned(
-              left: 0,
-              right: 0,
-              top: 130,
-              child: LoanAgreementCard()),
+          Positioned(left: 0, right: 0, top: 130, child: LoanApprovedCard()),
         ],
       ),
     );

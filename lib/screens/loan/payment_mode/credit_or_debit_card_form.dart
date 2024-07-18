@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:prathima_loan_app/customs/custom_appbar.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/custom_textfield.dart';
+import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/ui_widget.dart';
 
@@ -32,10 +34,13 @@ class CreditOrDebitCardForm extends StatelessWidget {
                 child: creditOrDebitCardForm(),
               ),
               const Spacer(),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.all(15.0),
                 child: CustomButton(
                   text: "Proceed",
+                  onTap: (){
+                    Get.toNamed(RouteHelper.loanOTPVerificationScreen);
+                  },
                 ),
               ),
             ],

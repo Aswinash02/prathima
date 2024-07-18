@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prathima_loan_app/customs/custom_appbar.dart';
+import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
@@ -68,9 +68,7 @@ class _VerificationOtpPageState extends State<VerificationOtpPage> {
                           length: 4,
                           fieldStyle: FieldStyle.box,
                           textFieldAlignment: MainAxisAlignment.spaceAround,
-                          // Adjust based on space
                           fieldWidth: 50,
-                          // Adjust fieldWidth dynamically
                           outlineBorderRadius: 15,
                           style: const TextStyle(fontSize: 16),
                           onChanged: (pin) {
@@ -87,13 +85,11 @@ class _VerificationOtpPageState extends State<VerificationOtpPage> {
                     ),
                     CustomButton(
                       text: "Continue",
-                      // fontSize: 16,
+
                       onTap: () {
                         Get.toNamed(RouteHelper.authSuccess);
                       },
-                      // borderRadius: 20,
-                      // horizontalPadding: 80,
-                      // padding: 10,
+
                     )
                   ],
                 ),

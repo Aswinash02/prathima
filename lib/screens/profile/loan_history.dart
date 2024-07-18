@@ -5,14 +5,14 @@ import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/custom_icon.dart';
 
-class TransactionScreen extends StatelessWidget {
-  const TransactionScreen({super.key});
+class LoanHistoryScreen extends StatelessWidget {
+  const LoanHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: "Transaction",
+        title: "Loan History",
         titleColor: MyTheme.blackColor,
         centerTitle: true,
       ),
@@ -40,7 +40,7 @@ class TransactionScreen extends StatelessWidget {
                 Row(
                   children: [
                     payButton(color: Colors.blue, text: "Pay"),
-                     const SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     const SizedBox(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

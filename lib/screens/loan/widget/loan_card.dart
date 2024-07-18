@@ -11,7 +11,7 @@ class LoanCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
       decoration: BoxDecoration(
-          color: MyTheme.loanCardColor,
+          color: MyTheme.mainColor,
           borderRadius: BorderRadius.circular(15)),
       child: Column(
         children: [

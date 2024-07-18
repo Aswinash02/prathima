@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
-import 'package:prathima_loan_app/screens/home/widget/home_appbar.dart';
+import 'package:prathima_loan_app/screens/home/widget/home_app_bar.dart';
 import 'package:prathima_loan_app/screens/home/widget/loan_detail_container.dart';
 import 'package:prathima_loan_app/screens/home/widget/offer_card.dart';
 

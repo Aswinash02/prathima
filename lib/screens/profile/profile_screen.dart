@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prathima_loan_app/customs/custom_appbar.dart';
+import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
+import 'package:prathima_loan_app/screens/auth/widget/logout_dailog.dart';
 import 'package:prathima_loan_app/screens/profile/widget/profile_card.dart';
 import 'package:prathima_loan_app/screens/profile/widget/profile_option.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
@@ -28,12 +29,14 @@ class ProfileScreen extends StatelessWidget {
               ),
               ProfileOption(
                 option: "Loan History",
-                icon: "assets/icon/person_circle_icon.png",
-                onTap: () {},
+                icon: "assets/icon/loan_history_icon.png",
+                onTap: () {
+                  Get.toNamed(RouteHelper.loanHistoryScreen);
+                },
               ),
               ProfileOption(
                 option: "About Us",
-                icon: "assets/icon/about_as_icon.png",
+                icon: "assets/icon/about_us_icon.png",
                 onTap: () {
                   Get.toNamed(RouteHelper.aboutUsScreen);
                 },
@@ -45,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               ProfileOption(
                 option: "Terms and Condition",
-                icon: "assets/icon/privacy_icon.png",
+                icon: "assets/icon/terms_and_condition_icon.png",
                 onTap: () {
                   Get.toNamed(RouteHelper.termsAndConditionScreen);
                 },
@@ -57,15 +60,17 @@ class ProfileScreen extends StatelessWidget {
               ),
               ProfileOption(
                 option: "Privacy Policy",
-                icon: "assets/icon/privacy_icon.png",
+                icon: "assets/icon/privacy_and_policy_icon.png",
                 onTap: () {
                   Get.toNamed(RouteHelper.privacyPolicyScreen);
                 },
               ),
               ProfileOption(
-                option: "Sign out",
-                icon: "assets/icon/log_out_icon.png",
-                onTap: () {},
+                option: "Log out",
+                icon: "assets/icon/logout_icon.png",
+                onTap: () {
+                  showLogoutDialog(context);
+                },
               ),
             ],
           ),

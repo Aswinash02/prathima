@@ -14,9 +14,9 @@ PreferredSizeWidget homeAppBar() {
                   horizontal: 16,
                 ),
                 filled: true,
-                fillColor: MyTheme.light_grey,
+                hintText: "Search",
+                fillColor: MyTheme.searchBarColor,
                 prefixIcon: const Icon(Icons.search),
-                suffixIcon: const Icon(Icons.mic),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none,
