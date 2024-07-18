@@ -7,6 +7,7 @@ import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/input_decorations.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -24,7 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
             return SliverToBoxAdapter(
               child: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30),
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30),
                 child: Column(
                   children: <Widget>[
                     const Padding(
@@ -37,7 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 210,
                       ),
                     ),
-                    const  Row(
+                    const Row(
                       children: [
                         CustomText(
                           text: "Register Page",
@@ -52,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         children: [
                           CustomText(
                             text:
-                            "Enter email and phone number to send one time Password",
+                                "Enter email and phone number to send one time Password",
                             fontWeight: FontWeight.w700,
                             fontSize: 18,
                             maxLines: 2,
@@ -68,7 +69,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Text(
                             "Name",
                             style: TextStyle(
-                                color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                                color: MyTheme.accent_color,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       ],
@@ -83,7 +85,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           decoration: InputDecorations.buildInputDecoration_1(
                               hint_text: "John Doe"),
                           inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[a-zA-Z\s]')),
                             // Allow only letters and spaces
                           ],
                         ),
@@ -154,7 +157,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Text(
                         "Password",
                         style: TextStyle(
-                            color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                            color: MyTheme.accent_color,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                     Padding(
@@ -170,21 +174,23 @@ class _SignupScreenState extends State<SignupScreen> {
                               obscureText: !authController.showPassword,
                               enableSuggestions: false,
                               autocorrect: false,
-                              decoration: InputDecorations.buildInputDecoration_1(
-                                  hint_text: "• • • • • • • •")
-                                  .copyWith(
-                                  suffixIcon: InkWell(
-                                    onTap: () {
-                                      authController.showPassword = !authController.showPassword;
-                                      setState(() {});
-                                    },
-                                    child: Icon(
-                                      authController.showPassword
-                                          ? Icons.visibility_outlined
-                                          : Icons.visibility_off_outlined,
-                                      color: MyTheme.accent_color,
-                                    ),
-                                  )),
+                              decoration:
+                                  InputDecorations.buildInputDecoration_1(
+                                          hint_text: "• • • • • • • •")
+                                      .copyWith(
+                                          suffixIcon: InkWell(
+                                onTap: () {
+                                  authController.showPassword =
+                                      !authController.showPassword;
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  authController.showPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: MyTheme.accent_color,
+                                ),
+                              )),
                             ),
                           ),
                           Text(
@@ -201,7 +207,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Text(
                         "Confirm Password",
                         style: TextStyle(
-                            color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                            color: MyTheme.accent_color,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                     Padding(
@@ -215,20 +222,21 @@ class _SignupScreenState extends State<SignupScreen> {
                           enableSuggestions: false,
                           autocorrect: false,
                           decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "• • • • • • • •")
+                                  hint_text: "• • • • • • • •")
                               .copyWith(
-                              suffixIcon: InkWell(
-                                onTap: () {
-                                  authController.showConfirmPassword = !authController.showConfirmPassword;
-                                  setState(() {});
-                                },
-                                child: Icon(
-                                  authController.showConfirmPassword
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
-                                  color: MyTheme.accent_color,
-                                ),
-                              )),
+                                  suffixIcon: InkWell(
+                            onTap: () {
+                              authController.showConfirmPassword =
+                                  !authController.showConfirmPassword;
+                              setState(() {});
+                            },
+                            child: Icon(
+                              authController.showConfirmPassword
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                              color: MyTheme.accent_color,
+                            ),
+                          )),
                         ),
                       ),
                     ),
@@ -237,13 +245,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     CustomButton(
                       text: "Continue",
-                      fontSize: 16,
-                      onPressed: () {
+                      onTap: () {
                         Get.toNamed(RouteHelper.verificationOtp);
                       },
-                      borderRadius: 20,
-                      horizontalPadding: 90,
-                      padding: 10,
                     )
                     // CustomButton(
                     //   text: 'Continue',

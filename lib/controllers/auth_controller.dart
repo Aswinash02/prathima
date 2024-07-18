@@ -11,6 +11,7 @@ class AuthController extends GetxController implements GetxService {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   bool showPassword = false;
   bool showConfirmPassword = false;

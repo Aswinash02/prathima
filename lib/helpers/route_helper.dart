@@ -3,6 +3,7 @@ import 'package:prathima_loan_app/screens/auth/authentication_success_page.dart'
 import 'package:prathima_loan_app/screens/auth/otp_verification_page.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
+import 'package:prathima_loan_app/screens/initial_screen/initial_screen_page.dart';
 import 'package:prathima_loan_app/screens/kyc_form/kyc_details_screen.dart';
 import 'package:prathima_loan_app/screens/loan/loan_detail/loan_details_screen.dart';
 import 'package:prathima_loan_app/screens/loan/payment_mode/credit_or_debit_card_form.dart';
@@ -18,6 +19,7 @@ import 'package:prathima_loan_app/screens/profile/terms_and_condition_screen.dar
 
 class RouteHelper {
   static const String initial = '/';
+  static const String introductionScreen = '/introductionScreen';
   static const String login = '/loginIn';
   static const String authSuccess = '/authSuccess';
   static const String verificationOtp = '/verificationOtp';
