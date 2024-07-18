@@ -19,9 +19,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      initialRoute: RouteHelper.initial,
+      initialRoute: RouteHelper.introductionScreen,
       getPages: RouteHelper.routes,
     );
   }
