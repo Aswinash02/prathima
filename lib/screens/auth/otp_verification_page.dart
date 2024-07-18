@@ -87,13 +87,13 @@ class _VerificationOtpPageState extends State<VerificationOtpPage> {
                     ),
                     CustomButton(
                       text: "Continue",
-                      fontSize: 16,
-                      onPressed: () {
+                      // fontSize: 16,
+                      onTap: () {
                         Get.toNamed(RouteHelper.authSuccess);
                       },
-                      borderRadius: 20,
-                      horizontalPadding: 80,
-                      padding: 10,
+                      // borderRadius: 20,
+                      // horizontalPadding: 80,
+                      // padding: 10,
                     )
                   ],
                 ),

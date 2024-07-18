@@ -129,13 +129,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     CustomButton(
                       text: "Continue",
-                      fontSize: 16,
-                      onPressed: () {
+                      // fontSize: 16,
+                      onTap: () {
                         Get.toNamed(RouteHelper.verificationOtp);
                       },
-                      borderRadius: 20,
-                      horizontalPadding: 90,
-                      padding: 10,
+                      // borderRadius: 20,
+                      // horizontalPadding: 90,
+                      // padding: 10,
                     )
                     // CustomButton(
                     //   text: 'Continue',

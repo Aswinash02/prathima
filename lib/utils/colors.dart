@@ -4,12 +4,16 @@ class MyTheme {
   /*configurable colors stars*/
   static const Color accent_color = Color(0xFF409CFF);
   static const Color mainColor = Color(0xFF000078);
+  static const Color blackGrey = Color(0xFF545458);
   static const Color blueColor = Color(0xFF409CFF);
+  static const Color loanCardColor = Color(0xFF000078);
   static const Color accent_color_shadow =
-  Color.fromRGBO(229, 65, 28, .40); // this color is a dropshadow of
+      Color.fromRGBO(229, 65, 28, .40); // this color is a dropshadow of
   static Color soft_accent_color = Color.fromRGBO(254, 234, 209, 1);
-  static Color splash_screen_color = Color(0xFF409CFF); // if not sure , use the same color as accent color
-  static Color iconContainerColor = Color(0xFFDFF1E6); // if not sure , use the same color as accent color
+  static Color splash_screen_color =
+      Color(0xFF409CFF); // if not sure , use the same color as accent color
+  static Color iconContainerColor =
+      Color(0xFFDFF1E6); // if not sure , use the same color as accent color
   /*configurable colors ends*/
   /*If you are not a developer, do not change the bottom colors*/
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
@@ -31,6 +35,10 @@ class MyTheme {
   static Color? green_light = Colors.green[200];
   static Color shimmer_base = Colors.grey.shade50;
   static Color shimmer_highlighted = Colors.grey.shade200;
+  static Color color1 = Color(0xFFDBE0FF); // DBE0FF
+  static Color color2 = Color(0xFFA3AFFF); // A3AFFF
+
+  static Color mixedColor = Color.lerp(color1, color2, 0.5)!;
   //testing shimmer
   /*static Color shimmer_base = Colors.redAccent;
   static Color shimmer_highlighted = Colors.yellow;*/
@@ -38,16 +46,18 @@ class MyTheme {
   // gradient color for coupons
   static const Color gigas = Color.fromRGBO(95, 74, 139, 1);
   static const Color polo_blue = Color.fromRGBO(152, 179, 209, 1);
+
   //------------
   static const Color blue_chill = Color.fromRGBO(71, 148, 147, 1);
   static const Color cruise = Color.fromRGBO(124, 196, 195, 1);
+
   //---------------
   static const Color brick_red = Color.fromRGBO(191, 25, 49, 1);
   static const Color cinnabar = Color.fromRGBO(226, 88, 62, 1);
   static const Color blackColor = Colors.black;
   static const Color redColor = Colors.red;
 
-  static TextTheme textTheme1 = TextTheme(
+  static TextTheme textTheme1 = const TextTheme(
     bodyLarge: TextStyle(fontFamily: "PublicSansSerif", fontSize: 14),
     bodyMedium: TextStyle(fontFamily: "PublicSansSerif", fontSize: 12),
   );

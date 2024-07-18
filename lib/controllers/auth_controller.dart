@@ -9,4 +9,13 @@ class AuthController extends GetxController implements GetxService {
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmController = TextEditingController();
+
+  bool showPassword = false;
+  bool showConfirmPassword = false;
+
+  bool _isKycVerified = false;
+
+  bool get isKycVerified => _isKycVerified;
 }

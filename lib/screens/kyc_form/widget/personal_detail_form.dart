@@ -76,13 +76,13 @@ class PersonalDetailForm extends StatelessWidget {
           Center(
               child: CustomButton(
             text: "Submit",
-            fontSize: 16,
-            onPressed: () {
+            // fontSize: 16,
+            onTap: () {
               kycController.onStepReached(1);
             },
-            borderRadius: 20,
-            horizontalPadding: 90,
-            padding: 10,
+            // borderRadius: 20,
+            // horizontalPadding: 90,
+            // padding: 10,
           ))
         ],
       );

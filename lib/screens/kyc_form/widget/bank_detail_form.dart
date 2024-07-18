@@ -64,15 +64,15 @@ class BankDetailForm extends StatelessWidget {
           ),
           Center(
               child: CustomButton(
-            text: "Submit",
-            fontSize: 16,
-            onPressed: () {
-
-            },
-            borderRadius: 20,
-            horizontalPadding: 90,
-            padding: 10,
-          ))
+                text: "Submit",
+                // fontSize: 16,
+                onTap: () {
+                 kycController.onSubmitKycForm();
+                },
+                // borderRadius: 20,
+                // horizontalPadding: 90,
+                // padding: 10,
+              ))
         ],
       );
     });

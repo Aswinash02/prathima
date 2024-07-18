@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
+import 'package:prathima_loan_app/helpers/route_helper.dart';
 
 class KycSuccessCard extends StatelessWidget {
   const KycSuccessCard({super.key});
@@ -11,7 +14,6 @@ class KycSuccessCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Container(
-          height: 550,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12.0),
@@ -52,15 +54,20 @@ class KycSuccessCard extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Center(
-                    child: CustomButton(
-                  text: "Continue",
-                  fontSize: 16,
-                  onPressed: () {},
-                  borderRadius: 20,
-                  horizontalPadding: 90,
-                  padding: 10,
-                )),
+                GetBuilder<KycController>(builder: (kycController) {
+                  return Center(
+                      child: CustomButton(
+                    text: "Continue",
+                    // fontSize: 16,
+                    onTap: () {
+                      kycController.onPressedKycComplete();
+                      Get.toNamed(RouteHelper.loanDetailsForm);
+                    },
+                    // borderRadius: 20,
+                    // horizontalPadding: 90,
+                    // padding: 10,
+                  ));
+                }),
               ],
             )),
           ),

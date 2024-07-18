@@ -5,16 +5,16 @@ import 'package:prathima_loan_app/utils/colors.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
       {super.key,
-      required this.controller,
-      required this.hintText,
+       this.controller,
+       this.hintText,
       this.keyboardType,
       this.readOnly,
       this.hintTextColor,
       this.inputFormatters,
       this.maxLines});
 
-  final TextEditingController controller;
-  final String hintText;
+  final TextEditingController? controller;
+  final String? hintText;
   final Color? hintTextColor;
   final TextInputType? keyboardType;
   final bool? readOnly;

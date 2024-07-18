@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/data/repository/kyc_repository.dart';
 
+
 class KycController extends GetxController implements GetxService {
   final KycRepository kycRepository;
 
@@ -28,12 +29,18 @@ class KycController extends GetxController implements GetxService {
   final List<String> _dropdownItems = ["Own House ", "Rent House"];
   String? _selectedAddress;
   int _activeStep = 0;
+  bool _isKycVerified = false;
+  bool _isLoanApproved = false;
 
   List<String> get dropdownItems => _dropdownItems;
 
   String? get selectedAddress => _selectedAddress;
 
   int get activeStep => _activeStep;
+
+  bool get isKycVerified => _isKycVerified;
+
+  bool get isLoanApproved => _isLoanApproved;
 
   void onChangeDropdown(String? value) {
     _selectedAddress = value;
@@ -42,6 +49,16 @@ class KycController extends GetxController implements GetxService {
 
   void onStepReached(int index) {
     _activeStep = index;
+    update();
+  }
+
+  void onSubmitKycForm() {
+    _isKycVerified = true;
+    update();
+  }
+
+  void onPressedKycComplete() {
+    _isLoanApproved = true;
     update();
   }
 }

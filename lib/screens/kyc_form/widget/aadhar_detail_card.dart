@@ -33,33 +33,33 @@ class AadhaarDetailCard extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AadhaarDetailForm(),
-                  SizedBox(
+                  const AadhaarDetailForm(),
+                  const SizedBox(
                     height: 20,
                   ),
-                  PanDetailForm(),
-                  SizedBox(
+                  const PanDetailForm(),
+                  const SizedBox(
                     height: 20,
                   ),
-                  SmartCardDetailForm(),
-                  SizedBox(
+                  const SmartCardDetailForm(),
+                  const SizedBox(
                     height: 20,
                   ),
-                  DrivingLicenseDetailForm(),
-                  SizedBox(
+                  const DrivingLicenseDetailForm(),
+                  const SizedBox(
                     height: 20,
                   ),
-                  GasDetailForm(),
-                  SizedBox(
+                  const GasDetailForm(),
+                  const SizedBox(
                     height: 20,
                   ),
-                  BroadBandDetailForm(),
-                  SizedBox(
+                  const BroadBandDetailForm(),
+                  const SizedBox(
                     height: 20,
                   ),
                   Center(
@@ -67,24 +67,24 @@ class AadhaarDetailCard extends StatelessWidget {
                         builder: (kycController) {
                           return CustomButton(
                     text: "Submit",
-                    fontSize: 16,
-                    onPressed: () {
+                    // fontSize: 16,
+                    onTap: () {
                           kycController.onStepReached(2);
                     },
-                    borderRadius: 20,
-                    horizontalPadding: 90,
-                    padding: 10,
+                    // borderRadius: 20,
+                    // horizontalPadding: 90,
+                    // padding: 10,
                   );
                         }
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
                     onTap: () {},
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text: TextSpan(
+                      text: const TextSpan(
                         children: [
                           TextSpan(
                             text:

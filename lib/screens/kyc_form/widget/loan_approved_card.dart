@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 
-class LoanApprovedCard extends StatelessWidget {
-  const LoanApprovedCard({super.key});
+class KycLoanApprovedCard extends StatelessWidget {
+  const KycLoanApprovedCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,6 @@ class LoanApprovedCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Container(
-          height: 550,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12.0),
@@ -55,11 +54,11 @@ class LoanApprovedCard extends StatelessWidget {
                 Center(
                     child: CustomButton(
                   text: "Thank you",
-                  fontSize: 16,
-                  onPressed: () {},
-                  borderRadius: 20,
-                  horizontalPadding: 90,
-                  padding: 10,
+                  // fontSize: 16,
+                  onTap: () {},
+                  // borderRadius: 20,
+                  // horizontalPadding: 90,
+                  // padding: 10,
                 )),
               ],
             )),

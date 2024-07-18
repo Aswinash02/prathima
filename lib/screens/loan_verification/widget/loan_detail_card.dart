@@ -85,15 +85,15 @@ class LoanDetailCard extends StatelessWidget {
                         const RoundSliderThumbShape(enabledThumbRadius: 12.0),
                     overlayShape:
                         const RoundSliderOverlayShape(overlayRadius: 24.0),
-                    activeTrackColor: MyTheme.blueColor,
-                    inactiveTrackColor: MyTheme.blueColor.withOpacity(0.3),
+                    activeTrackColor: MyTheme.mainColor,
+                    inactiveTrackColor: MyTheme.mainColor.withOpacity(0.3),
                   ),
                   child: Slider(
                       value: loanController.currentSliderValue,
                       min: 0,
                       max: 100,
                       divisions: 100,
-                      activeColor: MyTheme.blueColor,
+                      activeColor: MyTheme.mainColor,
                       label:
                           loanController.currentSliderValue.round().toString(),
                       onChanged: loanController.onChangeSliderValue),
@@ -150,13 +150,13 @@ class LoanDetailCard extends StatelessWidget {
               Center(
                   child: CustomButton(
                 text: "Proceed",
-                fontSize: 16,
-                onPressed: () {
-                  Get.toNamed(RouteHelper.personalDetail);
+                // fontSize: 16,
+                onTap: () {
+                  Get.toNamed(RouteHelper.kycDetail);
                 },
-                borderRadius: 20,
-                horizontalPadding: 90,
-                padding: 10,
+                // borderRadius: 20,
+                // horizontalPadding: 90,
+                // padding: 10,
               ))
             ],
           ),

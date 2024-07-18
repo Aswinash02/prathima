@@ -12,8 +12,8 @@ import 'package:prathima_loan_app/screens/kyc_form/widget/work_info_card.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/ui_widget.dart';
 
-class PersonalDetailScreen extends StatelessWidget {
-  const PersonalDetailScreen({super.key});
+class KycDetailScreen extends StatelessWidget {
+  const KycDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +35,20 @@ class PersonalDetailScreen extends StatelessWidget {
               left: 0,
               right: 0,
               top: 130,
-              child:
-                  // LoanApprovedCard()
-                  // KycSuccessCard()
-                  //
-                  GetBuilder<KycController>(builder: (kycController) {
+              child: GetBuilder<KycController>(builder: (kycController) {
                 return kycController.activeStep == 0
-                    ? PersonalDetailCard()
+                    ? const PersonalDetailCard()
                     : kycController.activeStep == 1
-                        ? AadhaarDetailCard()
+                        ? const AadhaarDetailCard()
                         : kycController.activeStep == 2
-                            ? WorkInfoDetailCard()
-                            : BankDetailCard();
-              })
-              // AadhaarDetailCard()
-              // PersonalDetailCard()
-              ),
+                            ? const WorkInfoDetailCard()
+                            : kycController.activeStep == 3 &&
+                                    kycController.isKycVerified == false
+                                ? const BankDetailCard()
+                                : kycController.isLoanApproved == false
+                                    ? const KycSuccessCard()
+                                    : const KycLoanApprovedCard();
+              })),
         ],
       ),
     );

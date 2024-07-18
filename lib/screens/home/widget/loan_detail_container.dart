@@ -7,6 +7,7 @@ Widget loanDetailContainer({required String loanType, required String icon}) {
   return Column(
     children: [
       Container(
+        padding: EdgeInsets.all(12),
         child: CustomIcon(
           icon: icon,
           color: Colors.white,
