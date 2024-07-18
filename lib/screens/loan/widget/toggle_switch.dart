@@ -8,7 +8,7 @@ Widget toggleSwitch() {
     child: ToggleSwitch(
       minWidth: 160.0,
       cornerRadius: 8.0,
-      activeBgColors: [
+      activeBgColors: const [
         [MyTheme.mainColor],
         [MyTheme.mainColor],
         [MyTheme.mainColor],
@@ -19,7 +19,7 @@ Widget toggleSwitch() {
       initialLabelIndex: 0,
       totalSwitches: 3,
       fontSize : 13,
-      labels: ['Personal Loan', 'Business Loan' , 'Home Loan'],
+      labels: const ['Personal Loan', 'Business Loan' , 'Home Loan'],
       // multiLineText : true,
       centerText : true,
       borderWidth : 2.0,

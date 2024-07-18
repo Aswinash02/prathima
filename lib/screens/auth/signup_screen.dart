@@ -53,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         children: [
                           CustomText(
                             text:
-                                "Enter email and phone number to send one time Password",
+                                "Enter email and phone number to\nsend one time Password",
                             fontWeight: FontWeight.w700,
                             fontSize: 18,
                             maxLines: 2,
@@ -62,10 +62,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         ],
                       ),
                     ),
-                    Row(
+                    const Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
+                          padding: EdgeInsets.only(bottom: 4.0),
                           child: Text(
                             "Name",
                             style: TextStyle(
@@ -77,7 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
+                      child: SizedBox(
                         height: 36,
                         child: TextField(
                           controller: authController.nameController,
@@ -95,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     const Row(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(bottom: 4.0, top: 40),
+                          padding: EdgeInsets.only(bottom: 4.0, top: 4.0),
                           child: Text(
                             "Mail Id",
                             style: TextStyle(
@@ -152,21 +152,25 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        "Password",
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontWeight: FontWeight.w600),
-                      ),
+                    const Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 4.0),
+                          child: Text(
+                            "Password",
+                            style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Container(
+                          SizedBox(
                             height: 36,
                             child: TextField(
                               controller: authController.passwordController,
@@ -193,8 +197,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               )),
                             ),
                           ),
-                          Text(
-                            "Password Must Contain atleast 6 Characters",
+                          const Text(
+                            "Password Must Contain atleast 8 Characters",
                             style: TextStyle(
                                 color: MyTheme.textfield_grey,
                                 fontStyle: FontStyle.italic),
@@ -202,14 +206,18 @@ class _SignupScreenState extends State<SignupScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        "Confirm Password",
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontWeight: FontWeight.w600),
-                      ),
+                    const Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 4.0),
+                          child: Text(
+                            "Confirm Password",
+                            style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
@@ -246,7 +254,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     CustomButton(
                       text: "Continue",
                       onTap: () {
-                        Get.toNamed(RouteHelper.verificationOtp);
+                        authController.register();
                       },
                     )
                     // CustomButton(
