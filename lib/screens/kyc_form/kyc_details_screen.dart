@@ -35,20 +35,26 @@ class KycDetailScreen extends StatelessWidget {
             left: 0,
             right: 0,
             top: 130,
-            child: GetBuilder<KycController>(builder: (kycController) {
-              return kycController.activeStep == 0
-                  ? const PersonalDetailCard()
-                  : kycController.activeStep == 1
-                  ? const AadhaarDetailCard()
-                  : kycController.activeStep == 2
-                  ? const WorkInfoDetailCard()
-                  : kycController.activeStep == 3 &&
-                  kycController.isKycVerified == false
-                  ? const BankDetailCard()
-                  : kycController.isLoanApproved == false
-                  ? const KycSuccessCard()
-                  : const KycLoanApprovedCard();
-            },),),
+            child: GetBuilder<KycController>(
+              builder: (kycController) {
+                return kycController.activeStep == 0
+                    ? const PersonalDetailCard()
+                    : kycController.activeStep == 1
+                        ? const AadhaarDetailCard()
+                        : kycController.activeStep == 2
+                            ? const WorkInfoDetailCard()
+                            : kycController.activeStep == 3 &&
+                                    kycController.isKycVerified == false
+                                ? const BankDetailCard()
+                                : kycController.isKycVerified
+                                    ? KycSuccessCard()
+                                    : Container();
+                // : kycController.isLoanApproved == false
+                // ? const KycSuccessCard()
+                // : const KycLoanApprovedCard();
+              },
+            ),
+          ),
         ],
       ),
     );

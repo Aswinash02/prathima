@@ -20,4 +20,14 @@ class SharedPreference {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("user_phone") ?? "";
   }
+
+  Future<void> setUserToken(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("user_token", value);
+  }
+
+  Future<String> getUserToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString("user_token") ?? "";
+  }
 }
