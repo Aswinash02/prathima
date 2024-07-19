@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      initialRoute: RouteHelper.introductionScreen,
+      initialRoute: RouteHelper.login,
       getPages: RouteHelper.routes,
     );
   }

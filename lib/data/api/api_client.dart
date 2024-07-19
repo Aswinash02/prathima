@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:prathima_loan_app/utils/app_constant.dart';
 
 class ApiClient extends GetxService{
   final String baseUrl;
@@ -29,10 +29,10 @@ class ApiClient extends GetxService{
   }
 
   static Future<http.Response> post(
-      {required String url,
+      {required String endPoint,
       Map<String, String>? headers,
       required String body}) async {
-    Uri uri = Uri.parse(url);
+    Uri uri = Uri.parse(AppConstants.baseUrl+endPoint);
     Map<String, String>? headerMap = commonHeader;
     if (headers != null) {
       headerMap.addAll(headers);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/auth_controller.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
@@ -18,10 +20,12 @@ class VerificationOtpPage extends StatefulWidget {
 }
 
 class _VerificationOtpPageState extends State<VerificationOtpPage> {
+  final args = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
+        appBar: const CustomAppBar(
           title: '',
           titleColor: Colors.black,
           automaticallyImplyLeading: true,
@@ -63,33 +67,27 @@ class _VerificationOtpPageState extends State<VerificationOtpPage> {
                       child: SizedBox(
                         width: double.infinity,
                         child: OTPTextField(
-                          keyboardType: TextInputType.number,
-                          // controller: _verificationController,
-                          length: 4,
-                          fieldStyle: FieldStyle.box,
-                          textFieldAlignment: MainAxisAlignment.spaceAround,
-                          fieldWidth: 50,
-                          outlineBorderRadius: 15,
-                          style: const TextStyle(fontSize: 16),
-                          onChanged: (pin) {
-                            print("Changed: " + pin);
-                          },
-                          onCompleted: (pin) {
-                            print("Completed: " + pin);
-                            setState(() {
-                              // otpPin = pin;
-                            });
-                          },
-                        ),
+                            keyboardType: TextInputType.number,
+                            controller:
+                                Get.find<AuthController>().otpController,
+                            length: 4,
+                            fieldStyle: FieldStyle.box,
+                            textFieldAlignment: MainAxisAlignment.spaceAround,
+                            fieldWidth: 50,
+                            outlineBorderRadius: 15,
+                            style: const TextStyle(fontSize: 16),
+                            onChanged: (String otp) {},
+                            onCompleted: Get.find<AuthController>().setOTP),
                       ),
                     ),
                     CustomButton(
-                      text: "Continue",
-
+                      text: "Verify OTP",
                       onTap: () {
-                        Get.toNamed(RouteHelper.authSuccess);
+                        if (args['signInWithPhone'] == true) {
+                          Get.find<AuthController>()
+                              .signInWithPhone(args['phone']);
+                        } else {}
                       },
-
                     )
                   ],
                 ),

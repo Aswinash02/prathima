@@ -214,7 +214,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     CustomButton(
                       text: controller.signInWithOTP ? "Send OTP" : "Sign In",
                       onTap: () {
-                        controller.login();
+                        if (controller.signInWithOTP) {
+                          controller.sendOtp();
+                        } else {
+                          controller.login();
+                        }
                       },
                     ),
                     const SizedBox(
