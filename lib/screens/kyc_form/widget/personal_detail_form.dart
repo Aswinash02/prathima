@@ -52,7 +52,7 @@ class PersonalDetailForm extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           CustomTextField(
-            controller: kycController.dobController,
+            controller: kycController.addressController,
             hintText: "Enter Address",
             maxLines: 3,
           ),

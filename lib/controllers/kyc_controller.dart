@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/loan_controller.dart';
+import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/repository/kyc_repository.dart';
-import 'package:prathima_loan_app/repositories/kyc_repositories.dart';
 
 enum PickedFile {
   aadhaarCard,
@@ -16,6 +16,7 @@ enum PickedFile {
   broadBandSlip,
   gasSlip,
   taxReceipt,
+  rentReceipt,
   paySlipMonth1,
   paySlipMonth2,
   paySlipMonth3,
@@ -33,6 +34,12 @@ class KycData {
   // final String smartCard;
   final String accountHolderName;
   final String loanAmount;
+  final String houseType;
+  final String companyName;
+  final String companyEmail;
+  final String companyLocation;
+  final String address;
+  final String employmentType;
 
   // final String loan;
   final File panFile;
@@ -56,7 +63,12 @@ class KycData {
     // required this.smartCard,
     required this.accountHolderName,
     required this.loanAmount,
-    // required this.loan,
+    required this.houseType,
+    required this.companyName,
+    required this.companyEmail,
+    required this.companyLocation,
+    required this.address,
+    required this.employmentType,
     required this.panFile,
     required this.aadhaarFile,
     required this.propertyTaxReceipt,
@@ -95,6 +107,7 @@ class KycController extends GetxController implements GetxService {
   TextEditingController bankNameController = TextEditingController();
   final List<String> _dropdownItems = ["Own House ", "Rent House"];
   PlatformFile? _pickedTaxReceipt;
+  PlatformFile? _pickedRentReceipt;
   PlatformFile? _pickedAadhaarCard;
   PlatformFile? _pickedSmartCard;
   PlatformFile? _pickedIdCard;
@@ -123,6 +136,8 @@ class KycController extends GetxController implements GetxService {
 
   PlatformFile? get pickedTaxReceipt => _pickedTaxReceipt;
 
+  PlatformFile? get pickedRentReceipt => _pickedRentReceipt;
+
   PlatformFile? get pickedAadhaarCard => _pickedAadhaarCard;
 
   PlatformFile? get pickedSmartCard => _pickedSmartCard;
@@ -147,6 +162,7 @@ class KycController extends GetxController implements GetxService {
 
   void onChangeDropdown(String? value) {
     _selectedAddress = value;
+    print("selected Address ==============>${_selectedAddress}");
     update();
   }
 
@@ -156,32 +172,43 @@ class KycController extends GetxController implements GetxService {
   }
 
   void onSubmitKycForm() async {
-    _isKycVerified = true;
     KycData kycData = KycData(
-        aadhaarNumber: aadhaarNumberController.text,
-        panNumber: panNumberController.text,
-        accountNumber: accountNumberController.text,
-        ifscCode: ifscController.text,
-        bankName: bankNameController.text,
-        accountHolderName: accountHolderNameController.text,
-        loanAmount: "",
-        // loanAmount: Get.find<LoanController>().currentSliderValue!,
-        panFile: File(pickedPanCard!.path!),
-        aadhaarFile: File(pickedAadhaarCard!.path!),
-        propertyTaxReceipt: File(pickedTaxReceipt!.path!),
-        rentalAgreement: File(pickedTaxReceipt!.path!),
-        smartCardFile: File(pickedSmartCard!.path!),
-        drivingLicenseFile: File(pickedDrivingLicense!.path!),
-        recentGasBill: File(pickedGasSlip!.path!),
-        recentBroadbandBill: File(pickedBroadBandSlip!.path!),
-        paySlip: [
-          File(pickedPaySlipMonth1!.path!),
-          File(pickedPaySlipMonth2!.path!),
-          File(pickedPaySlipMonth2!.path!)
-        ],
-        idCard: File(pickedIdCard!.path!),
-        pfMemberPassbook: File(pickedPfPassBook!.path!));
-    var kycResponse = await KycRepositories().sendKYCData(kycData);
+      aadhaarNumber: aadhaarNumberController.text,
+      panNumber: panNumberController.text,
+      accountNumber: accountNumberController.text,
+      ifscCode: ifscController.text,
+      bankName: bankNameController.text,
+      accountHolderName: accountHolderNameController.text,
+      loanAmount: Get.find<LoanController>().loanAmountSliderValue.toString(),
+      panFile: File(pickedPanCard!.path!),
+      aadhaarFile: File(pickedAadhaarCard!.path!),
+      propertyTaxReceipt: File(pickedTaxReceipt!.path ?? ''),
+      rentalAgreement: File(pickedTaxReceipt!.path ?? ''),
+      smartCardFile: File(pickedSmartCard!.path!),
+      drivingLicenseFile: File(pickedDrivingLicense!.path!),
+      recentGasBill: File(pickedGasSlip!.path!),
+      recentBroadbandBill: File(pickedBroadBandSlip!.path!),
+      paySlip: [
+        File(pickedPaySlipMonth1!.path!),
+        File(pickedPaySlipMonth2!.path!),
+        File(pickedPaySlipMonth2!.path!)
+      ],
+      idCard: File(pickedIdCard!.path!),
+      pfMemberPassbook: File(pickedPfPassBook!.path!),
+      houseType: selectedAddress!,
+      companyName: companyNameController.text,
+      companyEmail: companyEmailController.text,
+      companyLocation: companyLocationController.text,
+      address: addressController.text,
+      employmentType: employmentTypeController.text,
+    );
+    var kycResponse = await kycRepository.sendKYCData(kycData);
+    if (kycResponse.result!) {
+      _isKycVerified = true;
+      showCustomSnackBar(kycResponse.message, isError: false);
+    } else {
+      showCustomSnackBar(kycResponse.message);
+    }
     update();
   }
 
@@ -196,6 +223,9 @@ class KycController extends GetxController implements GetxService {
       switch (fileType) {
         case PickedFile.taxReceipt:
           _pickedTaxReceipt = result.files.first;
+          break;
+        case PickedFile.rentReceipt:
+          _pickedRentReceipt = result.files.first;
           break;
         case PickedFile.aadhaarCard:
           _pickedAadhaarCard = result.files.first;
