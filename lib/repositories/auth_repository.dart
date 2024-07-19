@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
-import 'package:prathima_loan_app/customs/custom_toest.dart';
 import 'package:prathima_loan_app/data/api/api_client.dart';
 import 'package:prathima_loan_app/models/login_model.dart';
 import 'package:prathima_loan_app/models/signup_model.dart';
-import 'package:prathima_loan_app/screens/auth/otp_verification_page.dart';
-import 'package:toast/toast.dart';
 
-class AuthRepositories{
+class AuthRepositories extends GetxService {
   Future getSignupResponse(
     String name,
     String email,
@@ -35,8 +31,7 @@ class AuthRepositories{
     return signupResponseFromJson(response.body);
   }
 
-  Future<LoginResponse> getLoginResponse(
-      String email, String password) async {
+  Future<LoginResponse> getLoginResponse(String email, String password) async {
     var post_body = jsonEncode({
       "email": email,
       "password": password,

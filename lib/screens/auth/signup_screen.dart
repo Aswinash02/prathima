@@ -5,7 +5,6 @@ import 'package:prathima_loan_app/controllers/auth_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/input_decorations.dart';
-import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -26,156 +25,230 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30),
-                child: Column(
-                  children: <Widget>[
-                    const Padding(
-                      padding: EdgeInsets.only(top: 40, bottom: 40),
-                      child: Image(
-                        image: AssetImage(
-                          "assets/login_main_image.png",
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 20,
+                      left: 0,
+                      child: GestureDetector(
+                        onTap: () => Get.back(),
+                        child: const SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Icon(Icons.arrow_back),
                         ),
-                        height: 250,
-                        width: 210,
                       ),
                     ),
-                    const Row(
-                      children: [
-                        CustomText(
-                          text: "Register Page",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 22,
-                        ),
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: Row(
-                        children: [
-                          CustomText(
-                            text:
-                                "Enter email and phone number to\nsend one time Password",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            maxLines: 2,
-                            color: MyTheme.textfield_grey,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 4.0),
-                          child: Text(
-                            "Name",
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontWeight: FontWeight.w600),
+                    Column(
+                      children: <Widget>[
+                        const Padding(
+                          padding: EdgeInsets.only(top: 40, bottom: 40),
+                          child: Stack(
+                            children: [
+                              Image(
+                                image: AssetImage(
+                                  "assets/login_main_image.png",
+                                ),
+                                height: 250,
+                                width: 210,
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: SizedBox(
-                        height: 36,
-                        child: TextField(
-                          controller: authController.nameController,
-                          autofocus: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "John Doe"),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z\s]')),
-                            // Allow only letters and spaces
+                        const Row(
+                          children: [
+                            CustomText(
+                              text: "Register Page",
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22,
+                            ),
                           ],
                         ),
-                      ),
-                    ),
-                    const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 4.0, top: 4.0),
-                          child: Text(
-                            "Mail Id",
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontWeight: FontWeight.w600),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: Row(
+                            children: [
+                              CustomText(
+                                text:
+                                    "Enter email and phone number to\nsend one time Password",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
+                                maxLines: 2,
+                                color: MyTheme.textfield_grey,
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: SizedBox(
-                        height: 36,
-                        child: TextField(
-                          controller: authController.emailController,
-                          autofocus: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "Enter Email"),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[a-zA-Z0-9@._-]')),
-                            // Allow letters, digits, '@', '.', '_', and '-'
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 4.0),
+                              child: Text(
+                                "Name",
+                                style: TextStyle(
+                                    color: MyTheme.mainColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ),
-                    const Row(
-                      children: [
                         Padding(
-                          padding: EdgeInsets.only(bottom: 4.0),
-                          child: Text(
-                            "Phone",
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: SizedBox(
-                        height: 36,
-                        child: TextField(
-                          controller: authController.phoneController,
-                          autofocus: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "Enter Mobile No."),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                            // Allow only digits
-                          ],
-                          keyboardType: TextInputType.phone,
-                        ),
-                      ),
-                    ),
-                    const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 4.0),
-                          child: Text(
-                            "Password",
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          SizedBox(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SizedBox(
                             height: 36,
                             child: TextField(
-                              controller: authController.passwordController,
+                              controller: authController.signUpNameCon,
                               autofocus: false,
-                              obscureText: !authController.showPassword,
+                              decoration:
+                                  InputDecorations.buildInputDecoration_1(
+                                      hint_text: "John Doe"),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[a-zA-Z\s]')),
+                                // Allow only letters and spaces
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 4.0, top: 4.0),
+                              child: Text(
+                                "Mail Id",
+                                style: TextStyle(
+                                    color: MyTheme.mainColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SizedBox(
+                            height: 36,
+                            child: TextField(
+                              controller: authController.signUpEmailCon,
+                              autofocus: false,
+                              decoration:
+                                  InputDecorations.buildInputDecoration_1(
+                                      hint_text: "Enter Email"),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[a-zA-Z0-9@._-]')),
+                                // Allow letters, digits, '@', '.', '_', and '-'
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 4.0),
+                              child: Text(
+                                "Phone",
+                                style: TextStyle(
+                                    color: MyTheme.mainColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SizedBox(
+                            height: 36,
+                            child: TextField(
+                              controller: authController.signUpPhoneCon,
+                              autofocus: false,
+                              decoration:
+                                  InputDecorations.buildInputDecoration_1(
+                                      hint_text: "Enter Mobile No."),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9]')),
+                              ],
+                              keyboardType: TextInputType.phone,
+                            ),
+                          ),
+                        ),
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 4.0),
+                              child: Text(
+                                "Password",
+                                style: TextStyle(
+                                    color: MyTheme.mainColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                height: 36,
+                                child: TextField(
+                                  controller: authController.signUpPasswordCon,
+                                  autofocus: false,
+                                  obscureText: !authController.showPassword,
+                                  enableSuggestions: false,
+                                  autocorrect: false,
+                                  decoration:
+                                      InputDecorations.buildInputDecoration_1(
+                                              hint_text: "• • • • • • • •")
+                                          .copyWith(
+                                              suffixIcon: InkWell(
+                                    onTap: () {
+                                      authController.showPassword =
+                                          !authController.showPassword;
+                                      setState(() {});
+                                    },
+                                    child: Icon(
+                                      authController.showPassword
+                                          ? Icons.visibility_outlined
+                                          : Icons.visibility_off_outlined,
+                                      color: MyTheme.mainColor,
+                                      size: 15,
+                                    ),
+                                  )),
+                                ),
+                              ),
+                              const Text(
+                                "Password Must Contain atleast 8 Characters",
+                                style: TextStyle(
+                                    color: MyTheme.textfield_grey,
+                                    fontStyle: FontStyle.italic),
+                              )
+                            ],
+                          ),
+                        ),
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 4.0),
+                              child: Text(
+                                "Confirm Password",
+                                style: TextStyle(
+                                    color: MyTheme.mainColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SizedBox(
+                            height: 36,
+                            child: TextField(
+                              controller:
+                                  authController.signUpPasswordConfirmCon,
+                              autofocus: false,
+                              obscureText: !authController.showConfirmPassword,
                               enableSuggestions: false,
                               autocorrect: false,
                               decoration:
@@ -184,90 +257,32 @@ class _SignupScreenState extends State<SignupScreen> {
                                       .copyWith(
                                           suffixIcon: InkWell(
                                 onTap: () {
-                                  authController.showPassword =
-                                      !authController.showPassword;
+                                  authController.showConfirmPassword =
+                                      !authController.showConfirmPassword;
                                   setState(() {});
                                 },
                                 child: Icon(
-                                  authController.showPassword
+                                  authController.showConfirmPassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
-                                  color: MyTheme.accent_color,
+                                  color: MyTheme.mainColor,
+                                  size: 15,
                                 ),
                               )),
                             ),
                           ),
-                          const Text(
-                            "Password Must Contain atleast 8 Characters",
-                            style: TextStyle(
-                                color: MyTheme.textfield_grey,
-                                fontStyle: FontStyle.italic),
-                          )
-                        ],
-                      ),
-                    ),
-                    const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 4.0),
-                          child: Text(
-                            "Confirm Password",
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontWeight: FontWeight.w600),
-                          ),
                         ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomButton(
+                          text: "Sign Up",
+                          onTap: () {
+                            authController.register();
+                          },
+                        )
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        height: 36,
-                        child: TextField(
-                          controller: authController.passwordConfirmController,
-                          autofocus: false,
-                          obscureText: !authController.showConfirmPassword,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                                  hint_text: "• • • • • • • •")
-                              .copyWith(
-                                  suffixIcon: InkWell(
-                            onTap: () {
-                              authController.showConfirmPassword =
-                                  !authController.showConfirmPassword;
-                              setState(() {});
-                            },
-                            child: Icon(
-                              authController.showConfirmPassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: MyTheme.accent_color,
-                            ),
-                          )),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomButton(
-                      text: "Continue",
-                      onTap: () {
-                        authController.register();
-                      },
-                    )
-                    // CustomButton(
-                    //   text: 'Continue',
-                    //   onPressed: () {
-                    //     Get.toNamed(RouteHelper.verificationOtp);
-                    //   },
-                    //   textColor: Colors.white,
-                    //   borderRadius: 12.0,
-                    //   padding: 20.0,
-                    //   horizontalPadding: 100,
-                    //   fontSize: 18.0,
-                    // ),
                   ],
                 ),
               ),

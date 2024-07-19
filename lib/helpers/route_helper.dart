@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:prathima_loan_app/screens/auth/authentication_success_page.dart';
 import 'package:prathima_loan_app/screens/auth/otp_verification_page.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
+import 'package:prathima_loan_app/screens/auth/signup_screen.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
 import 'package:prathima_loan_app/screens/initial_screen/initial_screen_page.dart';
 import 'package:prathima_loan_app/screens/kyc_form/kyc_details_screen.dart';
@@ -24,7 +25,8 @@ import 'package:prathima_loan_app/screens/profile/terms_and_condition_screen.dar
 class RouteHelper {
   static const String initial = '/';
   static const String introductionScreen = '/introductionScreen';
-  static const String login = '/loginIn';
+  static const String login = '/login';
+  static const String signUp = '/signUp';
   static const String authSuccess = '/authSuccess';
   static const String verificationOtp = '/verificationOtp';
   static const String home = '/home';
@@ -52,6 +54,7 @@ class RouteHelper {
   static List<GetPage> routes = [
     GetPage(name: initial, page: () => const MainScreen()),
     GetPage(name: login, page: () => const SignInScreen()),
+    GetPage(name: signUp, page: () => const SignupScreen()),
     GetPage(name: verificationOtp, page: () => const VerificationOtpPage()),
     GetPage(name: authSuccess, page: () => const AuthSuccessPage()),
     GetPage(name: home, page: () => const HomeScreen()),

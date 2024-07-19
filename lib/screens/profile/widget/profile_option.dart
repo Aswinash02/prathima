@@ -22,34 +22,37 @@ class ProfileOption extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: onTap,
-            child: Row(
-              children: [
-                Container(
-                  child: CustomIcon(
-                    icon: icon,
-                    height: 25,
-                    width: 25,
-                    color: MyTheme.mainColor,
+            child: Container(
+              color: Colors.transparent,
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: MyTheme.mainColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: CustomIcon(
+                      icon: icon,
+                      height: 25,
+                      width: 25,
+                      color: MyTheme.mainColor,
+                    ),
                   ),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: MyTheme.mainColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                CustomText(
-                  text: option,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 15,
-                )
-              ],
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  CustomText(
+                    text: option,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  const Spacer(),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 15,
+                  )
+                ],
+              ),
             ),
           ),
           const Divider()

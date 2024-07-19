@@ -7,6 +7,7 @@ class InputDecorations {
         hintText: hint_text,
         filled: true,
         fillColor: MyTheme.white,
+
         hintStyle: const TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(

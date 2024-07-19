@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/repository/auth_repository.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/models/login_model.dart';
@@ -7,32 +8,41 @@ import 'package:prathima_loan_app/models/signup_model.dart';
 import 'package:prathima_loan_app/repositories/auth_repository.dart';
 import 'package:prathima_loan_app/utils/shared_preferences.dart';
 
-import '../customs/custom_snackbar.dart';
-
 class AuthController extends GetxController implements GetxService {
   final AuthRepository authRepository;
 
   AuthController({required this.authRepository});
 
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController passwordConfirmController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  final sharedPreference = SharedPreference();
+
+  // Sign Up
+  TextEditingController signUpPhoneCon = TextEditingController();
+  TextEditingController signUpEmailCon = TextEditingController();
+  TextEditingController signUpPasswordCon = TextEditingController();
+  TextEditingController signUpPasswordConfirmCon = TextEditingController();
+  TextEditingController signUpNameCon = TextEditingController();
+
+  // Sign In
+  TextEditingController signInPhoneCon = TextEditingController();
+  TextEditingController signInEmailCon = TextEditingController();
+  TextEditingController signInPasswordCon = TextEditingController();
 
   bool showPassword = false;
   bool showConfirmPassword = false;
+  bool _signInWithOTP = false;
 
   bool _isKycVerified = false;
 
   bool get isKycVerified => _isKycVerified;
 
+  bool get signInWithOTP => _signInWithOTP;
+
   void register() async {
-    String firstName = nameController.text;
-    String email = emailController.text;
-    String number = phoneController.text;
-    String password = passwordController.text;
-    String confirmPassword = passwordConfirmController.text;
+    String firstName = signUpNameCon.text;
+    String email = signUpEmailCon.text;
+    String number = signUpPhoneCon.text;
+    String password = signUpPasswordCon.text;
+    String confirmPassword = signUpPasswordConfirmCon.text;
 
     if (firstName.isEmpty) {
       showCustomSnackBar("Enter Your Name");
@@ -65,28 +75,66 @@ class AuthController extends GetxController implements GetxService {
   }
 
   void login() async {
-    String email = emailController.text;
-    String password = passwordController.text;
+    String email = signInEmailCon.text;
+    String password = signInPasswordCon.text;
+    String phone = signInPhoneCon.text;
 
-    if (email.isEmpty) {
+    if (signInWithOTP == false && email.isEmpty) {
       showCustomSnackBar("Enter Your Email");
-    } else if (!GetUtils.isEmail(email)) {
+    } else if (signInWithOTP == false && !GetUtils.isEmail(email)) {
       showCustomSnackBar("Enter Valid Email Id");
-    } else if (password == "") {
+    } else if (signInWithOTP == false && password == "") {
       showCustomSnackBar("Enter Password");
-    } else if (password.length < 8) {
+    } else if (signInWithOTP == false && password.length < 8) {
       showCustomSnackBar("Password Length atleast greater than 8 characters");
+    } else if (signInWithOTP == true && phone == "") {
+      showCustomSnackBar("Enter Phone Number");
+    } else if (signInWithOTP == true && phone.length < 10) {
+      showCustomSnackBar("Invalid Phone Number");
     } else {
       LoginResponse loginResponse =
           await AuthRepositories().getLoginResponse(email, password);
       if (loginResponse.result == false) {
         showCustomSnackBar(loginResponse.message);
       } else {
-        showCustomSnackBar(loginResponse.message);
+        showCustomSnackBar(loginResponse.message, isError: false);
         Get.toNamed(RouteHelper.verificationOtp);
-        SharedPreference().setLogin(true);
-        SharedPreference().setUserPhoneNo(loginResponse.user?.phoneNumber ?? '');
+        sharedPreference.setLogin(true);
+        sharedPreference.setUserPhoneNo(loginResponse.user?.phoneNumber ?? '');
       }
     }
   }
+
+  void onChangeSignInMethod() {
+    _signInWithOTP = !_signInWithOTP;
+    update();
+  }
+
+  Future<void> clearUserData() async {
+    sharedPreference.setLogin(false);
+  }
+
+  void clearControllerData() {
+    signUpPhoneCon.clear();
+    signUpNameCon.clear();
+    signUpPasswordConfirmCon.clear();
+    signUpPasswordCon.clear();
+    signUpEmailCon.clear();
+    signInPhoneCon.clear();
+    signInEmailCon.clear();
+    signInPasswordCon.clear();
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    clearControllerData();
+    super.onClose();
+  }
+// Future<void> setUserData() async {}
 }

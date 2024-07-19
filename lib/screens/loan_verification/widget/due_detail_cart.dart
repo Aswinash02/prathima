@@ -140,14 +140,14 @@ class DueDetailCard extends StatelessWidget {
                             children: [
                               Container(
                                 padding: const EdgeInsets.all(2),
+                                decoration: const BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle),
                                 child: const Icon(
                                   Icons.arrow_upward,
                                   size: 14,
                                   color: Colors.white,
                                 ),
-                                decoration: const BoxDecoration(
-                                    color: Colors.green,
-                                    shape: BoxShape.circle),
                               ),
                               const SizedBox(
                                 width: 4,
@@ -193,7 +193,7 @@ class DueDetailCard extends StatelessWidget {
               GetBuilder<LoanController>(builder: (loanController) {
                 return loanController.isChangeDetail
                     ? changeDetailColumn()
-                    : LoanPeriodCard();
+                    : const LoanPeriodCard();
               }),
               const SizedBox(
                 height: 20,
@@ -202,13 +202,10 @@ class DueDetailCard extends StatelessWidget {
                 return Center(
                     child: CustomButton(
                   text: "Proceed",
-                  // fontSize: 16,
                   onTap: () {
                    loanController.onPressedProceed();
                   },
-                  // borderRadius: 20,
-                  // horizontalPadding: 90,
-                  // padding: 10,
+
                 ));
               })
             ],

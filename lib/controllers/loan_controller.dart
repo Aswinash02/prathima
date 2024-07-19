@@ -7,7 +7,8 @@ class LoanController extends GetxController implements GetxService {
 
   LoanController({required this.loanRepository});
 
-  double _currentSliderValue = 20.0;
+  double _loanAmountSliderValue = 5000;
+  double _dueMonthSliderValue = 2;
   bool _isChangeDetail = false;
   String _selectedMode = '';
   List<PaymentMethod> paymentMethodString = [
@@ -17,14 +18,20 @@ class LoanController extends GetxController implements GetxService {
     PaymentMethod(img: "assets/img/BHIM.png", name: 'BHIM'),
   ];
 
-  double get currentSliderValue => _currentSliderValue;
+  double get loanAmountSliderValue => _loanAmountSliderValue;
+
+  double get dueMonthSliderValue => _dueMonthSliderValue;
 
   bool get isChangeDetail => _isChangeDetail;
 
   String get selectedMode => _selectedMode;
 
-  void onChangeSliderValue(double value) {
-    _currentSliderValue = value;
+  void onChangeLoanAmountSlider(double value) {
+    _loanAmountSliderValue = value;
+    update();
+  }
+  void onChangeDueMonthSlider(double value) {
+    _dueMonthSliderValue = value;
     update();
   }
 
@@ -38,7 +45,6 @@ class LoanController extends GetxController implements GetxService {
   }
 
   void onChangeMode(String? value) {
-    print('mode =========== ${value}');
     _selectedMode = value!;
     update();
   }

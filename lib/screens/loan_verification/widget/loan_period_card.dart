@@ -47,13 +47,14 @@ class LoanPeriodCard extends StatelessWidget {
                   inactiveTrackColor: MyTheme.mainColor.withOpacity(0.3),
                 ),
                 child: Slider(
-                    value: loanController.currentSliderValue,
-                    min: 0,
-                    max: 100,
+                    value: loanController.dueMonthSliderValue,
+                    min: 2,
+                    max: 5,
                     divisions: 100,
                     activeColor: MyTheme.mainColor,
-                    label: loanController.currentSliderValue.round().toString(),
-                    onChanged: loanController.onChangeSliderValue),
+                    label:
+                        loanController.dueMonthSliderValue.round().toString(),
+                    onChanged: loanController.onChangeDueMonthSlider),
               );
             }),
             const Row(

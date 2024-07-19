@@ -89,14 +89,15 @@ class LoanDetailCard extends StatelessWidget {
                     inactiveTrackColor: MyTheme.mainColor.withOpacity(0.3),
                   ),
                   child: Slider(
-                      value: loanController.currentSliderValue,
-                      min: 0,
-                      max: 100,
+                      value: loanController.loanAmountSliderValue,
+                      min: 5000,
+                      max: 300000,
                       divisions: 100,
                       activeColor: MyTheme.mainColor,
-                      label:
-                          loanController.currentSliderValue.round().toString(),
-                      onChanged: loanController.onChangeSliderValue),
+                      label: loanController.loanAmountSliderValue
+                          .round()
+                          .toString(),
+                      onChanged: loanController.onChangeLoanAmountSlider),
                 );
               }),
               const Row(
