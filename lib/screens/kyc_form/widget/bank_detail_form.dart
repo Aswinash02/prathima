@@ -6,7 +6,6 @@ import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/custom_textfield.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/doc_upload_container.dart';
 
-
 class BankDetailForm extends StatelessWidget {
   const BankDetailForm({super.key});
 
@@ -58,21 +57,22 @@ class BankDetailForm extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           DocUploadContainer(
-              textString: "Upload your Pf member Pass book ", onTap: () {}),
-          SizedBox(
+            textString: "Upload your Pf member Pass book ",
+            selectedFile: kycController.pickedPfPassBook,
+            onTap: () {
+              kycController.pickFiles(PickedFile.pfPassBook);
+            },
+          ),
+          const SizedBox(
             height: 20,
           ),
           Center(
               child: CustomButton(
-                text: "Submit",
-                // fontSize: 16,
-                onTap: () {
-                 kycController.onSubmitKycForm();
-                },
-                // borderRadius: 20,
-                // horizontalPadding: 90,
-                // padding: 10,
-              ))
+            text: "Submit",
+            onTap: () {
+              kycController.onSubmitKycForm();
+            },
+          ))
         ],
       );
     });

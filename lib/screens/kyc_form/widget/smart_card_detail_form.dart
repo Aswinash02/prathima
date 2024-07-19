@@ -15,15 +15,15 @@ class SmartCardDetailForm extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(
+          const CustomText(
             text: "Smart card",
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             text:
                 "Please upload your Smart card below for completing your KYC.",
             fontSize: 13,
@@ -31,12 +31,15 @@ class SmartCardDetailForm extends StatelessWidget {
             maxLines: 3,
             color: MyTheme.font_grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           DocUploadContainer(
             textString: 'Upload Smart card Front photo ',
-            onTap: () {},
+            selectedFile: kycController.pickedSmartCard,
+            onTap: () {
+              kycController.pickFiles(PickedFile.smartCard);
+            },
           ),
         ],
       );

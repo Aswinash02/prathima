@@ -15,15 +15,15 @@ class DrivingLicenseDetailForm extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(
+          const CustomText(
             text: "Driving licence",
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             text:
                 "Please upload your Driving licence below for completing your KYC.",
             fontSize: 13,
@@ -31,12 +31,15 @@ class DrivingLicenseDetailForm extends StatelessWidget {
             maxLines: 3,
             color: MyTheme.font_grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           DocUploadContainer(
             textString: 'Upload Driving Licence Front  And Back photo',
-            onTap: () {},
+            selectedFile: kycController.pickedDrivingLicense,
+            onTap: () {
+              kycController.pickFiles(PickedFile.drivingLicense);
+            },
           ),
         ],
       );

@@ -48,7 +48,10 @@ class AadhaarDetailForm extends StatelessWidget {
           ),
           DocUploadContainer(
             textString: 'Upload aadhaar card Front photo ',
-            onTap: () {},
+            selectedFile: kycController.pickedAadhaarCard,
+            onTap: () {
+              kycController.pickFiles(PickedFile.aadhaarCard);
+            },
           ),
         ],
       );

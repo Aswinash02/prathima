@@ -4,7 +4,6 @@ import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/custom_textfield.dart';
-import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/doc_upload_container.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/house_type_dropdown.dart';
 
@@ -70,19 +69,18 @@ class PersonalDetailForm extends StatelessWidget {
           ),
           DocUploadContainer(
             textString: 'Upload Your Property tax receipt',
-            onTap: () {},
+            selectedFile: kycController.pickedTaxReceipt,
+            onTap: () {
+              kycController.pickFiles(PickedFile.taxReceipt);
+            },
           ),
           const SizedBox(height: 20),
           Center(
               child: CustomButton(
             text: "Submit",
-            // fontSize: 16,
             onTap: () {
               kycController.onStepReached(1);
             },
-            // borderRadius: 20,
-            // horizontalPadding: 90,
-            // padding: 10,
           ))
         ],
       );

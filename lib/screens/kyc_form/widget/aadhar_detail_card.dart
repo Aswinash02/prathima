@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
-import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/aadhar_detail_form.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/broadband_detail_form.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/driving_license_detail_form.dart';
@@ -62,21 +61,15 @@ class AadhaarDetailCard extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Center(
-                      child: GetBuilder<KycController>(
-                        builder: (kycController) {
-                          return CustomButton(
-                    text: "Submit",
-                    // fontSize: 16,
-                    onTap: () {
-                          kycController.onStepReached(2);
-                    },
-                    // borderRadius: 20,
-                    // horizontalPadding: 90,
-                    // padding: 10,
-                  );
-                        }
-                      )),
+                  Center(child:
+                      GetBuilder<KycController>(builder: (kycController) {
+                    return CustomButton(
+                      text: "Submit",
+                      onTap: () {
+                        kycController.onStepReached(2);
+                      },
+                    );
+                  })),
                   const SizedBox(
                     height: 20,
                   ),
@@ -85,6 +78,7 @@ class AadhaarDetailCard extends StatelessWidget {
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: const TextSpan(
+
                         children: [
                           TextSpan(
                             text:

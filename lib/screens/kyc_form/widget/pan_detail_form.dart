@@ -15,22 +15,22 @@ class PanDetailForm extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(
+          const CustomText(
             text: "Pan Card ",
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             text: "Please upload your PAN card below for completing your  KYC.",
             fontSize: 13,
             fontWeight: FontWeight.w500,
             maxLines: 3,
             color: MyTheme.font_grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           const CustomText(
@@ -40,19 +40,23 @@ class PanDetailForm extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           CustomTextField(
-              controller: kycController.panNumberController,
-              hintText: "Enter PAN Card Number",
-            onChanged: (String value){
-                kycController.panNumberController.text = value;
-                print("Pan Card Data ==============>${kycController.panNumberController.text}");
+            controller: kycController.panNumberController,
+            hintText: "Enter PAN Card Number",
+            onChanged: (String value) {
+              kycController.panNumberController.text = value;
+              print(
+                  "Pan Card Data ==============>${kycController.panNumberController.text}");
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           DocUploadContainer(
             textString: 'Upload PAN card Front photo',
-            onTap: () {},
+            selectedFile: kycController.pickedPanCard,
+            onTap: () {
+              kycController.pickFiles(PickedFile.panCard);
+            },
           ),
         ],
       );

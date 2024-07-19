@@ -15,15 +15,15 @@ class GasDetailForm extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(
+          const CustomText(
             text: "Recent Gas slip",
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             text:
                 "Please upload your Recent Gas slip below for completing  KYC.",
             fontSize: 13,
@@ -31,7 +31,7 @@ class GasDetailForm extends StatelessWidget {
             maxLines: 3,
             color: MyTheme.font_grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           const CustomText(
@@ -43,12 +43,15 @@ class GasDetailForm extends StatelessWidget {
           CustomTextField(
               controller: kycController.gasSlipNumberController,
               hintText: "Enter Gas Slip Number"),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           DocUploadContainer(
             textString: 'Upload Recent Gas Slip photo',
-            onTap: () {},
+            selectedFile: kycController.pickedGasSlip,
+            onTap: () {
+              kycController.pickFiles(PickedFile.gasSlip);
+            },
           ),
         ],
       );

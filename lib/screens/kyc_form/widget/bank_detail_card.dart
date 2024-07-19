@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/bank_detail_form.dart';
-import 'package:prathima_loan_app/screens/kyc_form/widget/work_info_detail_form.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 class BankDetailCard extends StatelessWidget {
@@ -52,6 +51,9 @@ class BankDetailCard extends StatelessWidget {
                     height: 20,
                   ),
                   BankDetailForm(),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),

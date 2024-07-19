@@ -15,15 +15,15 @@ class BroadBandDetailForm extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(
+          const CustomText(
             text: "Recent Broadband bill",
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          CustomText(
+          const CustomText(
             text:
                 "Please upload your Recent BoardBand Bill below for completing KYC.",
             fontSize: 13,
@@ -31,7 +31,7 @@ class BroadBandDetailForm extends StatelessWidget {
             maxLines: 3,
             color: MyTheme.font_grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           const CustomText(
@@ -43,12 +43,15 @@ class BroadBandDetailForm extends StatelessWidget {
           CustomTextField(
               controller: kycController.broadBandBillNumberController,
               hintText: "Enter BoardBand Bill Number"),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           DocUploadContainer(
             textString: 'Upload Broadband Bill photo',
-            onTap: () {},
+            selectedFile: kycController.pickedBroadBandSlip,
+            onTap: () {
+              kycController.pickFiles(PickedFile.broadBandSlip);
+            },
           ),
         ],
       );
