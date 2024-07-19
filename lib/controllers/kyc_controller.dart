@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/data/repository/kyc_repository.dart';
+import 'package:prathima_loan_app/repositories/kyc_repositories.dart';
 
 enum PickedFile {
   aadhaarCard,
@@ -17,6 +21,54 @@ enum PickedFile {
   paySlipMonth3,
   idCard,
   pfPassBook
+}
+
+class KycData {
+  final String aadhaarNumber;
+  final String panNumber;
+  final String accountNumber;
+  final String ifscCode;
+  final String bankName;
+
+  // final String smartCard;
+  final String accountHolderName;
+  final String loanAmount;
+
+  // final String loan;
+  final File panFile;
+  final File aadhaarFile;
+  final File propertyTaxReceipt;
+  final File rentalAgreement;
+  final File smartCardFile;
+  final File drivingLicenseFile;
+  final File recentGasBill;
+  final File recentBroadbandBill;
+  final List<File> paySlip;
+  final File idCard;
+  final File pfMemberPassbook;
+
+  const KycData({
+    required this.aadhaarNumber,
+    required this.panNumber,
+    required this.accountNumber,
+    required this.ifscCode,
+    required this.bankName,
+    // required this.smartCard,
+    required this.accountHolderName,
+    required this.loanAmount,
+    // required this.loan,
+    required this.panFile,
+    required this.aadhaarFile,
+    required this.propertyTaxReceipt,
+    required this.rentalAgreement,
+    required this.smartCardFile,
+    required this.drivingLicenseFile,
+    required this.recentGasBill,
+    required this.recentBroadbandBill,
+    required this.paySlip,
+    required this.idCard,
+    required this.pfMemberPassbook,
+  });
 }
 
 class KycController extends GetxController implements GetxService {
@@ -103,8 +155,33 @@ class KycController extends GetxController implements GetxService {
     update();
   }
 
-  void onSubmitKycForm() {
+  void onSubmitKycForm() async {
     _isKycVerified = true;
+    KycData kycData = KycData(
+        aadhaarNumber: aadhaarNumberController.text,
+        panNumber: panNumberController.text,
+        accountNumber: accountNumberController.text,
+        ifscCode: ifscController.text,
+        bankName: bankNameController.text,
+        accountHolderName: accountHolderNameController.text,
+        loanAmount: "",
+        // loanAmount: Get.find<LoanController>().currentSliderValue!,
+        panFile: File(pickedPanCard!.path!),
+        aadhaarFile: File(pickedAadhaarCard!.path!),
+        propertyTaxReceipt: File(pickedTaxReceipt!.path!),
+        rentalAgreement: File(pickedTaxReceipt!.path!),
+        smartCardFile: File(pickedSmartCard!.path!),
+        drivingLicenseFile: File(pickedDrivingLicense!.path!),
+        recentGasBill: File(pickedGasSlip!.path!),
+        recentBroadbandBill: File(pickedBroadBandSlip!.path!),
+        paySlip: [
+          File(pickedPaySlipMonth1!.path!),
+          File(pickedPaySlipMonth2!.path!),
+          File(pickedPaySlipMonth2!.path!)
+        ],
+        idCard: File(pickedIdCard!.path!),
+        pfMemberPassbook: File(pickedPfPassBook!.path!));
+    var kycResponse = await KycRepositories().sendKYCData(kycData);
     update();
   }
 
