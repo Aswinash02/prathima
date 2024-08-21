@@ -32,50 +32,80 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: children[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: CustomIcon(
-              icon: "assets/icon/home_icon.png",
-              color: _selectedIndex == 0 ? MyTheme.mainColor : MyTheme.grey_153,
+    return WillPopScope(
+      onWillPop: () async {
+        if (_selectedIndex != 0) {
+          _selectedIndex = 0;
+          setState(() {});
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        body: children[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 25,
+                child: CustomIcon(
+                  icon: "assets/icon/home_icon.png",
+                  color: _selectedIndex == 0
+                      ? MyTheme.mainColor
+                      : MyTheme.grey_153,
+                ),
+              ),
+              label: 'Dashboard',
             ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: CustomIcon(
-              icon: "assets/icon/loan_icon.png",
-              height: 25,
-              width: 25,
-              color: _selectedIndex == 1 ? MyTheme.mainColor : MyTheme.grey_153,
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 25,
+                child: CustomIcon(
+                  icon: "assets/icon/loan_icon.png",
+                  height: 25,
+                  width: 25,
+                  color: _selectedIndex == 1
+                      ? MyTheme.mainColor
+                      : MyTheme.grey_153,
+                ),
+              ),
+              label: 'Loan',
             ),
-            label: 'Loan',
-          ),
-          BottomNavigationBarItem(
-            icon: CustomIcon(
-              icon: "assets/icon/transaction_icon.png",
-              color: _selectedIndex == 2 ? MyTheme.mainColor : MyTheme.grey_153,
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 25,
+                child: CustomIcon(
+                  icon: "assets/icon/transaction_icon.png",
+                  color: _selectedIndex == 2
+                      ? MyTheme.mainColor
+                      : MyTheme.grey_153,
+                ),
+              ),
+              label: 'Transaction',
             ),
-            label: 'Transaction',
-          ),
-          BottomNavigationBarItem(
-            icon: CustomIcon(
-              icon: "assets/icon/loan_history_icon.png",
-              height: 25,
-              width: 25,
-              color: _selectedIndex == 3 ? MyTheme.mainColor : MyTheme.grey_153,
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 25,
+                child: CustomIcon(
+                  icon: "assets/icon/loan_history_icon.png",
+                  height: 25,
+                  width: 25,
+                  color: _selectedIndex == 3
+                      ? MyTheme.mainColor
+                      : MyTheme.grey_153,
+                ),
+              ),
+              label: 'Profile',
             ),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: MyTheme.mainColor,
-        unselectedItemColor: MyTheme.grey_153,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        onTap: _onItemTapped,
+          ],
+          currentIndex: _selectedIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: MyTheme.mainColor,
+          unselectedItemColor: MyTheme.grey_153,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

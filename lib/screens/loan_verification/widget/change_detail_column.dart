@@ -6,7 +6,7 @@ Widget changeDetailColumn() {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       CustomText(
-        text: "Change details",
+        text: "Details",
         fontWeight: FontWeight.w700,
         fontSize: 20,
       ),

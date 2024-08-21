@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/aadhar_detail_card.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/personal_detail_form.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
+import 'package:prathima_loan_app/utils/shimmer/kyc_shimmer.dart';
 
 class PersonalDetailCard extends StatelessWidget {
   const PersonalDetailCard({super.key});
@@ -51,8 +54,12 @@ class PersonalDetailCard extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  PersonalDetailForm(),
-
+                  PersonalDetailForm()
+                  // GetBuilder<KycController>(builder: (controller) {
+                  //   return controller.kycDataLoadingState
+                  //       ? const ShimmerListView()
+                  //       : const PersonalDetailForm();
+                  // }),
                 ],
               ),
             ),

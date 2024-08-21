@@ -4,6 +4,7 @@ import 'package:prathima_loan_app/controllers/loan_agreement_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
+import 'package:prathima_loan_app/screens/loan_agreement_screen/widget/loan_agreement_form.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 class LoanAgreementCard extends StatelessWidget {
@@ -802,6 +803,8 @@ class LoanAgreementCard extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
+                  LoanAgreementForm(),
+                  SizedBox(height: 15,),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -831,17 +834,16 @@ class LoanAgreementCard extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
+
                   GetBuilder<LoanAgreementController>(builder: (controller) {
                     return Center(
                         child: CustomButton(
                       text: "Accept & Continue",
-                      // fontSize: 16,
-                      onTap: controller.isCheckBox ? () {
-                        Get.toNamed(RouteHelper.loanApprovedScreen);
-                      } : null,
-                      // borderRadius: 20,
-                      // horizontalPadding: 60,
-                      // padding: 10,
+                      onTap: controller.isCheckBox
+                          ? () {
+                              Get.toNamed(RouteHelper.loanApprovedScreen);
+                            }
+                          : null,
                       color: controller.isCheckBox
                           ? MyTheme.mainColor
                           : MyTheme.grey_153,

@@ -89,6 +89,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: TextField(
                                     controller: controller.signInPhoneCon,
                                     autofocus: false,
+                                    onChanged: (String str) {
+                                      if (str.length == 10) {
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                    },
                                     keyboardType: TextInputType.number,
                                     decoration:
                                         InputDecorations.buildInputDecoration_1(
@@ -211,16 +216,21 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    CustomButton(
-                      text: controller.signInWithOTP ? "Send OTP" : "Sign In",
-                      onTap: () {
-                        if (controller.signInWithOTP) {
-                          controller.sendOtp();
-                        } else {
-                          controller.login();
-                        }
-                      },
-                    ),
+                    GetBuilder<AuthController>(builder: (controller) {
+                      return CustomButton(
+                        text: controller.signInWithOTP ? "Send OTP" : "Sign In",
+                        loading: controller.loadingState,
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+
+                          if (controller.signInWithOTP) {
+                            controller.sendOtp();
+                          } else {
+                            controller.login();
+                          }
+                        },
+                      );
+                    }),
                     const SizedBox(
                       height: 20,
                     ),
@@ -244,9 +254,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600),
                           ),
-                          onTap: () {
-                            Get.toNamed(RouteHelper.signUp);
-                          },
+                          onTap: () => Get.toNamed(RouteHelper.signUp),
                         ),
                       ],
                     ),

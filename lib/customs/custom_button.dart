@@ -54,7 +54,8 @@ class CustomButton extends StatelessWidget {
       this.color,
       this.textColor,
       this.height,
-      this.width});
+      this.width,
+      this.loading = false});
 
   final void Function()? onTap;
   final String text;
@@ -62,6 +63,7 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final double? height;
   final double? width;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -70,17 +72,26 @@ class CustomButton extends StatelessWidget {
       child: Container(
         width: width ?? double.infinity,
         height: height ?? 50,
-        child: Center(
-          child: CustomText(
-            text: text,
-            color: textColor ?? MyTheme.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
         decoration: BoxDecoration(
             color: color ?? MyTheme.mainColor,
             borderRadius: BorderRadius.circular(10)),
+        child: Center(
+          child: loading
+              ? const SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ),
+                )
+              : CustomText(
+                  text: text,
+                  color: textColor ?? MyTheme.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+        ),
       ),
     );
   }

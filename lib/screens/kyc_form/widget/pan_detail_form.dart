@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
@@ -42,9 +43,39 @@ class PanDetailForm extends StatelessWidget {
           CustomTextField(
             controller: kycController.panNumberController,
             hintText: "Enter PAN Card Number",
-            // onChanged: (String value) {
-            //   kycController.panNumberController.text = value;
-            // },
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+              LengthLimitingTextInputFormatter(10)
+            ],
+            onChanged: kycController.onChangePan,
+            suffixIcon: Wrap(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: kycController.panLoadingState
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : kycController.isPanVerified
+                          ? Container(
+                              height: 20,
+                              width: 20,
+                              decoration: const BoxDecoration(
+                                  color: Colors.green, shape: BoxShape.circle),
+                              child: const Icon(
+                                Icons.check,
+                                size: 12,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const SizedBox(),
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 10,

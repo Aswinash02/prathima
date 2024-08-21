@@ -165,6 +165,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   InputDecorations.buildInputDecoration_1(
                                       hint_text: "Enter Mobile No."),
                               inputFormatters: [
+                                LengthLimitingTextInputFormatter(10),
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'[0-9]')),
                               ],
@@ -275,12 +276,16 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        CustomButton(
-                          text: "Sign Up",
-                          onTap: () {
-                            authController.register();
-                          },
-                        )
+                        GetBuilder<AuthController>(builder: (controller) {
+                          return CustomButton(
+                            text: "Sign Up",
+                            loading: controller.loadingState,
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                              authController.register();
+                            },
+                          );
+                        })
                       ],
                     ),
                   ],

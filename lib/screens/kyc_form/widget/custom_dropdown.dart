@@ -3,16 +3,26 @@ import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
-class HouseTypeDropdown extends StatelessWidget {
-  const HouseTypeDropdown({super.key});
+class DropdownField extends StatelessWidget {
+  final List<String> itemList;
+  final String hintText;
+  final void Function(String?) onChange;
+  final String? value;
+
+  const DropdownField(
+      {super.key,
+      required this.itemList,
+      required this.hintText,
+      required this.onChange,
+      required this.value});
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<KycController>(builder: (kycController) {
       return DropdownButtonFormField(
-        value: kycController.selectedAddress,
-        onChanged: kycController.onChangeDropdown,
-        items: kycController.dropdownItems.map((item) {
+        value: value,
+        onChanged: onChange,
+        items: itemList.map((item) {
           return DropdownMenuItem(
             value: item,
             child: Text(item),
@@ -21,7 +31,7 @@ class HouseTypeDropdown extends StatelessWidget {
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
-          hintText: "Select Address",
+          hintText: hintText,
           hintStyle: const TextStyle(color: MyTheme.grey_153),
           contentPadding: const EdgeInsets.all(12),
           enabledBorder: OutlineInputBorder(

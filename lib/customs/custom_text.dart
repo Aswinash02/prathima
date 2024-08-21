@@ -18,13 +18,13 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Text(
       text,
       style: TextStyle(
         fontSize: fontSize ?? 15,
         fontWeight: fontWeight ?? FontWeight.w500,
         color: color ?? Colors.black,
-
       ),
 
       maxLines: maxLines ?? 1,

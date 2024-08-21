@@ -80,15 +80,19 @@ class _VerificationOtpPageState extends State<VerificationOtpPage> {
                             onCompleted: Get.find<AuthController>().setOTP),
                       ),
                     ),
-                    CustomButton(
-                      text: "Verify OTP",
-                      onTap: () {
-                        if (args['signInWithPhone'] == true) {
-                          Get.find<AuthController>()
-                              .signInWithPhone(args['phone']);
-                        } else {}
-                      },
-                    )
+                    GetBuilder<AuthController>(builder: (controller) {
+                      return CustomButton(
+                        text: "Verify OTP",
+                        loading: controller.loadingState,
+                        onTap: () {
+                          if (args != null && args['signInWithPhone'] == true) {
+                            controller.signInWithPhone(args['phone']);
+                          } else {
+                            controller.verifyEmail();
+                          }
+                        },
+                      );
+                    })
                   ],
                 ),
               ),

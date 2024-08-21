@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-
-import '../../../utils/colors.dart';
+import 'package:prathima_loan_app/utils/colors.dart';
 
 class IntroductionScreenWidget {
-  // This method should return a PageViewModel and take image path and text as parameters
   PageViewModel getPageViewModel(String imagePath, String text) {
     return PageViewModel(
       title: "",

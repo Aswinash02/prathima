@@ -61,7 +61,7 @@ class LoanDetailCard extends StatelessWidget {
                         color: Colors.grey,
                       ),
                       CustomText(
-                        text: "Loki Bank",
+                        text: "Prathima Finance",
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
                       )
@@ -79,31 +79,34 @@ class LoanDetailCard extends StatelessWidget {
               ),
               GetBuilder<LoanController>(builder: (loanController) {
                 return SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    trackHeight: 12.0,
-                    thumbShape:
-                        const RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                    overlayShape:
-                        const RoundSliderOverlayShape(overlayRadius: 24.0),
-                    activeTrackColor: MyTheme.mainColor,
-                    inactiveTrackColor: MyTheme.mainColor.withOpacity(0.3),
-                  ),
-                  child: Slider(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: 12.0,
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                      overlayShape:
+                          const RoundSliderOverlayShape(overlayRadius: 24.0),
+                      activeTrackColor: MyTheme.mainColor,
+                      inactiveTrackColor: MyTheme.mainColor.withOpacity(0.3),
+                    ),
+                    child: Slider(
                       value: loanController.loanAmountSliderValue,
                       min: 5000,
                       max: 300000,
-                      divisions: 100,
+                      divisions: ((300000 - 5000) / 500).round(),
                       activeColor: MyTheme.mainColor,
                       label: loanController.loanAmountSliderValue
                           .round()
                           .toString(),
-                      onChanged: loanController.onChangeLoanAmountSlider),
-                );
+                      onChanged: (double value) {
+                        loanController.onChangeLoanAmountSlider(
+                            (value / 500).round() * 500);
+                      },
+                    ));
               }),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
@@ -123,7 +126,12 @@ class LoanDetailCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  Column(
+                  GetBuilder<LoanController>(builder: (controller) {
+                    return CustomText(
+                      text: "₹${controller.loanAmountSliderValue.toInt()}",
+                    );
+                  }),
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomText(
@@ -145,19 +153,17 @@ class LoanDetailCard extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Center(
                   child: CustomButton(
                 text: "Proceed",
-                // fontSize: 16,
                 onTap: () {
-                  Get.toNamed(RouteHelper.kycDetail);
+                  Get.find<LoanController>().loanAmountProceed();
+                  // Get.find<LoanController>().onPressedBack();
+                  // Get.toNamed(RouteHelper.kycDetail);
                 },
-                // borderRadius: 20,
-                // horizontalPadding: 90,
-                // padding: 10,
               ))
             ],
           ),

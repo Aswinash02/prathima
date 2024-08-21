@@ -36,31 +36,34 @@ class KycFailureCard extends StatelessWidget {
                   height: 10,
                 ),
                 const CustomText(
-                  text: "Loan Rejected",
+                  text: "Kyc Failed",
                   fontWeight: FontWeight.w700,
                   fontSize: 17,
                 ),
                 const SizedBox(
                   height: 40,
                 ),
-                const CustomText(
-                  text:
-                      "Thanks for submitting your document we’ll verify it and"
-                      " complete your KYC as soon as possible",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
+                GetBuilder<KycController>(builder: (controller) {
+                  return CustomText(
+                    text: controller.kycStatus!.reason ?? '',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    maxLines: 8,
+                    textAlign: TextAlign.center,
+                  );
+                }),
+                const SizedBox(
                   height: 20,
                 ),
                 GetBuilder<KycController>(builder: (kycController) {
                   return Center(
                       child: CustomButton(
-                    text: "Back to home",
+                    text: "Update Kyc",
                     onTap: () {
-                      Get.offAllNamed(RouteHelper.initial);
+                      print('yes entered');
+                      kycController.onTapUpdateKyc();
+                      // Get.toNamed(RouteHelper.kycDetail,
+                      //     parameters: {'update': "true"});
                     },
                   ));
                 }),

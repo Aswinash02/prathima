@@ -53,7 +53,7 @@ class CustomStepper extends StatelessWidget {
                           ),
                         ),
                         customTitle: CustomText(
-                          text: 'Personal Details',
+                          text: 'Aadhaar Details',
                           textAlign: TextAlign.center,
                           maxLines: 3,
                           color: kycController.activeStep >= 0
@@ -83,7 +83,7 @@ class CustomStepper extends StatelessWidget {
                           ),
                         ),
                         customTitle: CustomText(
-                          text: 'Aadhar Details',
+                          text: 'Personal Details',
                           textAlign: TextAlign.center,
                           maxLines: 3,
                           color: kycController.activeStep >= 1
@@ -152,7 +152,7 @@ class CustomStepper extends StatelessWidget {
                         ),
                       ),
                     ],
-                    onStepReached: kycController.onStepReached)),
+                    onStepReached: (int step) {})),
           ),
         ],
       );

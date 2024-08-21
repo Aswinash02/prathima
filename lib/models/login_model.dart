@@ -1,10 +1,3 @@
-import 'dart:convert';
-
-LoginResponse loginResponseFromJson(String str) =>
-    LoginResponse.fromJson(json.decode(str));
-
-String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
-
 class LoginResponse {
   String? message;
   User? user;
@@ -15,19 +8,19 @@ class LoginResponse {
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     result = json['result'];
     token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message'] = message;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    data['result'] = this.result;
-    data['token'] = this.token;
+    data['result'] = result;
+    data['token'] = token;
     return data;
   }
 }
@@ -59,28 +52,28 @@ class User {
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.phoneNumber,
-        this.emailVerifiedAt,
-        this.userType,
-        this.createdAt,
-        this.updatedAt,
-        this.pincode,
-        this.city,
-        this.district,
-        this.state,
-        this.country,
-        this.otp,
-        this.gender,
-        this.dob,
-        this.address,
-        this.houseType,
-        this.companyName,
-        this.companyEmail,
-        this.companyLocation,
-        this.otpExpiresAt,
-        this.panData});
+      this.name,
+      this.email,
+      this.phoneNumber,
+      this.emailVerifiedAt,
+      this.userType,
+      this.createdAt,
+      this.updatedAt,
+      this.pincode,
+      this.city,
+      this.district,
+      this.state,
+      this.country,
+      this.otp,
+      this.gender,
+      this.dob,
+      this.address,
+      this.houseType,
+      this.companyName,
+      this.companyEmail,
+      this.companyLocation,
+      this.otpExpiresAt,
+      this.panData});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -105,37 +98,36 @@ class User {
     companyEmail = json['company_email'];
     companyLocation = json['company_location'];
     otpExpiresAt = json['otp_expires_at'];
-    panData = json['pan_data'] != null
-        ? new PanData.fromJson(json['pan_data'])
-        : null;
+    panData =
+        json['pan_data'] != null ? PanData.fromJson(json['pan_data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phone_number'] = this.phoneNumber;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['user_type'] = this.userType;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['pincode'] = this.pincode;
-    data['city'] = this.city;
-    data['district'] = this.district;
-    data['state'] = this.state;
-    data['country'] = this.country;
-    data['otp'] = this.otp;
-    data['gender'] = this.gender;
-    data['dob'] = this.dob;
-    data['address'] = this.address;
-    data['house_type'] = this.houseType;
-    data['company_name'] = this.companyName;
-    data['company_email'] = this.companyEmail;
-    data['company_location'] = this.companyLocation;
-    data['otp_expires_at'] = this.otpExpiresAt;
-    if (this.panData != null) {
-      data['pan_data'] = this.panData!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['phone_number'] = phoneNumber;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['user_type'] = userType;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['pincode'] = pincode;
+    data['city'] = city;
+    data['district'] = district;
+    data['state'] = state;
+    data['country'] = country;
+    data['otp'] = otp;
+    data['gender'] = gender;
+    data['dob'] = dob;
+    data['address'] = address;
+    data['house_type'] = houseType;
+    data['company_name'] = companyName;
+    data['company_email'] = companyEmail;
+    data['company_location'] = companyLocation;
+    data['otp_expires_at'] = otpExpiresAt;
+    if (panData != null) {
+      data['pan_data'] = panData!.toJson();
     }
     return data;
   }
@@ -150,10 +142,10 @@ class PanData {
 
   PanData(
       {this.responseStatusId,
-        this.data,
-        this.responseTypeId,
-        this.message,
-        this.status});
+      this.data,
+      this.responseTypeId,
+      this.message,
+      this.status});
 
   PanData.fromJson(Map<String, dynamic> json) {
     responseStatusId = json['response_status_id'];
@@ -189,14 +181,14 @@ class Data {
 
   Data(
       {this.panNumber,
-        this.aadhaarSeedingStatus,
-        this.gender,
-        this.panReturnedName,
-        this.lastName,
-        this.aadhaarSeedingStatusCode,
-        this.middleName,
-        this.title,
-        this.firstName});
+      this.aadhaarSeedingStatus,
+      this.gender,
+      this.panReturnedName,
+      this.lastName,
+      this.aadhaarSeedingStatusCode,
+      this.middleName,
+      this.title,
+      this.firstName});
 
   Data.fromJson(Map<String, dynamic> json) {
     panNumber = json['pan_number'];

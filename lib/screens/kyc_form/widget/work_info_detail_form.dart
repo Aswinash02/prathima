@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
@@ -25,6 +26,9 @@ class WorkInfoDetailForm extends StatelessWidget {
           const SizedBox(height: 2),
           CustomTextField(
               controller: kycController.employmentTypeController,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-z A-Z]')),
+              ],
               hintText: "Enter Position"),
           const SizedBox(height: 10),
           const CustomText(
@@ -68,7 +72,7 @@ class WorkInfoDetailForm extends StatelessWidget {
             height: 20,
           ),
           const CustomText(
-            text: "Upload Past 3 month Payslip ",
+            text: "Upload Your Last 3 Month Payslip",
             fontSize: 13,
             fontWeight: FontWeight.w500,
             color: MyTheme.font_grey,
@@ -76,6 +80,13 @@ class WorkInfoDetailForm extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          // DocUploadContainer(
+          //   textString: "Upload Your Last Month Payslip",
+          //   selectedFile: kycController.pickedPaySlipMonth1,
+          //   onTap: () {
+          //     kycController.pickFiles(PickedFile.paySlipMonth1);
+          //   },
+          // ),
           UploadPaySlipContainer(
             textString: 'Upload Your Past 3 month Payslip',
             onTapMonth1: () {
@@ -115,9 +126,9 @@ class WorkInfoDetailForm extends StatelessWidget {
           ),
           Center(
               child: CustomButton(
-            text: "Submit",
+            text: "Next",
             onTap: () {
-              kycController.onStepReached(3);
+              kycController.onTapWorkForm();
             },
           ))
         ],

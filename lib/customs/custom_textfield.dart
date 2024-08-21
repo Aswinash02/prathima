@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
       this.hintTextColor,
       this.inputFormatters,
       this.maxLines,
-      this.onChanged});
+      this.onChanged, this.suffixIcon, this.onTap});
 
   final TextEditingController? controller;
   final String? hintText;
@@ -22,6 +22,9 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
   final void Function(String)? onChanged;
+  final Widget? suffixIcon;
+  final void Function()? onTap;
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,30 +36,31 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType ?? TextInputType.text,
       maxLines: maxLines ?? 1,
       textAlign: TextAlign.left,
-      textDirection: TextDirection.rtl,
+      onTap: onTap,
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
+        suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: TextStyle(color: hintTextColor ?? MyTheme.grey_153),
-        contentPadding: EdgeInsets.all(12),
+        contentPadding: const EdgeInsets.all(12),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.grey,
             width: 0.5,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.grey,
             width: 0.5,
           ),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.grey,
             width: 0.5,
           ),

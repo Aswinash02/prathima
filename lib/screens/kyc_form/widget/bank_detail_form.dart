@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
@@ -22,8 +23,13 @@ class BankDetailForm extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           CustomTextField(
-              controller: kycController.accountNumberController,
-              hintText: "Enter Account Number"),
+            controller: kycController.accountNumberController,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            hintText: "Enter Account Number",
+            onChanged: kycController.onChangeBankDetails,
+          ),
           const SizedBox(height: 10),
           const CustomText(
             text: "IFSC Code",
@@ -32,8 +38,13 @@ class BankDetailForm extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           CustomTextField(
-              controller: kycController.ifscController,
-              hintText: "Enter IFSC Code"),
+            controller: kycController.ifscController,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+            ],
+            hintText: "Enter IFSC Code",
+            onChanged: kycController.onChangeBankDetails,
+          ),
           const SizedBox(height: 10),
           const CustomText(
             text: "Account Holder Name",
@@ -43,6 +54,9 @@ class BankDetailForm extends StatelessWidget {
           const SizedBox(height: 2),
           CustomTextField(
               controller: kycController.accountHolderNameController,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-z A-Z]')),
+              ],
               hintText: "Enter Account Holder Name"),
           const SizedBox(height: 10),
           const CustomText(
@@ -53,11 +67,14 @@ class BankDetailForm extends StatelessWidget {
           const SizedBox(height: 2),
           CustomTextField(
             controller: kycController.bankNameController,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[a-z A-Z]')),
+            ],
             hintText: "Enter Bank Name",
           ),
           const SizedBox(height: 20),
           DocUploadContainer(
-            textString: "Upload your Pf member Pass book ",
+            textString: "Upload your Bank Pass book ",
             selectedFile: kycController.pickedPfPassBook,
             onTap: () {
               kycController.pickFiles(PickedFile.pfPassBook);
@@ -66,13 +83,25 @@ class BankDetailForm extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Center(
-              child: CustomButton(
-            text: "Submit",
-            onTap: () {
-              kycController.onSubmitKycForm();
-            },
-          ))
+          GetBuilder<KycController>(builder: (controller) {
+            return Center(
+                child: CustomButton(
+              text: controller.isUpdateKyc ? "Update" : "Submit",
+              loading: controller.kycLoadingState,
+              onTap:
+              // controller.kycLoadingState
+              //     ? null
+              //     :
+
+                  () {
+                      if (controller.isUpdateKyc) {
+                        kycController.onSubmitUpdateKycForm();
+                      } else {
+                        kycController.onSubmitKycForm();
+                      }
+                    },
+            ));
+          })
         ],
       );
     });

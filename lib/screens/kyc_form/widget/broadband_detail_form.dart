@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
-import 'package:prathima_loan_app/customs/custom_textfield.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/doc_upload_container.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
@@ -34,18 +33,18 @@ class BroadBandDetailForm extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const CustomText(
-            text: "BoardBand Bill Number",
-            fontWeight: FontWeight.w600,
-            fontSize: 13,
-          ),
-          const SizedBox(height: 2),
-          CustomTextField(
-              controller: kycController.broadBandBillNumberController,
-              hintText: "Enter BoardBand Bill Number"),
-          const SizedBox(
-            height: 10,
-          ),
+          // const CustomText(
+          //   text: "BoardBand Bill Number",
+          //   fontWeight: FontWeight.w600,
+          //   fontSize: 13,
+          // ),
+          // const SizedBox(height: 2),
+          // CustomTextField(
+          //     controller: kycController.broadBandBillNumberController,
+          //     hintText: "Enter BoardBand Bill Number"),
+          // const SizedBox(
+          //   height: 10,
+          // ),
           DocUploadContainer(
             textString: 'Upload Broadband Bill photo',
             selectedFile: kycController.pickedBroadBandSlip,

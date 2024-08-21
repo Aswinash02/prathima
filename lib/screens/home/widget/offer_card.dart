@@ -15,9 +15,12 @@ Widget offerCard() {
         ),
       ],
     ),
-    child: const Column(
+    child: Column(
       children: [
-        Image(image: AssetImage("assets/img/offer_card.png")),
+        Container(
+            height: 146,
+            color: Colors.white,
+            child: Image(image: AssetImage("assets/img/offer_card.png"))),
         Padding(
           padding: EdgeInsets.all(15.0),
           child: Row(

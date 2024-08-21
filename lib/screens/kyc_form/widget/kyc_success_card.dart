@@ -51,21 +51,17 @@ class KycSuccessCard extends StatelessWidget {
                   maxLines: 2,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 GetBuilder<KycController>(builder: (kycController) {
                   return Center(
                       child: CustomButton(
                     text: "Continue",
-                    // fontSize: 16,
                     onTap: () {
-                      kycController.onPressedKycComplete();
+                      // kycController.onPressedKycComplete();
                       Get.toNamed(RouteHelper.loanDetailsForm);
                     },
-                    // borderRadius: 20,
-                    // horizontalPadding: 90,
-                    // padding: 10,
                   ));
                 }),
               ],

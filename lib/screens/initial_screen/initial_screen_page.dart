@@ -1,7 +1,15 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
+import 'package:prathima_loan_app/controllers/network_controller.dart';
+import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
+import 'package:prathima_loan_app/screens/main_screen.dart';
+import 'package:prathima_loan_app/screens/no_internet_screen.dart';
 import 'package:prathima_loan_app/screens/onboard/on_board_screen.dart';
+import 'package:prathima_loan_app/screens/splash_screen.dart';
 import 'package:prathima_loan_app/utils/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +28,14 @@ class _InitialScreenState extends State<InitialScreen> {
   void initState() {
     super.initState();
     _introSeenFuture = _checkIntroSeen();
+    ever(Get.find<ConnectivityService>().connectivityStatus, (result) {
+      print('ConnectivityResult ======== > ${result}');
+      if (result == ConnectivityResult.none) {
+        Get.offAllNamed(RouteHelper.noInternetScreen);
+      } else {
+        Get.offAllNamed(RouteHelper.introductionScreen);
+      }
+    });
   }
 
   Future<bool> _checkIntroSeen() async {
@@ -29,9 +45,16 @@ class _InitialScreenState extends State<InitialScreen> {
 
   Future<void> _checkLoginStatus() async {
     bool isLoggedIn = await SharedPreference().getLogin();
-    setState(() {
-      _isLoggedIn = isLoggedIn;
-    });
+    String token = await SharedPreference().getUserToken();
+    print('token --------------- > ${token}');
+    if (isLoggedIn == true) {
+      await Get.find<KycController>().getKycStatus();
+    }
+    if (mounted) {
+      setState(() {
+        _isLoggedIn = isLoggedIn;
+      });
+    }
   }
 
   @override
@@ -40,13 +63,18 @@ class _InitialScreenState extends State<InitialScreen> {
       future: _introSeenFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const SplashScreen();
         } else if (snapshot.data == true) {
           if (_isLoggedIn == null) {
             _checkLoginStatus();
-            return const Center(child: CircularProgressIndicator());
+            return const SplashScreen();
           } else if (_isLoggedIn == true) {
-            return const HomeScreen();
+            if (Get.find<KycController>().kycStatus != null &&
+                Get.find<KycController>().kycStatus!.status != 0) {
+              return const MainScreen();
+            } else {
+              return const HomeScreen();
+            }
           } else {
             return const SignInScreen();
           }

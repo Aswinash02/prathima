@@ -64,9 +64,10 @@ class AadhaarDetailCard extends StatelessWidget {
                   Center(child:
                       GetBuilder<KycController>(builder: (kycController) {
                     return CustomButton(
-                      text: "Submit",
+                      text: "Next",
                       onTap: () {
-                        kycController.onStepReached(2);
+
+                        kycController.onTapAadhaarForm();
                       },
                     );
                   })),

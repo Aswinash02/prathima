@@ -16,11 +16,13 @@ import 'package:prathima_loan_app/screens/loan_agreement_screen/loan_agreenent_s
 import 'package:prathima_loan_app/screens/loan_approved/loan_approved_screen.dart';
 import 'package:prathima_loan_app/screens/loan_verification/loan_details_form.dart';
 import 'package:prathima_loan_app/screens/main_screen.dart';
+import 'package:prathima_loan_app/screens/no_internet_screen.dart';
 import 'package:prathima_loan_app/screens/profile/about_us_screen.dart';
+import 'package:prathima_loan_app/screens/profile/edit_profile/edit_profile_screen.dart';
 import 'package:prathima_loan_app/screens/profile/loan_history.dart';
-import 'package:prathima_loan_app/screens/profile/personal_details/personal_details_screen.dart';
 import 'package:prathima_loan_app/screens/profile/privacy_policy_screen.dart';
 import 'package:prathima_loan_app/screens/profile/terms_and_condition_screen.dart';
+import 'package:prathima_loan_app/screens/splash_screen.dart';
 
 class RouteHelper {
   static const String initial = '/';
@@ -34,7 +36,7 @@ class RouteHelper {
   static const String loanDetailsForm = '/loanDetailsForm';
   static const String loanApprovedScreen = '/loanApprovedScreen';
   static const String loanAgreementScreen = '/loanAgreementScreen';
-  static const String personalDetailsScreen = '/personalDetailsScreen';
+  static const String editProfileScreen = '/editProfileScreen';
   static const String aboutUsScreen = '/aboutUsScreen';
   static const String privacyPolicyScreen = '/privacyPolicyScreen';
   static const String termsAndConditionScreen = '/termsAndConditionScreen';
@@ -44,6 +46,8 @@ class RouteHelper {
   static const String preCloseLoanSuccessScreen = '/preCloseLoanSuccessScreen';
   static const String personalLoanDetailScreen = '/PersonalLoanDetailScreen';
   static const String loanHistoryScreen = '/loanHistoryScreen';
+  static const String noInternetScreen = '/noInternetScreen';
+  static const String splashScreen = '/splashScreen';
   static const String preClosingLoanAmountScreen =
       '/preClosingLoanAmountScreen';
 
@@ -64,7 +68,11 @@ class RouteHelper {
     GetPage(name: loanAgreementScreen, page: () => const LoanAgreementScreen()),
     GetPage(name: aboutUsScreen, page: () => const AboutUsScreen()),
     GetPage(name: privacyPolicyScreen, page: () => const PrivacyPolicyScreen()),
-    GetPage(name: loanDetailsScreen, page: () => const LoanDetailsScreen()),
+    GetPage(
+      name: loanDetailsScreen,
+      page: () => const LoanDetailsScreen(),
+      transition: Transition.fadeIn,
+    ),
     GetPage(name: loanHistoryScreen, page: () => const LoanHistoryScreen()),
     GetPage(
         name: loanOTPVerificationScreen,
@@ -73,6 +81,8 @@ class RouteHelper {
         name: preCloseLoanSuccessScreen,
         page: () => const PreCloseLoanSuccessScreen()),
     GetPage(name: introductionScreen, page: () => const InitialScreen()),
+    GetPage(name: noInternetScreen, page: () => const NoInternetScreen()),
+    GetPage(name: splashScreen, page: () => const SplashScreen()),
     GetPage(
         name: personalLoanDetailScreen,
         page: () => const PersonalLoanDetailScreen()),
@@ -89,7 +99,6 @@ class RouteHelper {
     GetPage(
         name: termsAndConditionScreen,
         page: () => const TermsAndConditionScreen()),
-    GetPage(
-        name: personalDetailsScreen, page: () => const PersonalDetailsScreen()),
+    GetPage(name: editProfileScreen, page: () => const EditProfileScreen()),
   ];
 }

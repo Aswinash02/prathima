@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otp_text_field/otp_text_field.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
+import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/repository/auth_repository.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/models/login_model.dart';
@@ -34,13 +36,12 @@ class AuthController extends GetxController implements GetxService {
   bool showPassword = false;
   bool showConfirmPassword = false;
   bool _signInWithOTP = false;
+  bool _loadingState = false;
   String? _otp;
 
-  bool _isKycVerified = false;
-
-  bool get isKycVerified => _isKycVerified;
-
   bool get signInWithOTP => _signInWithOTP;
+
+  bool get loadingState => _loadingState;
 
   String? get otp => _otp;
 
@@ -68,16 +69,26 @@ class AuthController extends GetxController implements GetxService {
     } else if (password != confirmPassword) {
       showCustomSnackBar("Password does not matched");
     } else {
-      SignupResponse signupResponse = await authRepository.getSignupResponse(
+      _loadingState = true;
+      update();
+      var response = await authRepository.getSignupResponse(
           firstName, email, number, password, confirmPassword);
-
-      if (signupResponse.result == false) {
-        showCustomSnackBar(signupResponse.message);
-      } else {
-        showCustomSnackBar(signupResponse.message);
+      SignupResponse signupResponse = SignupResponse.fromJson(response.body);
+      if (response.statusCode == 201) {
+        showCustomSnackBar(signupResponse.message, isError: false);
+        // authRepository.saveUserToken(token: signupResponse.token!);
+        // sharedPreference.setUserData(jsonEncode(signupResponse));
+        // sharedPreference.setUserToken(signupResponse.token!);
+        clearControllerData();
         Get.toNamed(RouteHelper.verificationOtp);
+      } else if (signupResponse.errors != null) {
+        showCustomSnackBar(signupResponse.errors!.first);
+      } else {
+        ApiChecker.checkApi(response);
       }
     }
+    _loadingState = false;
+    update();
   }
 
   void login() async {
@@ -86,26 +97,41 @@ class AuthController extends GetxController implements GetxService {
 
     if (email.isEmpty) {
       showCustomSnackBar("Enter Your Email");
+      return;
     } else if (!GetUtils.isEmail(email)) {
       showCustomSnackBar("Enter Valid Email Id");
+      return;
     } else if (password == "") {
       showCustomSnackBar("Enter Password");
+      return;
     } else if (password.length < 8) {
       showCustomSnackBar("Password Length atleast greater than 8 characters");
+      return;
     } else {
+      _loadingState = true;
+      update();
       LoginResponse loginResponse =
           await authRepository.getLoginResponse(email, password);
       if (loginResponse.result == false) {
         showCustomSnackBar(loginResponse.message);
       } else {
-        print(loginResponse.message);
         showCustomSnackBar(loginResponse.message, isError: false);
-        Get.toNamed(RouteHelper.verificationOtp);
-        sharedPreference.setLogin(true);
+        authRepository.saveUserToken(token: loginResponse.token!);
+        sharedPreference.setUserData(jsonEncode(loginResponse.toJson()));
         sharedPreference.setUserToken(loginResponse.token ?? '');
         sharedPreference.setUserPhoneNo(loginResponse.user?.phoneNumber ?? '');
+        sharedPreference.setLogin(true);
+        await Get.find<KycController>().getKycStatus();
+        if (Get.find<KycController>().kycStatus!.status != 0) {
+          Get.offAllNamed(RouteHelper.initial);
+        } else {
+          Get.offAllNamed(RouteHelper.home);
+        }
+        clearControllerData();
       }
     }
+    _loadingState = false;
+    update();
   }
 
   Future<void> sendOtp() async {
@@ -115,8 +141,10 @@ class AuthController extends GetxController implements GetxService {
     } else if (signInWithOTP == true && phone.length < 10) {
       showCustomSnackBar("Invalid Phone Number");
     } else {
-      String response = await authRepository.sendOTP(phone);
-      var responseBody = jsonDecode(response);
+      _loadingState = true;
+      update();
+      var response = await authRepository.sendOTP(phone);
+      var responseBody = response.body;
       if (responseBody["result"] == false) {
         showCustomSnackBar(responseBody["message"]);
       } else {
@@ -127,21 +155,57 @@ class AuthController extends GetxController implements GetxService {
         signInPhoneCon.clear();
       }
     }
+    _loadingState = false;
+    update();
   }
 
   void signInWithPhone(String phone) async {
     if (otp != null) {
+      _loadingState = true;
+      update();
       LoginResponse loginResponse =
           await authRepository.signInWithPhone(phone, otp!);
       if (loginResponse.result == false) {
         showCustomSnackBar(loginResponse.message);
       } else {
+        authRepository.saveUserToken(token: loginResponse.token!);
         showCustomSnackBar(loginResponse.message, isError: false);
+        sharedPreference.setUserData(jsonEncode(loginResponse));
         Get.offAllNamed(RouteHelper.authSuccess);
         sharedPreference.setLogin(true);
+        sharedPreference.setUserToken(loginResponse.token ?? '');
         sharedPreference.setUserPhoneNo(loginResponse.user?.phoneNumber ?? '');
       }
+    } else {
+      showCustomSnackBar("Enter Valid OTP");
     }
+    _loadingState = false;
+    update();
+  }
+
+  Future<LoginResponse> userData() async {
+    String userData = await sharedPreference.getUserData();
+    return LoginResponse.fromJson(jsonDecode(userData));
+  }
+
+  void verifyEmail() async {
+    LoginResponse user = await userData();
+    if (otp != null) {
+      _loadingState = true;
+      update();
+      Map<String, dynamic> emailVerify =
+          await authRepository.verifyEmail(user.user!.email!, otp!);
+      if (emailVerify['message'] == "OTP verified successfully!") {
+        showCustomSnackBar(emailVerify['message'], isError: false);
+        Get.offAllNamed(RouteHelper.authSuccess);
+      } else {
+        showCustomSnackBar(emailVerify['message']);
+      }
+    } else {
+      showCustomSnackBar("Enter Valid OTP");
+    }
+    _loadingState = false;
+    update();
   }
 
   void onChangeSignInMethod() {

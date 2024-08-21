@@ -49,8 +49,7 @@ class DocUploadContainer extends StatelessWidget {
                       border: Border.all(color: Colors.grey, width: 0.5)),
                   child: Row(
                     children: [
-                      const Image(
-                          image: AssetImage("assets/img/pdf_img.png")),
+                      const Image(image: AssetImage("assets/img/pdf_img.png")),
                       Expanded(
                         child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -66,7 +65,6 @@ class DocUploadContainer extends StatelessWidget {
                   ),
                 ),
               ),
-
             GestureDetector(
               onTap: onTap,
               child: Container(

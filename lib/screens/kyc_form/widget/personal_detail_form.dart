@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/custom_textfield.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/doc_upload_container.dart';
-import 'package:prathima_loan_app/screens/kyc_form/widget/house_type_dropdown.dart';
+import 'package:prathima_loan_app/screens/kyc_form/widget/custom_dropdown.dart';
 
 class PersonalDetailForm extends StatelessWidget {
   const PersonalDetailForm({super.key});
@@ -23,7 +24,12 @@ class PersonalDetailForm extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           CustomTextField(
-              controller: kycController.nameController, hintText: "Enter Name"),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-z A-Z]')),
+              ],
+              controller: kycController.nameController,
+              readOnly: true,
+              hintText: "Enter Name"),
           const SizedBox(height: 10),
           const CustomText(
             text: "Gender",
@@ -33,6 +39,7 @@ class PersonalDetailForm extends StatelessWidget {
           const SizedBox(height: 2),
           CustomTextField(
               controller: kycController.genderController,
+              readOnly: true,
               hintText: "Enter Gender"),
           const SizedBox(height: 10),
           const CustomText(
@@ -42,8 +49,14 @@ class PersonalDetailForm extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           CustomTextField(
-              controller: kycController.dobController,
-              hintText: "Enter Date Of Birth"),
+            controller: kycController.dobController,
+            hintText: "Enter Date Of Birth",
+            suffixIcon: const Icon(Icons.calendar_month),
+            readOnly: true,
+            // onTap: () {
+            //   kycController.datePicker(context);
+            // },
+          ),
           const SizedBox(height: 10),
           const CustomText(
             text: "Address",
@@ -53,6 +66,7 @@ class PersonalDetailForm extends StatelessWidget {
           const SizedBox(height: 2),
           CustomTextField(
             controller: kycController.addressController,
+            readOnly: true,
             hintText: "Enter Address",
             maxLines: 3,
           ),
@@ -63,23 +77,29 @@ class PersonalDetailForm extends StatelessWidget {
             fontSize: 13,
           ),
           const SizedBox(height: 2),
-          const HouseTypeDropdown(),
+          DropdownField(
+              itemList: kycController.houseType,
+              hintText: "Select Address",
+              onChange: kycController.onChangeHouseType,
+              value: kycController.selectedAddress),
           const SizedBox(
             height: 10,
           ),
-          DocUploadContainer(
-            textString: 'Upload Your Property tax receipt',
-            selectedFile: kycController.pickedTaxReceipt,
-            onTap: () {
-              kycController.pickFiles(PickedFile.taxReceipt);
-            },
-          ),
+          kycController.selectedAddress == "Rent House"
+              ? const SizedBox()
+              : DocUploadContainer(
+                  textString: 'Upload Your Property tax receipt',
+                  selectedFile: kycController.pickedTaxReceipt,
+                  onTap: () {
+                    kycController.pickFiles(PickedFile.taxReceipt);
+                  },
+                ),
           const SizedBox(height: 20),
           Center(
               child: CustomButton(
-            text: "Submit",
+            text: "Next",
             onTap: () {
-              kycController.onStepReached(1);
+              kycController.onTapPersonalForm();
             },
           ))
         ],

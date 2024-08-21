@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
@@ -15,9 +16,20 @@ class AuthSuccessPage extends StatefulWidget {
 
 class _AuthSuccessPageState extends State<AuthSuccessPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initCall();
+  }
+
+  Future<void> initCall() async {
+    await Get.find<KycController>().getKycStatus();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
+        appBar: const CustomAppBar(
           title: '',
           titleColor: Colors.black,
           automaticallyImplyLeading: true,
@@ -58,15 +70,21 @@ class _AuthSuccessPageState extends State<AuthSuccessPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: CustomButton(
-                          text: "Continue",
-                          onTap: () {
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: CustomButton(
+                        text: "Continue",
+                        onTap: () {
+                          if (Get.find<KycController>().kycStatus!.status !=
+                              0) {
+                            Get.offAllNamed(RouteHelper.initial);
+                          } else {
                             Get.offAllNamed(RouteHelper.home);
-                          },
-                        )),
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

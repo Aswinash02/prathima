@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/home_controller.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
-import 'package:prathima_loan_app/helpers/route_helper.dart';
-import 'package:prathima_loan_app/screens/home/widget/home_app_bar.dart';
+import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
+import 'package:prathima_loan_app/screens/home/widget/home_page_loan_card.dart';
+import 'package:prathima_loan_app/screens/home/widget/loan_card.dart';
 import 'package:prathima_loan_app/screens/home/widget/loan_detail_container.dart';
 import 'package:prathima_loan_app/screens/home/widget/offer_card.dart';
+import 'package:prathima_loan_app/utils/colors.dart';
+import 'package:prathima_loan_app/utils/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,18 +20,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    await Get.find<HomeController>().getInitialLoanAmount();
+    await Get.find<KycController>().getKycStatus();
+  }
+
+  Future<void> _onRefresh() async {
+    Get.find<HomeController>().clearData();
+    fetchData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: homeAppBar(),
+      appBar: const CustomAppBar(
+        title: "PRATHIMA FINANCE",
+        titleColor: Colors.black,
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child: RefreshIndicator(
+          color: MyTheme.mainColor,
+          onRefresh: _onRefresh,
+          child: ListView(
             children: [
               GestureDetector(
-                  onTap: () => Get.toNamed(RouteHelper.loanDetailsForm),
-                  child: Image(image: AssetImage("assets/img/loan_card.png"))),
+                  onTap: () => Get.find<HomeController>().onTapLoanCard(),
+                  child: const LoanCard()),
               const SizedBox(height: 10),
               const CustomText(
                 text: "Loan Details",
@@ -38,23 +64,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   loanDetailContainer(
-                      loanType: 'Personal Loan',
-                      icon: 'assets/icon/personal_loan_icon.png'),
+                    loanType: 'Personal Loan',
+                    icon: 'assets/icon/personal_loan_icon.png',
+                  ),
                   loanDetailContainer(
-                      loanType: 'Home Loan',
-                      icon: 'assets/icon/home_loan_icon.png'),
+                    loanType: 'Home Loan',
+                    icon: 'assets/icon/home_loan_icon.png',
+                  ),
                   loanDetailContainer(
-                      loanType: 'Vehicle Loan',
-                      icon: 'assets/icon/vehicle_loan_icon.png'),
+                    loanType: 'Vehicle Loan',
+                    icon: 'assets/icon/vehicle_loan_icon.png',
+                  ),
                   loanDetailContainer(
-                      loanType: 'Business Loan',
-                      icon: 'assets/icon/business_loan_icon.png'),
+                    loanType: 'Business Loan',
+                    icon: 'assets/icon/business_loan_icon.png',
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               offerCard(),
+              const SizedBox(height: 20),
+              homePageLoanCard(),
             ],
           ),
         ),
