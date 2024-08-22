@@ -61,12 +61,14 @@ class HomeController extends GetxController implements GetxService {
 
   void onTapLoanCard() {
     if (Get.find<KycController>().kycStatus != null) {
-      print(Get.find<KycController>().kycStatus!.status);
-      if (Get.find<KycController>().kycStatus!.status == 2) {
-        Get.toNamed(RouteHelper.loanDetailsForm);
-      } else {
-        Get.toNamed(RouteHelper.kycDetail);
-      }
+      print("kyc status ${Get.find<KycController>().kycStatus!.status}");
+
+      Get.toNamed(RouteHelper.kycDetail);
+      // if (Get.find<KycController>().kycStatus!.status == 2) {
+      //   Get.toNamed(RouteHelper.loanDetailsForm);
+      // } else {
+      //   Get.toNamed(RouteHelper.kycDetail);
+      // }
     }
   }
 }

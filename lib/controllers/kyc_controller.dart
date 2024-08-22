@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:prathima_loan_app/controllers/auth_controller.dart';
-import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/model/aadhaar_otp_model.dart';
@@ -19,7 +18,8 @@ import 'package:prathima_loan_app/data/model/kyc_status_model.dart';
 import 'package:prathima_loan_app/data/model/pan_verify_model.dart';
 import 'package:prathima_loan_app/data/model/user_data_model.dart';
 import 'package:prathima_loan_app/data/repository/kyc_repository.dart';
-import 'package:prathima_loan_app/models/login_model.dart';
+import 'package:prathima_loan_app/data/model/login_model.dart';
+import 'package:prathima_loan_app/utils/app_constant.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
@@ -32,7 +32,7 @@ enum PickedFile {
   broadBandSlip,
   gasSlip,
   taxReceipt,
-  rentReceipt,
+  // rentReceipt,
   paySlipMonth1,
   paySlipMonth2,
   paySlipMonth3,
@@ -150,6 +150,8 @@ class KycController extends GetxController implements GetxService {
   bool _kycLoadingState = false;
   bool _kycDataLoadingState = false;
   bool _isUpdateKyc = false;
+  double _loanAmountSliderValue = 5000;
+  bool _setAmount = false;
   int? _refNum;
   UserDataModel? _userKYCData;
   KycStatusModel? _kycStatus;
@@ -167,6 +169,10 @@ class KycController extends GetxController implements GetxService {
   bool get isKycVerified => _isKycVerified;
 
   bool get isEnableOTP => _isEnableOTP;
+
+  bool get setAmount => _setAmount;
+
+  double get loanAmountSliderValue => _loanAmountSliderValue;
 
   bool get isUpdateKyc => _isUpdateKyc;
 
@@ -234,6 +240,17 @@ class KycController extends GetxController implements GetxService {
 
   void onChangeBankDetails(String value) {
     _bankVerified = false;
+    update();
+  }
+
+  void onPressedBack() {
+    _setAmount = false;
+    update();
+  }
+
+  void loanAmountProceed() {
+    _setAmount = true;
+    update();
   }
 
   void clearKycForm() {
@@ -261,6 +278,10 @@ class KycController extends GetxController implements GetxService {
     _pickedPanCard = null;
     _pickedPfPassBook = null;
     _selectedAddress = null;
+    _setAmount = false;
+    _isPanVerified = false;
+    _aadhaarVerified = false;
+    _bankVerified = false;
   }
 
   void onSubmitKycForm() async {
@@ -271,13 +292,6 @@ class KycController extends GetxController implements GetxService {
     _kycLoadingState = true;
     update();
 
-    await bankVerify();
-    if (_bankVerified == false) {
-      showCustomSnackBar("Your BankAccount Number Not Verified");
-      _kycLoadingState = false;
-      update();
-      return;
-    }
     KycData kycData = KycData(
       aadhaarNumber: aadhaarNumberController.text,
       panNumber: panNumberController.text,
@@ -285,7 +299,7 @@ class KycController extends GetxController implements GetxService {
       ifscCode: ifscController.text,
       bankName: bankNameController.text,
       accountHolderName: accountHolderNameController.text,
-      loanAmount: Get.find<LoanController>().loanAmountSliderValue.toString(),
+      loanAmount: loanAmountSliderValue.toString(),
       panFile: File(pickedPanCard!.path!),
       aadhaarFile: File(pickedAadhaarCard!.path!),
       propertyTaxReceipt: selectedAddress == 'Own House'
@@ -338,32 +352,25 @@ class KycController extends GetxController implements GetxService {
     _kycLoadingState = true;
     update();
 
-    await bankVerify();
-    if (_bankVerified == false) {
-      showCustomSnackBar("Your BankAccount Number Not Verified");
-      _kycLoadingState = false;
-      update();
-      return;
-    }
     final panFile = await downloadFile(_pickedPanCard!.path!, 'pan_file');
     final taxReceiptFile =
-        await downloadFile(_pickedPanCard!.path!, 'property_tax_receipt');
+        await downloadFile(_pickedTaxReceipt!.path!, 'property_tax_receipt');
     final rentalAgreementFile =
-        await downloadFile(_pickedPanCard!.path!, 'rental_agreement');
+        await downloadFile(_pickedRentReceipt!.path!, 'rental_agreement');
     final smartCartFile =
-        await downloadFile(_pickedPanCard!.path!, 'smart_card_file');
+        await downloadFile(_pickedSmartCard!.path!, 'smart_card_file');
     final drivingLicenseFile =
-        await downloadFile(_pickedPanCard!.path!, 'driving_license_file');
+        await downloadFile(_pickedDrivingLicense!.path!, 'driving_license_file');
     final gasBillFile =
-        await downloadFile(_pickedPanCard!.path!, 'recent_gas_bill');
+        await downloadFile(_pickedGasSlip!.path!, 'recent_gas_bill');
     final broadBandBillFile =
-        await downloadFile(_pickedPanCard!.path!, 'recent_broadband_bill');
-    final paySlip1File = await downloadFile(_pickedPanCard!.path!, 'pay_slip1');
-    final paySlip2File = await downloadFile(_pickedPanCard!.path!, 'pay_slip2');
-    final paySlip3File = await downloadFile(_pickedPanCard!.path!, 'pay_slip3');
-    final idCardFile = await downloadFile(_pickedPanCard!.path!, 'id_card');
+        await downloadFile(_pickedBroadBandSlip!.path!, 'recent_broadband_bill');
+    final paySlip1File = await downloadFile(_pickedPaySlipMonth1!.path!, 'pay_slip1');
+    final paySlip2File = await downloadFile(_pickedPaySlipMonth2!.path!, 'pay_slip2');
+    final paySlip3File = await downloadFile(_pickedPaySlipMonth3!.path!, 'pay_slip3');
+    final idCardFile = await downloadFile(_pickedIdCard!.path!, 'id_card');
     final pfPassBookFile =
-        await downloadFile(_pickedPanCard!.path!, 'pf_member_passbook');
+        await downloadFile(_pickedPfPassBook!.path!, 'pf_member_passbook');
     final aadhaarFile =
         await downloadFile(_pickedAadhaarCard!.path!, 'aadhar_file');
     KycData kycData = KycData(
@@ -373,7 +380,7 @@ class KycController extends GetxController implements GetxService {
       ifscCode: ifscController.text,
       bankName: bankNameController.text,
       accountHolderName: accountHolderNameController.text,
-      loanAmount: Get.find<LoanController>().loanAmountSliderValue.toString(),
+      loanAmount: loanAmountSliderValue.toString(),
       panFile: panFile,
       aadhaarFile: aadhaarFile,
       propertyTaxReceipt: taxReceiptFile,
@@ -412,14 +419,19 @@ class KycController extends GetxController implements GetxService {
   Future<void> getKycStatus() async {
     var response = await kycRepository.getKycStatus();
     _kycStatus = KycStatusModel.fromJson(response.body);
-
     update();
   }
 
   void onTapUpdateKyc() {
+    _setAmount = false;
     _isUpdateKyc = true;
     update();
     getUserKycData();
+  }
+
+  void onChangeLoanAmountSlider(double value) {
+    _loanAmountSliderValue = value;
+    update();
   }
 
   Future<File> downloadFile(String filePathOrUrl, String filename) async {
@@ -605,16 +617,20 @@ class KycController extends GetxController implements GetxService {
       onFileFetched: (file) => _pickedAadhaarCard = file,
     );
 
-    await fetchFile(
-      urlPath: _userKYCData!.user!.kyc!.propertyTaxRecipt ??
-          _userKYCData!.user!.kyc!.rentalAgreement!,
-      onFileFetched: (file) => _pickedTaxReceipt = file,
-    );
-
-    await fetchFile(
-      urlPath: _userKYCData!.user!.kyc!.rentalAgreement!,
-      onFileFetched: (file) => _pickedRentReceipt = file,
-    );
+    if (_userKYCData!.user!.kyc!.propertyTaxRecipt != null) {
+      await fetchFile(
+        urlPath: _userKYCData!.user!.kyc!.propertyTaxRecipt
+            ??
+            _userKYCData!.user!.kyc!.rentalAgreement!,
+        onFileFetched: (file) => _pickedTaxReceipt = file,
+      );
+    }
+    if (_userKYCData!.user!.kyc!.rentalAgreement != null) {
+      await fetchFile(
+        urlPath: _userKYCData!.user!.kyc!.rentalAgreement!,
+        onFileFetched: (file) => _pickedRentReceipt = file,
+      );
+    }
 
     await fetchFile(
       urlPath: _userKYCData!.user!.kyc!.smartCardFile!,
@@ -670,7 +686,7 @@ class KycController extends GetxController implements GetxService {
     required String urlPath,
     required void Function(PlatformFile file) onFileFetched,
   }) async {
-    final String url = "https://prathima.v4inspire.com$urlPath";
+    final String url = "${AppConstants.baseUrl}$urlPath";
     final http.Response response = await http.get(Uri.parse(url));
     Uint8List fileBytes = response.bodyBytes;
     String fileName = url.split('/').last;
@@ -705,19 +721,26 @@ class KycController extends GetxController implements GetxService {
   }
 
   Future<void> bankVerify() async {
+    _loadingState = true;
+    update();
     LoginResponse phone = await Get.find<AuthController>().userData();
-    var response = await kycRepository.bankVerify(accountNumberController.text,
-        ifscController.text, phone.user!.phoneNumber!);
-    // phone.user!.phoneNumber!
+    var response = await kycRepository.bankVerify(
+        accountNumberController.text, ifscController.text,phone.user!.phoneNumber!);
     if (response.statusCode == 200) {
       BankVerifyModel responseModel = BankVerifyModel.fromJson(response.body);
       if (responseModel.success?.message ==
           "Bank details verified successfully.") {
         _bankVerified = true;
+        accountHolderNameController.text =
+            responseModel.success!.response!.data!.recipientName ?? '';
+        bankNameController.text =
+            responseModel.success!.response!.data!.bank ?? '';
       }
     } else {
       ApiChecker.checkApi(response);
     }
+    _loadingState = false;
+    update();
   }
 
   Future<void> aadhaarOnChange(String value) async {
@@ -801,9 +824,9 @@ class KycController extends GetxController implements GetxService {
         case PickedFile.taxReceipt:
           _pickedTaxReceipt = result.files.first;
           break;
-        case PickedFile.rentReceipt:
-          _pickedRentReceipt = result.files.first;
-          break;
+        // case PickedFile.rentReceipt:
+        //   _pickedRentReceipt = result.files.first;
+        //   break;
         case PickedFile.aadhaarCard:
           _pickedAadhaarCard = result.files.first;
           break;
@@ -963,6 +986,8 @@ class KycController extends GetxController implements GetxService {
       return "Enter Account Number";
     } else if (ifscController.text.isEmpty) {
       return "Enter IFSC Code";
+    } else if (_bankVerified == false) {
+      return "Your BankAccount Number Not Verified";
     } else if (bankNameController.text.isEmpty) {
       return "Enter Bank Name";
     } else if (accountHolderNameController.text.isEmpty) {

@@ -7,14 +7,14 @@ import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
-class AuthSuccessPage extends StatefulWidget {
-  const AuthSuccessPage({super.key});
+class AuthSuccessScreen extends StatefulWidget {
+  const AuthSuccessScreen({super.key});
 
   @override
-  State<AuthSuccessPage> createState() => _AuthSuccessPageState();
+  State<AuthSuccessScreen> createState() => _AuthSuccessPageState();
 }
 
-class _AuthSuccessPageState extends State<AuthSuccessPage> {
+class _AuthSuccessPageState extends State<AuthSuccessScreen> {
   @override
   void initState() {
     // TODO: implement initState

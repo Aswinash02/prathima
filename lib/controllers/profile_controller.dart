@@ -101,7 +101,6 @@ class ProfileController extends GetxController implements GetxService {
   }
 
   Future<void> editProfile() async {
-    print('dobCon.text -- ${dobCon.text}');
     if (!isChange()) {
       showCustomSnackBar("No Changes There");
       return;

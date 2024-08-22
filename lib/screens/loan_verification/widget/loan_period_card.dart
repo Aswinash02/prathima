@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/data/model/approved_loan_model.dart';
-import 'package:prathima_loan_app/screens/kyc_form/widget/custom_dropdown.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 class LoanPeriodCard extends StatelessWidget {
@@ -41,18 +40,12 @@ class LoanPeriodCard extends StatelessWidget {
             // const CustomText(
             //     text: "5 Months", fontWeight: FontWeight.w600, fontSize: 18),
             GetBuilder<LoanController>(builder: (controller) {
-              if(controller.selectedDueDate != null){
-                print('controller.selectedDueDate ${controller.selectedDueDate!.dueDate}');
-                print('controller.selectedDueDate ${controller.selectedDueDate}');
-
-              }
               return SizedBox(
                   height: 35,
                   child: DropdownButtonFormField<DueDateInterestRate>(
                     value: controller.selectedDueDate,
                     onChanged: controller.onChangeDueDate,
                     items: controller.dueDateInterestRate.map((item) {
-                      print('item ----- ${item.dueDate}');
                       return DropdownMenuItem(
                         value: item,
                         child: Text(item.dueDate!),

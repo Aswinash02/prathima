@@ -7,7 +7,6 @@ import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
 import 'package:prathima_loan_app/screens/main_screen.dart';
-import 'package:prathima_loan_app/screens/no_internet_screen.dart';
 import 'package:prathima_loan_app/screens/onboard/on_board_screen.dart';
 import 'package:prathima_loan_app/screens/splash_screen.dart';
 import 'package:prathima_loan_app/utils/shared_preferences.dart';
@@ -29,7 +28,6 @@ class _InitialScreenState extends State<InitialScreen> {
     super.initState();
     _introSeenFuture = _checkIntroSeen();
     ever(Get.find<ConnectivityService>().connectivityStatus, (result) {
-      print('ConnectivityResult ======== > ${result}');
       if (result == ConnectivityResult.none) {
         Get.offAllNamed(RouteHelper.noInternetScreen);
       } else {
@@ -44,9 +42,8 @@ class _InitialScreenState extends State<InitialScreen> {
   }
 
   Future<void> _checkLoginStatus() async {
+
     bool isLoggedIn = await SharedPreference().getLogin();
-    String token = await SharedPreference().getUserToken();
-    print('token --------------- > ${token}');
     if (isLoggedIn == true) {
       await Get.find<KycController>().getKycStatus();
     }

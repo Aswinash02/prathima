@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:prathima_loan_app/screens/auth/authentication_success_page.dart';
+import 'package:prathima_loan_app/screens/auth/auth_success_screen.dart';
 import 'package:prathima_loan_app/screens/auth/otp_verification_page.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
 import 'package:prathima_loan_app/screens/auth/signup_screen.dart';
@@ -22,6 +22,8 @@ import 'package:prathima_loan_app/screens/profile/edit_profile/edit_profile_scre
 import 'package:prathima_loan_app/screens/profile/loan_history.dart';
 import 'package:prathima_loan_app/screens/profile/privacy_policy_screen.dart';
 import 'package:prathima_loan_app/screens/profile/terms_and_condition_screen.dart';
+import 'package:prathima_loan_app/screens/profile/widget/contact_us_screen.dart';
+import 'package:prathima_loan_app/screens/profile/widget/help_and_support_screen.dart';
 import 'package:prathima_loan_app/screens/splash_screen.dart';
 
 class RouteHelper {
@@ -29,7 +31,7 @@ class RouteHelper {
   static const String introductionScreen = '/introductionScreen';
   static const String login = '/login';
   static const String signUp = '/signUp';
-  static const String authSuccess = '/authSuccess';
+  static const String authSuccessScreen = '/authSuccessScreen';
   static const String verificationOtp = '/verificationOtp';
   static const String home = '/home';
   static const String kycDetail = '/kycDetail';
@@ -48,6 +50,8 @@ class RouteHelper {
   static const String loanHistoryScreen = '/loanHistoryScreen';
   static const String noInternetScreen = '/noInternetScreen';
   static const String splashScreen = '/splashScreen';
+  static const String helpAndSupportScreen = '/helpAndSupportScreen';
+  static const String contactUsScreenScreen = '/contactUsScreenScreen';
   static const String preClosingLoanAmountScreen =
       '/preClosingLoanAmountScreen';
 
@@ -56,49 +60,136 @@ class RouteHelper {
   }
 
   static List<GetPage> routes = [
-    GetPage(name: initial, page: () => const MainScreen()),
-    GetPage(name: login, page: () => const SignInScreen()),
-    GetPage(name: signUp, page: () => const SignupScreen()),
-    GetPage(name: verificationOtp, page: () => const VerificationOtpPage()),
-    GetPage(name: authSuccess, page: () => const AuthSuccessPage()),
-    GetPage(name: home, page: () => const HomeScreen()),
-    GetPage(name: loanDetailsForm, page: () => const LoanDetailsForm()),
-    GetPage(name: kycDetail, page: () => const KycDetailScreen()),
-    GetPage(name: loanApprovedScreen, page: () => const LoanApprovedScreen()),
-    GetPage(name: loanAgreementScreen, page: () => const LoanAgreementScreen()),
-    GetPage(name: aboutUsScreen, page: () => const AboutUsScreen()),
-    GetPage(name: privacyPolicyScreen, page: () => const PrivacyPolicyScreen()),
+    GetPage(
+      name: initial,
+      page: () => const MainScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: login,
+      page: () => const SignInScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: signUp,
+      page: () => const SignupScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: verificationOtp,
+      page: () => const VerificationOtpPage(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: authSuccessScreen,
+      page: () => const AuthSuccessScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: home,
+      page: () => const HomeScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: loanDetailsForm,
+      page: () => const LoanDetailsForm(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: kycDetail,
+      page: () => const KycDetailScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: loanApprovedScreen,
+      page: () => const LoanApprovedScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: loanAgreementScreen,
+      page: () => const LoanAgreementScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: aboutUsScreen,
+      page: () => const AboutUsScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: privacyPolicyScreen,
+      page: () => const PrivacyPolicyScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: helpAndSupportScreen,
+      page: () => const HelpAndSupportScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: contactUsScreenScreen,
+      page: () => const ContactUsScreen(),
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
       name: loanDetailsScreen,
       page: () => const LoanDetailsScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.rightToLeft,
     ),
-    GetPage(name: loanHistoryScreen, page: () => const LoanHistoryScreen()),
     GetPage(
-        name: loanOTPVerificationScreen,
-        page: () => const LoanOTPVerificationScreen()),
+      name: loanHistoryScreen,
+      page: () => const LoanHistoryScreen(),
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
-        name: preCloseLoanSuccessScreen,
-        page: () => const PreCloseLoanSuccessScreen()),
-    GetPage(name: introductionScreen, page: () => const InitialScreen()),
-    GetPage(name: noInternetScreen, page: () => const NoInternetScreen()),
-    GetPage(name: splashScreen, page: () => const SplashScreen()),
+      name: loanOTPVerificationScreen,
+      page: () => const LoanOTPVerificationScreen(),
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
-        name: personalLoanDetailScreen,
-        page: () => const PersonalLoanDetailScreen()),
+      name: preCloseLoanSuccessScreen,
+      page: () => const PreCloseLoanSuccessScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: introductionScreen,
+      page: () => const InitialScreen(),
+    ),
+    GetPage(
+      name: noInternetScreen,
+      page: () => const NoInternetScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: splashScreen,
+      page: () => const SplashScreen()
+    ),
+    GetPage(
+      name: personalLoanDetailScreen,
+      page: () => const PersonalLoanDetailScreen(),
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
         name: creditOrDebitCardForm,
         page: () {
           return CreditOrDebitCardForm(
             cardType: Get.parameters['cardType']!,
           );
-        }),
+        },
+        transition: Transition.rightToLeft),
     GetPage(
-        name: preClosingLoanAmountScreen,
-        page: () => const PreClosingLoanAmountScreen()),
+      name: preClosingLoanAmountScreen,
+      page: () => const PreClosingLoanAmountScreen(),
+      transition: Transition.rightToLeft,
+    ),
     GetPage(
-        name: termsAndConditionScreen,
-        page: () => const TermsAndConditionScreen()),
-    GetPage(name: editProfileScreen, page: () => const EditProfileScreen()),
+      name: termsAndConditionScreen,
+      page: () => const TermsAndConditionScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: editProfileScreen,
+      page: () => const EditProfileScreen(),
+      transition: Transition.rightToLeft,
+    ),
   ];
 }

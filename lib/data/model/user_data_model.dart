@@ -310,8 +310,6 @@ class UserDataModel {
   UserDataModel({this.user, this.userKyc, this.status});
 
   UserDataModel.fromJson(Map<String, dynamic> json) {
-    print('json ========== ${json['user']}');
-    print('json ========== ${json['user_kyc']}');
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     userKyc = json['user_kyc'] != 'KYC details not available'
         ? Kyc.fromJson(json['user_kyc'])
@@ -344,8 +342,8 @@ class User {
   int? aadhaarVerified;
   Aadhaar? aadhaar;
   String? mailotp;
-  String? numberVerified;
-  String? mailVerified;
+  int? numberVerified;
+  int? mailVerified;
   double? latitude;
   double? longitude;
   Kyc? kyc;

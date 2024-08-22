@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:prathima_loan_app/data/api/api_client.dart';
-import 'package:prathima_loan_app/models/login_model.dart';
-import 'package:prathima_loan_app/models/signup_model.dart';
+import 'package:prathima_loan_app/data/model/login_model.dart';
+import 'package:prathima_loan_app/data/model/signup_model.dart';
 import 'package:prathima_loan_app/utils/app_constant.dart';
 
 class AuthRepository extends GetxService {
@@ -51,7 +51,6 @@ class AuthRepository extends GetxService {
         "Content-Type": "application/json",
       },
     );
-    print("login Response=============>${response.body}");
     return LoginResponse.fromJson(response.body);
   }
 
@@ -87,7 +86,6 @@ class AuthRepository extends GetxService {
         "Content-Type": "application/json",
       },
     );
-    print("login Response=============>${response.body}");
     return LoginResponse.fromJson(response.body);
   }
 

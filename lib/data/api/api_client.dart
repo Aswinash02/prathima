@@ -4,7 +4,7 @@ import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prathima_loan_app/data/model/error_model.dart';
-import 'package:prathima_loan_app/utils/app_constant.dart';
+import 'package:prathima_loan_app/data/model/login_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,8 +19,12 @@ class ApiClient extends GetxService {
   late Map<String, String> _mainHeaders;
 
   ApiClient({required this.appBaseUrl, required this.sharedPreferences}) {
-    token = sharedPreferences.getString("user_token");
-    print('token ==== > ${token}');
+    String userData = sharedPreferences.getString("user_data") ?? "";
+    if (userData != "") {
+      LoginResponse decodeUserData =
+          LoginResponse.fromJson(jsonDecode(userData));
+      token = decodeUserData.token;
+    }
     if (kDebugMode) {
       print('Token: $token');
     }

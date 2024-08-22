@@ -9,14 +9,11 @@ class LoanController extends GetxController implements GetxService {
 
   LoanController({required this.loanRepository});
 
-  double _loanAmountSliderValue = 5000;
   double _dueMonthSliderValue = 2;
 
   // bool _isChangeDetail = false;
   String _selectedMode = '';
-  bool _isNext = false;
-  bool _setAmount = false;
-  int _interest = 0;
+
   DueDateInterestRate? _selectedDueDate;
   List<DueDateInterestRate> _dueDateInterestRate = [];
   bool _loadingState = false;
@@ -29,8 +26,6 @@ class LoanController extends GetxController implements GetxService {
     PaymentMethod(img: "assets/img/BHIM.png", name: 'BHIM'),
   ];
 
-  double get loanAmountSliderValue => _loanAmountSliderValue;
-
   double get dueMonthSliderValue => _dueMonthSliderValue;
 
   DueDateInterestRate? get selectedDueDate => _selectedDueDate;
@@ -41,19 +36,7 @@ class LoanController extends GetxController implements GetxService {
 
   bool get loadingState => _loadingState;
 
-  bool get setAmount => _setAmount;
-
-  int get interest => _interest;
-
   List<DueDateInterestRate> get dueDateInterestRate => _dueDateInterestRate;
-
-  bool get isNext => _isNext;
-
-  void onChangeLoanAmountSlider(double value) {
-    _loanAmountSliderValue = value;
-    _setAmount = true;
-    update();
-  }
 
   void onChangeDueMonthSlider(double value) {
     _dueMonthSliderValue = value;
@@ -65,7 +48,10 @@ class LoanController extends GetxController implements GetxService {
       showCustomSnackBar("Select Due Duration");
       return;
     }
-    Get.toNamed(RouteHelper.loanAgreementScreen);
+    Get.toNamed(
+      RouteHelper.loanAgreementScreen,
+
+    );
     // if (_isChangeDetail == false) {
     //   _isChangeDetail = true;
     // } else {
@@ -84,7 +70,6 @@ class LoanController extends GetxController implements GetxService {
     update();
 
     approvedLoanData = await loanRepository.getApprovedLoanData();
-    print('loanData ============ > ${approvedLoanData}');
     if (approvedLoanData!.status != false) {
       _dueDateInterestRate = approvedLoanData!.loan!.dueDateInterestRate ?? [];
     }
@@ -92,14 +77,8 @@ class LoanController extends GetxController implements GetxService {
     update();
   }
 
-  void onPressedBack() {
-    _isNext = !_isNext;
-    update();
-  }
-
-  void loanAmountProceed() {
-    _setAmount = true;
-    update();
+  void calledDispose() {
+    _selectedDueDate = null;
   }
 
   void onChangeDueDate(DueDateInterestRate? value) {

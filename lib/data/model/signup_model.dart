@@ -14,6 +14,18 @@ class SignupResponse {
     result = json['result'];
     errors = json['errors'];
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message'] = message;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    data['token'] = token;
+    data['result'] = result;
+    data['errors'] = errors;
+    return data;
+  }
 }
 
 class User {
@@ -39,5 +51,16 @@ class User {
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
     id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['email'] = email;
+    data['phone_number'] = phoneNumber;
+    data['updated_at'] = updatedAt;
+    data['created_at'] = createdAt;
+    data['id'] = id;
+    return data;
   }
 }

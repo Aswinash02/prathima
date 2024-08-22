@@ -8,8 +8,8 @@ import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/repository/auth_repository.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
-import 'package:prathima_loan_app/models/login_model.dart';
-import 'package:prathima_loan_app/models/signup_model.dart';
+import 'package:prathima_loan_app/data/model/login_model.dart';
+import 'package:prathima_loan_app/data/model/signup_model.dart';
 import 'package:prathima_loan_app/utils/shared_preferences.dart';
 
 class AuthController extends GetxController implements GetxService {
@@ -76,9 +76,8 @@ class AuthController extends GetxController implements GetxService {
       SignupResponse signupResponse = SignupResponse.fromJson(response.body);
       if (response.statusCode == 201) {
         showCustomSnackBar(signupResponse.message, isError: false);
-        // authRepository.saveUserToken(token: signupResponse.token!);
-        // sharedPreference.setUserData(jsonEncode(signupResponse));
-        // sharedPreference.setUserToken(signupResponse.token!);
+        authRepository.saveUserToken(token: signupResponse.token!);
+        sharedPreference.setUserData(jsonEncode(signupResponse.toJson()));
         clearControllerData();
         Get.toNamed(RouteHelper.verificationOtp);
       } else if (signupResponse.errors != null) {
@@ -118,8 +117,6 @@ class AuthController extends GetxController implements GetxService {
         showCustomSnackBar(loginResponse.message, isError: false);
         authRepository.saveUserToken(token: loginResponse.token!);
         sharedPreference.setUserData(jsonEncode(loginResponse.toJson()));
-        sharedPreference.setUserToken(loginResponse.token ?? '');
-        sharedPreference.setUserPhoneNo(loginResponse.user?.phoneNumber ?? '');
         sharedPreference.setLogin(true);
         await Get.find<KycController>().getKycStatus();
         if (Get.find<KycController>().kycStatus!.status != 0) {
@@ -135,6 +132,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   Future<void> sendOtp() async {
+    Get.focusScope?.unfocus();
     String phone = signInPhoneCon.text;
     if (signInWithOTP == true && phone == "") {
       showCustomSnackBar("Enter Phone Number");
@@ -170,11 +168,9 @@ class AuthController extends GetxController implements GetxService {
       } else {
         authRepository.saveUserToken(token: loginResponse.token!);
         showCustomSnackBar(loginResponse.message, isError: false);
-        sharedPreference.setUserData(jsonEncode(loginResponse));
-        Get.offAllNamed(RouteHelper.authSuccess);
+        sharedPreference.setUserData(jsonEncode(loginResponse.toJson()));
+        Get.offAllNamed(RouteHelper.authSuccessScreen);
         sharedPreference.setLogin(true);
-        sharedPreference.setUserToken(loginResponse.token ?? '');
-        sharedPreference.setUserPhoneNo(loginResponse.user?.phoneNumber ?? '');
       }
     } else {
       showCustomSnackBar("Enter Valid OTP");
@@ -197,7 +193,8 @@ class AuthController extends GetxController implements GetxService {
           await authRepository.verifyEmail(user.user!.email!, otp!);
       if (emailVerify['message'] == "OTP verified successfully!") {
         showCustomSnackBar(emailVerify['message'], isError: false);
-        Get.offAllNamed(RouteHelper.authSuccess);
+        sharedPreference.setLogin(true);
+        Get.offAllNamed(RouteHelper.authSuccessScreen);
       } else {
         showCustomSnackBar(emailVerify['message']);
       }
@@ -214,7 +211,8 @@ class AuthController extends GetxController implements GetxService {
   }
 
   Future<void> clearUserData() async {
-    sharedPreference.setLogin(false);
+    await sharedPreference.setLogin(false);
+    await sharedPreference.setUserData("");
   }
 
   void clearControllerData() {

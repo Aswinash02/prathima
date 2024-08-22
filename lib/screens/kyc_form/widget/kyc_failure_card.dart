@@ -60,10 +60,7 @@ class KycFailureCard extends StatelessWidget {
                       child: CustomButton(
                     text: "Update Kyc",
                     onTap: () {
-                      print('yes entered');
                       kycController.onTapUpdateKyc();
-                      // Get.toNamed(RouteHelper.kycDetail,
-                      //     parameters: {'update': "true"});
                     },
                   ));
                 }),

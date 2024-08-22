@@ -62,7 +62,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileOption(
                         option: "Help &  Support",
                         icon: "assets/icon/help_and_support_icon.png",
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(RouteHelper.helpAndSupportScreen);
+                        },
                       ),
                       ProfileOption(
                         option: "Terms and Condition",
@@ -74,7 +76,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileOption(
                         option: "Contact Us",
                         icon: "assets/icon/contact_us_icon.png",
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(RouteHelper.contactUsScreenScreen);
+                        },
                       ),
                       ProfileOption(
                         option: "Privacy Policy",

@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/api/api_client.dart';
 import 'package:http/http.dart' as http;
-import 'package:prathima_loan_app/models/kyc_model.dart';
+import 'package:prathima_loan_app/data/model/kyc_model.dart';
+import 'package:prathima_loan_app/data/model/login_model.dart';
 import 'package:prathima_loan_app/utils/app_constant.dart';
 import 'package:prathima_loan_app/utils/shared_preferences.dart';
 
@@ -16,14 +15,15 @@ class KycRepository extends GetxService {
   KycRepository({required this.apiClient});
 
   Future<KycResponseModel> sendKYCData(KycData kycData) async {
-    String userToken = await SharedPreference().getUserToken();
-    var uri = Uri.parse('https://prathima.v4inspire.com/api/loan/user-kyc');
+    String userData = await SharedPreference().getUserData();
+    LoginResponse decodeUserData = LoginResponse.fromJson(jsonDecode(userData));
+    var uri = Uri.parse(AppConstants.baseUrl + AppConstants.userKycUrl);
     var request = http.MultipartRequest('POST', uri);
 
     // Add headers
     request.headers.addAll({
       'Content-Type': 'multipart/form-data',
-      'Authorization': 'Bearer $userToken',
+      'Authorization': 'Bearer ${decodeUserData.token}',
     });
 
     // Add text fields
@@ -82,9 +82,6 @@ class KycRepository extends GetxService {
       var jsonResponse = json.decode(responseData);
       var kycResponse = KycResponseModel.fromJson(jsonResponse);
       showCustomSnackBar("KYC data uploaded successfully", isError: false);
-      print("KYC Success Message=============>${kycResponse.message}");
-      print("KYC responseData=============>${responseData}");
-      print("KYC jsonResponse=============>${jsonResponse}");
       return kycResponse;
     } else {
       var responseData = await response.stream.bytesToString();
@@ -95,14 +92,15 @@ class KycRepository extends GetxService {
   }
 
   Future<KycResponseModel> updateKYCData(KycData kycData) async {
-    String userToken = await SharedPreference().getUserToken();
-    var uri = Uri.parse('https://prathima.v4inspire.com/api/loan/update-kyc');
+    String userData = await SharedPreference().getUserData();
+    LoginResponse decodeUserData = LoginResponse.fromJson(jsonDecode(userData));
+    var uri = Uri.parse(AppConstants.baseUrl + AppConstants.updateKycUrl);
     var request = http.MultipartRequest('POST', uri);
 
     // Add headers
     request.headers.addAll({
       'Content-Type': 'multipart/form-data',
-      'Authorization': 'Bearer $userToken',
+      'Authorization': 'Bearer ${decodeUserData.token}',
     });
 
     // Add text fields
@@ -156,20 +154,14 @@ class KycRepository extends GetxService {
     if (response.statusCode == 200) {
       var responseData = await response.stream.bytesToString();
       var jsonResponse = json.decode(responseData);
-      print('jsonResponse ======= ${jsonResponse}');
       var kycResponse = KycResponseModel.fromJson(jsonResponse);
       showCustomSnackBar("KYC data Updated successfully", isError: false);
-      print("KYC Success Message=============>${kycResponse.message}");
-      print("KYC responseData=============>${responseData}");
-      print("KYC jsonResponse=============>${jsonResponse}");
       return kycResponse;
     } else {
       var responseData = await response.stream.bytesToString();
       var jsonResponse = json.decode(responseData);
 
       var kycResponse = KycResponseModel.fromJson(jsonResponse);
-      print("KYC update Success responseData=============>${responseData}");
-      print("KYC update Success jsonResponse=============>${jsonResponse}");
       return kycResponse;
     }
   }
@@ -205,9 +197,12 @@ class KycRepository extends GetxService {
   }
 
   Future<Response> panVerify(String panNumber) async {
-    String phoneNumber = await SharedPreference().getUserPhoneNo();
-    return await apiClient.postData(AppConstants.panVerifyUrl,
-        {"phone_number": phoneNumber, "pan_number": panNumber});
+    String userData = await SharedPreference().getUserData();
+    LoginResponse decodeUserData = LoginResponse.fromJson(jsonDecode(userData));
+    return await apiClient.postData(AppConstants.panVerifyUrl, {
+      "phone_number": decodeUserData.user!.phoneNumber,
+      "pan_number": panNumber
+    });
   }
 
   Future<Response> getUserKycData() async {

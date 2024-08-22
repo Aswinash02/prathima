@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
+import 'package:prathima_loan_app/data/model/user_data_model.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/custom_icon.dart';
 
-class LoanDetailCard extends StatelessWidget {
-  const LoanDetailCard({super.key});
+class LoanAmountCard extends StatelessWidget {
+  const LoanAmountCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,7 @@ class LoanDetailCard extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
-              GetBuilder<LoanController>(builder: (loanController) {
+              GetBuilder<KycController>(builder: (controller) {
                 return SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       trackHeight: 12.0,
@@ -89,16 +91,15 @@ class LoanDetailCard extends StatelessWidget {
                       inactiveTrackColor: MyTheme.mainColor.withOpacity(0.3),
                     ),
                     child: Slider(
-                      value: loanController.loanAmountSliderValue,
+                      value: controller.loanAmountSliderValue,
                       min: 5000,
                       max: 300000,
                       divisions: ((300000 - 5000) / 500).round(),
                       activeColor: MyTheme.mainColor,
-                      label: loanController.loanAmountSliderValue
-                          .round()
-                          .toString(),
+                      label:
+                          controller.loanAmountSliderValue.round().toString(),
                       onChanged: (double value) {
-                        loanController.onChangeLoanAmountSlider(
+                        controller.onChangeLoanAmountSlider(
                             (value / 500).round() * 500);
                       },
                     ));
@@ -126,7 +127,7 @@ class LoanDetailCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  GetBuilder<LoanController>(builder: (controller) {
+                  GetBuilder<KycController>(builder: (controller) {
                     return CustomText(
                       text: "₹${controller.loanAmountSliderValue.toInt()}",
                     );
@@ -160,9 +161,7 @@ class LoanDetailCard extends StatelessWidget {
                   child: CustomButton(
                 text: "Proceed",
                 onTap: () {
-                  Get.find<LoanController>().loanAmountProceed();
-                  // Get.find<LoanController>().onPressedBack();
-                  // Get.toNamed(RouteHelper.kycDetail);
+                  Get.find<KycController>().loanAmountProceed();
                 },
               ))
             ],

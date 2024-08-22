@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
-import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/screens/loan_verification/widget/change_detail_column.dart';
 import 'package:prathima_loan_app/screens/loan_verification/widget/loan_period_card.dart';
 

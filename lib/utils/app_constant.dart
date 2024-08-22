@@ -17,4 +17,5 @@ class AppConstants {
   static const String userDataUrl = "/api/user/get";
   static const String editProfileUrl = "/api/loan/user-update";
   static const String approvedLoanUrl = "/api/loan/approved-loan";
+  static const String userKycUrl = "/api/loan/user-kyc";
 }
