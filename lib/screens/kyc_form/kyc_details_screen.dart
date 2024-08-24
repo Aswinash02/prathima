@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
-import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/aadhar_detail_card.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/bank_detail_card.dart';

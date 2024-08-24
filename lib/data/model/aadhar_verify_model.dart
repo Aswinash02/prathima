@@ -1,6 +1,7 @@
 class AadhaarVerifyModel {
   int? timestamp;
   String? transactionId;
+  String? message;
   AadhaarData? data;
   int? code;
   String? error;
@@ -14,6 +15,7 @@ class AadhaarVerifyModel {
     data = json['data'] != null ? AadhaarData.fromJson(json['data']) : null;
     code = json['code'];
     error = json['error'];
+    message = json['message'];
   }
 }
 

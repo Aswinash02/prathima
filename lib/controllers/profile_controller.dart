@@ -82,7 +82,7 @@ class ProfileController extends GetxController implements GetxService {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1000),
-      lastDate: DateTime(3000),
+      lastDate: DateTime.now(),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: customTheme,
@@ -123,7 +123,7 @@ class ProfileController extends GetxController implements GetxService {
     EditProfileModel editProfileResponse =
         EditProfileModel.fromJson(response.body);
     if (response.statusCode == 200) {
-      showCustomSnackBar("Edit Profile Successfully", isError: false);
+      showCustomSnackBar("Profile Updated Successfully", isError: false);
       await getUserData();
     } else if (editProfileResponse.errors != null) {
       showCustomSnackBar(editProfileResponse.errors!.first);

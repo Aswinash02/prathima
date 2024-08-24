@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/auth_controller.dart';
-import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
-import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
 import '../../customs/custom_button.dart';
-import 'auth_success_screen.dart';
 
 class VerificationOtpPage extends StatefulWidget {
   const VerificationOtpPage({super.key});
@@ -47,18 +44,27 @@ class _VerificationOtpPageState extends State<VerificationOtpPage> {
                         ),
                       ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: Row(
                         children: [
-                          CustomText(
-                            text:
-                                "We have sent the verification\ncode to your email address",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            maxLines: 2,
-                            color: MyTheme.textfield_grey,
-                          ),
+                          args != null && args['signInWithPhone'] == true
+                              ? const CustomText(
+                                  text:
+                                      "We have sent the verification\ncode to your Phone Number",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                  maxLines: 2,
+                                  color: MyTheme.textfield_grey,
+                                )
+                              : const CustomText(
+                                  text:
+                                      "We have sent the verification\ncode to your email address",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                  maxLines: 2,
+                                  color: MyTheme.textfield_grey,
+                                ),
                         ],
                       ),
                     ),

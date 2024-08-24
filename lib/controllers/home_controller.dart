@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
@@ -63,12 +61,11 @@ class HomeController extends GetxController implements GetxService {
     if (Get.find<KycController>().kycStatus != null) {
       print("kyc status ${Get.find<KycController>().kycStatus!.status}");
 
-      Get.toNamed(RouteHelper.kycDetail);
-      // if (Get.find<KycController>().kycStatus!.status == 2) {
-      //   Get.toNamed(RouteHelper.loanDetailsForm);
-      // } else {
-      //   Get.toNamed(RouteHelper.kycDetail);
-      // }
+      if (Get.find<KycController>().kycStatus!.status == 3) {
+        Get.toNamed(RouteHelper.loanDetailsForm);
+      } else {
+        Get.toNamed(RouteHelper.kycDetail);
+      }
     }
   }
 }

@@ -34,7 +34,7 @@ class BankDetailForm extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: kycController.loadingState
+                  child: kycController.bankLoadingState
                       ? const SizedBox(
                           height: 20,
                           width: 20,
@@ -78,20 +78,25 @@ class BankDetailForm extends StatelessWidget {
           const SizedBox(height: 10),
           kycController.bankVerified
               ? const SizedBox()
-              : Align(
-                  alignment: Alignment.bottomRight,
-                  child: GestureDetector(
-                    onTap: () async {
-                      await kycController.bankVerify();
-                    },
-                    child: const CustomText(
-                      text: "Verify",
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16,
-                      color: MyTheme.mainColor,
+              : Column(
+                children: [
+                  Align(
+                      alignment: Alignment.bottomRight,
+                      child: GestureDetector(
+                        onTap: () async {
+                          await kycController.bankVerify();
+                        },
+                        child: const CustomText(
+                          text: "Verify",
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                          color: MyTheme.mainColor,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  const SizedBox(height: 350,)
+                ],
+              ),
           kycController.bankVerified
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

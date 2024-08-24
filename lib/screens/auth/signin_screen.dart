@@ -6,10 +6,7 @@ import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/input_decorations.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
-import 'package:prathima_loan_app/screens/auth/signup_screen.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
-
-import 'otp_verification_page.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -28,7 +25,7 @@ class _SignInScreenState extends State<SignInScreen> {
             return SliverToBoxAdapter(
               child: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30),
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30),
                 child: Column(
                   children: <Widget>[
                     const Padding(
@@ -41,165 +38,160 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: 210,
                       ),
                     ),
-                    const Row(
-                      children: [
-                        CustomText(
-                          text: "Login",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 22,
-                        ),
-                      ],
+                    const CustomText(
+                      text: "Login",
+                      fontWeight: FontWeight.w700,
+                      fontSize: 22,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: Row(
-                        children: [
-                          CustomText(
-                            text:
-                            "Enter email and phone number to\nsend one time Password",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                            maxLines: 2,
-                            color: MyTheme.textfield_grey,
-                          ),
-                        ],
-                      ),
-                    ),
+                    // const Padding(
+                    //   padding: EdgeInsets.only(top: 10.0),
+                    //   child: Row(
+                    //     children: [
+                    //       CustomText(
+                    //         text:
+                    //         "Enter email and phone number to\nsend one time Password",
+                    //         fontWeight: FontWeight.w700,
+                    //         fontSize: 18,
+                    //         maxLines: 2,
+                    //         color: MyTheme.textfield_grey,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     controller.signInWithOTP
                         ? Wrap(
-                      children: [
-                        const Row(
-                          children: [
-                            Padding(
-                              padding:
-                              EdgeInsets.only(bottom: 4.0, top: 40),
-                              child: Text(
-                                "Phone Number",
-                                style: TextStyle(
-                                    color: MyTheme.mainColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: SizedBox(
-                            height: 36,
-                            child: TextField(
-                              controller: controller.signInPhoneCon,
-                              autofocus: false,
-                              onChanged: (String str) {
-                                if (str.length == 10) {
-                                  FocusScope.of(context).unfocus();
-                                }
-                              },
-                              keyboardType: TextInputType.number,
-                              decoration:
-                              InputDecorations.buildInputDecoration_1(
-                                  hint_text: "Enter Phone Number"),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(10),
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                        : Wrap(
-                      children: [
-                        const Row(
-                          children: [
-                            Padding(
-                              padding:
-                              EdgeInsets.only(bottom: 4.0, top: 40),
-                              child: Text(
-                                "Mail Id",
-                                style: TextStyle(
-                                    color: MyTheme.mainColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: SizedBox(
-                            height: 36,
-                            child: TextField(
-                              controller: controller.signInEmailCon,
-                              autofocus: false,
-                              decoration:
-                              InputDecorations.buildInputDecoration_1(
-                                  hint_text: "Enter Email"),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'[a-zA-Z0-9@._-]')),
-                                // Allow letters, digits, '@', '.', '_', and '-'
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 4.0),
-                              child: Text(
-                                "Password",
-                                style: TextStyle(
-                                    color: MyTheme.mainColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              SizedBox(
-                                height: 36,
-                                child: TextField(
-                                  controller:
-                                  controller.signInPasswordCon,
-                                  autofocus: false,
-                                  obscureText: !controller.showPassword,
-                                  enableSuggestions: false,
-                                  autocorrect: false,
-                                  decoration: InputDecorations
-                                      .buildInputDecoration_1(
-                                      hint_text:
-                                      "• • • • • • • •")
-                                      .copyWith(
-                                      suffixIcon: InkWell(
-                                        onTap: () {
-                                          controller.showPassword =
-                                          !controller.showPassword;
-                                          setState(() {});
-                                        },
-                                        child: Icon(
-                                          controller.showPassword
-                                              ? Icons.visibility_outlined
-                                              : Icons.visibility_off_outlined,
+                              const Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(bottom: 4.0, top: 40),
+                                    child: Text(
+                                      "Phone Number",
+                                      style: TextStyle(
                                           color: MyTheme.mainColor,
-                                          size: 15,
-                                        ),
-                                      )),
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: SizedBox(
+                                  height: 36,
+                                  child: TextField(
+                                    controller: controller.signInPhoneCon,
+                                    autofocus: false,
+                                    onChanged: (String str) {
+                                      if (str.length == 10) {
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                    },
+                                    keyboardType: TextInputType.number,
+                                    decoration:
+                                        InputDecorations.buildInputDecoration_1(
+                                            hint_text: "Enter Phone Number"),
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(10),
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
+                                  ),
                                 ),
                               ),
-                              const Text(
-                                "Password Must Contain atleast 8 Characters",
-                                style: TextStyle(
-                                    color: MyTheme.textfield_grey,
-                                    fontStyle: FontStyle.italic),
-                              )
+                            ],
+                          )
+                        : Wrap(
+                            children: [
+                              const Row(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(bottom: 4.0, top: 40),
+                                    child: Text(
+                                      "Mail Id",
+                                      style: TextStyle(
+                                          color: MyTheme.mainColor,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: SizedBox(
+                                  height: 36,
+                                  child: TextField(
+                                    controller: controller.signInEmailCon,
+                                    autofocus: false,
+                                    decoration:
+                                        InputDecorations.buildInputDecoration_1(
+                                            hint_text: "Enter Email"),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[a-zA-Z0-9@._-]')),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 4.0),
+                                    child: Text(
+                                      "Password",
+                                      style: TextStyle(
+                                          color: MyTheme.mainColor,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      height: 36,
+                                      child: TextField(
+                                        controller:
+                                            controller.signInPasswordCon,
+                                        autofocus: false,
+                                        obscureText: !controller.showPassword,
+                                        enableSuggestions: false,
+                                        autocorrect: false,
+                                        decoration: InputDecorations
+                                                .buildInputDecoration_1(
+                                                    hint_text:
+                                                        "• • • • • • • •")
+                                            .copyWith(
+                                                suffixIcon: InkWell(
+                                          onTap: () {
+                                            controller.showPassword =
+                                                !controller.showPassword;
+                                            setState(() {});
+                                          },
+                                          child: Icon(
+                                            controller.showPassword
+                                                ? Icons.visibility_off_outlined
+                                                : Icons.visibility_outlined,
+                                            color: MyTheme.mainColor,
+                                            size: 15,
+                                          ),
+                                        )),
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Password Must Contain atleast 8 Characters",
+                                      style: TextStyle(
+                                          color: MyTheme.textfield_grey,
+                                          fontStyle: FontStyle.italic),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
                     Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
@@ -237,10 +229,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: [
                         const Center(
                             child: Text(
-                              "Already Have an account?",
-                              style:
+                          "Don't have an account?",
+                          style:
                               TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                            )),
+                        )),
                         const SizedBox(
                           width: 10,
                         ),

@@ -79,6 +79,26 @@ class AadhaarDetailForm extends StatelessWidget {
               ],
             ),
           ),
+          !kycController.aadhaarVerified &&
+                  !kycController.isEnableOTP &&
+                  kycController.aadhaarNumberController.text.length == 12 &&
+                  !kycController.loadingState
+              ? Align(
+                  alignment: Alignment.bottomRight,
+                  child: GestureDetector(
+                    onTap: () => kycController.aadhaarVerify(),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.0),
+                      child: CustomText(
+                        text: "resend",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        color: MyTheme.mainColor,
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
           const SizedBox(
             height: 10,
           ),
@@ -120,6 +140,27 @@ class AadhaarDetailForm extends StatelessWidget {
                             : const SizedBox(),
                       ),
                     ),
+                    !kycController.aadhaarVerified &&
+                            kycController
+                                    .aadhaarNumberOTPController.text.length ==
+                                6 &&
+                            !kycController.otpLoadingState
+                        ? Align(
+                            alignment: Alignment.bottomRight,
+                            child: GestureDetector(
+                              onTap: () => kycController.aadhaarVerify(),
+                              child: const Padding(
+                                padding: EdgeInsets.only(bottom: 4.0),
+                                child: CustomText(
+                                  text: "resend",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  color: MyTheme.mainColor,
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 )
               : const SizedBox(),

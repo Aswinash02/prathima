@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
-import 'package:prathima_loan_app/customs/custom_textfield.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/doc_upload_container.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
@@ -35,7 +34,7 @@ class DrivingLicenseDetailForm extends StatelessWidget {
             height: 10,
           ),
           DocUploadContainer(
-            textString: 'Upload Driving Licence Front  And Back photo',
+            textString: 'Upload Driving Licence photo',
             selectedFile: kycController.pickedDrivingLicense,
             onTap: () {
               kycController.pickFiles(PickedFile.drivingLicense);

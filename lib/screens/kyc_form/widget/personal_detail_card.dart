@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
-import 'package:prathima_loan_app/screens/kyc_form/widget/aadhar_detail_card.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/personal_detail_form.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
-import 'package:prathima_loan_app/utils/shimmer/kyc_shimmer.dart';
 
 class PersonalDetailCard extends StatelessWidget {
   const PersonalDetailCard({super.key});
@@ -44,7 +40,7 @@ class PersonalDetailCard extends StatelessWidget {
                     height: 20,
                   ),
                   CustomText(
-                    text: "Please enter your bank account details with"
+                    text: "Please enter your personal details instead of bank details with"
                         " which you are going to make payment for investment.",
                     fontSize: 13,
                     fontWeight: FontWeight.w500,

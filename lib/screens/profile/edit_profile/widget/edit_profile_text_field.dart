@@ -9,6 +9,7 @@ class EditProfileTextField extends StatelessWidget {
   final void Function()? onTap;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final void Function(String)? onChanged;
 
   const EditProfileTextField({
     super.key,
@@ -16,7 +17,7 @@ class EditProfileTextField extends StatelessWidget {
     this.hintText,
     this.readOnly,
     this.onTap,
-    this.keyboardType, this.inputFormatters,
+    this.keyboardType, this.inputFormatters, this.onChanged,
   });
 
   @override
@@ -30,6 +31,7 @@ class EditProfileTextField extends StatelessWidget {
         cursorHeight: 20,
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
+        onChanged: onChanged,
         readOnly: readOnly ?? false,
         decoration: InputDecoration(
           suffixIcon: readOnly == true

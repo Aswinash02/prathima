@@ -23,6 +23,7 @@ import 'package:prathima_loan_app/utils/app_constant.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:url_launcher/url_launcher.dart';
 
 enum PickedFile {
   aadhaarCard,
@@ -145,6 +146,7 @@ class KycController extends GetxController implements GetxService {
   bool _isPanVerified = false;
   bool _isEnableOTP = false;
   bool _loadingState = false;
+  bool _bankLoadingState = false;
   bool _otpLoadingState = false;
   bool _panLoadingState = false;
   bool _kycLoadingState = false;
@@ -181,6 +183,8 @@ class KycController extends GetxController implements GetxService {
   bool get bankVerified => _bankVerified;
 
   bool get loadingState => _loadingState;
+
+  bool get bankLoadingState => _bankLoadingState;
 
   bool get otpLoadingState => _otpLoadingState;
 
@@ -359,15 +363,18 @@ class KycController extends GetxController implements GetxService {
         await downloadFile(_pickedRentReceipt!.path!, 'rental_agreement');
     final smartCartFile =
         await downloadFile(_pickedSmartCard!.path!, 'smart_card_file');
-    final drivingLicenseFile =
-        await downloadFile(_pickedDrivingLicense!.path!, 'driving_license_file');
+    final drivingLicenseFile = await downloadFile(
+        _pickedDrivingLicense!.path!, 'driving_license_file');
     final gasBillFile =
         await downloadFile(_pickedGasSlip!.path!, 'recent_gas_bill');
-    final broadBandBillFile =
-        await downloadFile(_pickedBroadBandSlip!.path!, 'recent_broadband_bill');
-    final paySlip1File = await downloadFile(_pickedPaySlipMonth1!.path!, 'pay_slip1');
-    final paySlip2File = await downloadFile(_pickedPaySlipMonth2!.path!, 'pay_slip2');
-    final paySlip3File = await downloadFile(_pickedPaySlipMonth3!.path!, 'pay_slip3');
+    final broadBandBillFile = await downloadFile(
+        _pickedBroadBandSlip!.path!, 'recent_broadband_bill');
+    final paySlip1File =
+        await downloadFile(_pickedPaySlipMonth1!.path!, 'pay_slip1');
+    final paySlip2File =
+        await downloadFile(_pickedPaySlipMonth2!.path!, 'pay_slip2');
+    final paySlip3File =
+        await downloadFile(_pickedPaySlipMonth3!.path!, 'pay_slip3');
     final idCardFile = await downloadFile(_pickedIdCard!.path!, 'id_card');
     final pfPassBookFile =
         await downloadFile(_pickedPfPassBook!.path!, 'pf_member_passbook');
@@ -458,6 +465,8 @@ class KycController extends GetxController implements GetxService {
 
   Future<void> aadhaarVerify() async {
     _loadingState = true;
+    aadhaarNumberOTPController.clear();
+    _isEnableOTP = false;
     update();
     var response =
         await kycRepository.aadhaarVerify(aadhaarNumberController.text);
@@ -476,11 +485,15 @@ class KycController extends GetxController implements GetxService {
         _refNum = responseModel.data?.referenceId;
         showCustomSnackBar(responseModel.data?.message, isError: false);
       } else {
-        aadhaarNumberController.clear();
-        showCustomSnackBar(responseModel.data?.message);
+        // aadhaarNumberController.clear();
+        if (responseModel.data != null) {
+          showCustomSnackBar(responseModel.data!.message);
+        } else {
+          showCustomSnackBar(responseModel.message);
+        }
       }
     } else {
-      aadhaarNumberController.clear();
+      // aadhaarNumberController.clear();
       ApiChecker.checkApi(response);
     }
     _loadingState = false;
@@ -490,7 +503,6 @@ class KycController extends GetxController implements GetxService {
   Future<void> aadhaarOTPVerify() async {
     _otpLoadingState = true;
     update();
-
     var response = await kycRepository.aadhaarOTPVerify(
         _refNum.toString(), aadhaarNumberOTPController.text);
     if (response.statusCode == 200) {
@@ -512,19 +524,33 @@ class KycController extends GetxController implements GetxService {
         showCustomSnackBar("Aadhaar Verified Successful ", isError: false);
       } else {
         _aadhaarVerified = false;
-        aadhaarNumberOTPController.clear();
-        aadhaarNumberController.clear();
+        // aadhaarNumberOTPController.clear();
+        // aadhaarNumberController.clear();
         showCustomSnackBar(responseModel.data?.message);
       }
     } else {
       _aadhaarVerified = false;
-      aadhaarNumberOTPController.clear();
-      aadhaarNumberController.clear();
+      // aadhaarNumberOTPController.clear();
+      // aadhaarNumberController.clear();
       ApiChecker.checkApi(response);
     }
 
     _otpLoadingState = false;
     update();
+  }
+
+  Future<void> onTapWhatsapp() async {
+    try {
+      const whatsappUrl = "https://wa.me/919942737239";
+
+      if (await canLaunch(whatsappUrl)) {
+        await launch(whatsappUrl);
+      } else {
+        throw Exception("Could not launch $whatsappUrl");
+      }
+    } catch (e) {
+      showCustomSnackBar(e.toString());
+    }
   }
 
   Future<void> panVerify() async {
@@ -545,12 +571,12 @@ class KycController extends GetxController implements GetxService {
         showCustomSnackBar(responseModel.success?.message, isError: false);
       } else {
         _isPanVerified = false;
-        panNumberController.clear();
+        // panNumberController.clear();
         showCustomSnackBar(responseModel.success?.message);
       }
     } else {
       _isPanVerified = false;
-      panNumberController.clear();
+      // panNumberController.clear();
       ApiChecker.checkApi(response);
     }
 
@@ -619,8 +645,7 @@ class KycController extends GetxController implements GetxService {
 
     if (_userKYCData!.user!.kyc!.propertyTaxRecipt != null) {
       await fetchFile(
-        urlPath: _userKYCData!.user!.kyc!.propertyTaxRecipt
-            ??
+        urlPath: _userKYCData!.user!.kyc!.propertyTaxRecipt ??
             _userKYCData!.user!.kyc!.rentalAgreement!,
         onFileFetched: (file) => _pickedTaxReceipt = file,
       );
@@ -721,11 +746,11 @@ class KycController extends GetxController implements GetxService {
   }
 
   Future<void> bankVerify() async {
-    _loadingState = true;
+    _bankLoadingState = true;
     update();
     LoginResponse phone = await Get.find<AuthController>().userData();
-    var response = await kycRepository.bankVerify(
-        accountNumberController.text, ifscController.text,phone.user!.phoneNumber!);
+    var response = await kycRepository.bankVerify(accountNumberController.text,
+        ifscController.text, phone.user!.phoneNumber!);
     if (response.statusCode == 200) {
       BankVerifyModel responseModel = BankVerifyModel.fromJson(response.body);
       if (responseModel.success?.message ==
@@ -739,7 +764,7 @@ class KycController extends GetxController implements GetxService {
     } else {
       ApiChecker.checkApi(response);
     }
-    _loadingState = false;
+    _bankLoadingState = false;
     update();
   }
 
@@ -766,6 +791,7 @@ class KycController extends GetxController implements GetxService {
         await aadhaarOTPVerify();
       }
     }
+    update();
   }
 
   Future<void> onChangePan(String value) async {

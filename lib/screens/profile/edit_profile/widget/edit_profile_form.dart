@@ -36,6 +36,9 @@ class EditProfileForm extends StatelessWidget {
                       EditProfileTextField(
                         controller: controller.nameCon,
                         hintText: 'Enter Name',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                        ],
                       ),
                       const SizedBox(height: 5),
                       const CustomText(text: "Date of Birth"),
@@ -101,14 +104,24 @@ class EditProfileForm extends StatelessWidget {
                       EditProfileTextField(
                         controller: controller.cityCon,
                         hintText: 'Enter City',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+
+                        ],
                       ),
                       const SizedBox(height: 5),
                       const CustomText(text: "Pincode"),
                       EditProfileTextField(
                         keyboardType: TextInputType.number,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6)
                         ],
+                        onChanged: (String str){
+                          if(str.length == 6){
+                            FocusScope.of(context).unfocus();
+                          }
+                        },
                         controller: controller.pincodeCon,
                         hintText: 'Enter Pincode',
                       ),
@@ -117,18 +130,27 @@ class EditProfileForm extends StatelessWidget {
                       EditProfileTextField(
                         controller: controller.districtCon,
                         hintText: 'Enter District',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                        ],
                       ),
                       const SizedBox(height: 5),
                       const CustomText(text: "State"),
                       EditProfileTextField(
                         controller: controller.stateCon,
                         hintText: 'Enter State',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                        ],
                       ),
                       const SizedBox(height: 5),
                       const CustomText(text: "Country"),
                       EditProfileTextField(
                         controller: controller.countryCon,
                         hintText: 'Enter Country',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                        ],
                       ),
                       const SizedBox(height: 5),
                       controller.userData!.user!.kyc != null
@@ -182,7 +204,7 @@ class EditProfileForm extends StatelessWidget {
                           return CustomButton(
                             loading: controller.editProfileLoadingState,
                             onTap: () => controller.editProfile(),
-                            text: "Edit Profile",
+                            text: "Update Profile",
                           );
                         }),
                       ),

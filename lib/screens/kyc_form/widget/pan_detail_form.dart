@@ -77,6 +77,25 @@ class PanDetailForm extends StatelessWidget {
               ],
             ),
           ),
+          !kycController.isPanVerified &&
+                  kycController.panNumberController.text.length == 10 &&
+                  !kycController.panLoadingState
+              ? Align(
+                  alignment: Alignment.bottomRight,
+                  child: GestureDetector(
+                    onTap: () => kycController.panVerify(),
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 4.0),
+                      child: CustomText(
+                        text: "resend",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        color: MyTheme.mainColor,
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
           const SizedBox(
             height: 10,
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
+import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/aadhar_detail_form.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/broadband_detail_form.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/driving_license_detail_form.dart';
@@ -66,7 +67,6 @@ class AadhaarDetailCard extends StatelessWidget {
                     return CustomButton(
                       text: "Next",
                       onTap: () {
-
                         kycController.onTapAadhaarForm();
                       },
                     );
@@ -74,25 +74,27 @@ class AadhaarDetailCard extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: const TextSpan(
-
-                        children: [
-                          TextSpan(
-                            text:
-                                "If you are facing any difficulties please get in touch with us on ",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          TextSpan(
-                            text: "Whatsapp",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ],
+                  const CustomText(
+                    text: "If you are facing any difficulties please get in",
+                    color: Colors.grey,
+                    fontSize: 13,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CustomText(
+                        text: "touch with us on ",
+                        color: Colors.grey,
+                        fontSize: 13,
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () => Get.find<KycController>().onTapWhatsapp(),
+                        child: const CustomText(
+                          text: "Whatsapp",
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

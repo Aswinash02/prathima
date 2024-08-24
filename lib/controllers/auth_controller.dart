@@ -60,12 +60,14 @@ class AuthController extends GetxController implements GetxService {
       showCustomSnackBar("Enter Valid Email Id");
     } else if (number.isEmpty) {
       showCustomSnackBar("Enter Your Phone Number");
+    } else if (number.length < 10) {
+      showCustomSnackBar("Enter Valid Phone Number");
     } else if (password == "") {
       showCustomSnackBar("Enter Password");
-    } else if (confirmPassword == "") {
-      showCustomSnackBar("Enter Confirm Password");
     } else if (password.length < 8) {
       showCustomSnackBar("Password Length atleast greater than 8 characters");
+    } else if (confirmPassword == "") {
+      showCustomSnackBar("Enter Confirm Password");
     } else if (password != confirmPassword) {
       showCustomSnackBar("Password does not matched");
     } else {
@@ -147,6 +149,7 @@ class AuthController extends GetxController implements GetxService {
         showCustomSnackBar(responseBody["message"]);
       } else {
         print('otp ------- ${responseBody["OTP"]}');
+        showCustomSnackBar(responseBody["OTP"].toString(), isError: false);
         showCustomSnackBar(responseBody["message"], isError: false);
         Get.toNamed(RouteHelper.verificationOtp,
             arguments: {'signInWithPhone': true, 'phone': phone});
