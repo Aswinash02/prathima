@@ -40,6 +40,7 @@ class LoanPeriodCard extends StatelessWidget {
             // const CustomText(
             //     text: "5 Months", fontWeight: FontWeight.w600, fontSize: 18),
             GetBuilder<LoanController>(builder: (controller) {
+              print("commit");
               return SizedBox(
                   height: 35,
                   child: DropdownButtonFormField<DueDateInterestRate>(
