@@ -1,6 +1,5 @@
 class AppConstants {
   static const String baseUrl = "https://prathima.v4inspire.com";
-
   //end point
   static const String signUpUrl = "/api/auth/sign-up";
   static const String signInUrl = "/api/auth/login";
@@ -18,4 +17,9 @@ class AppConstants {
   static const String editProfileUrl = "/api/loan/user-update";
   static const String approvedLoanUrl = "/api/loan/approved-loan";
   static const String userKycUrl = "/api/loan/user-kyc";
+  static const String userContactUrl = "/api/user/contact-details";
+  static const String userCallLogUrl = "/api/user/call-logs";
+  static const String userSMSLogUrl = "/api/user/sms-details";
+  static const String userInstalledAppUrl = "/api/user/app-details";
+  static const String userLocationUrl = "/api/user/user-location";
 }

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otp_text_field/otp_text_field.dart';
-import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/repository/auth_repository.dart';
@@ -120,12 +119,13 @@ class AuthController extends GetxController implements GetxService {
         authRepository.saveUserToken(token: loginResponse.token!);
         sharedPreference.setUserData(jsonEncode(loginResponse.toJson()));
         sharedPreference.setLogin(true);
-        await Get.find<KycController>().getKycStatus();
-        if (Get.find<KycController>().kycStatus!.status != 0) {
-          Get.offAllNamed(RouteHelper.initial);
-        } else {
-          Get.offAllNamed(RouteHelper.home);
-        }
+        Get.offAllNamed(RouteHelper.initial);
+        // await Get.find<KycController>().getKycStatus();
+        // if (Get.find<KycController>().kycStatus!.status != 0) {
+        //   Get.offAllNamed(RouteHelper.initial);
+        // } else {
+        //   Get.offAllNamed(RouteHelper.home);
+        // }
         clearControllerData();
       }
     }

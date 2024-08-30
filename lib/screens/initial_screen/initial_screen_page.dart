@@ -42,7 +42,6 @@ class _InitialScreenState extends State<InitialScreen> {
   }
 
   Future<void> _checkLoginStatus() async {
-
     bool isLoggedIn = await SharedPreference().getLogin();
     if (isLoggedIn == true) {
       await Get.find<KycController>().getKycStatus();
@@ -66,12 +65,13 @@ class _InitialScreenState extends State<InitialScreen> {
             _checkLoginStatus();
             return const SplashScreen();
           } else if (_isLoggedIn == true) {
-            if (Get.find<KycController>().kycStatus != null &&
-                Get.find<KycController>().kycStatus!.status != 0) {
-              return const MainScreen();
-            } else {
-              return const HomeScreen();
-            }
+            return const MainScreen();
+            // if (Get.find<KycController>().kycStatus != null &&
+            //     Get.find<KycController>().kycStatus!.status != 0) {
+            //   return const MainScreen();
+            // } else {
+            //   return const HomeScreen();
+            // }
           } else {
             return const SignInScreen();
           }

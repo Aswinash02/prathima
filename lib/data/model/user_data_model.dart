@@ -300,7 +300,6 @@
 // //     firstName = json['first_name'];
 // //   }
 // // }
-import 'dart:convert';
 
 class UserDataModel {
   User? user;
@@ -342,10 +341,10 @@ class User {
   int? aadhaarVerified;
   Aadhaar? aadhaar;
   String? mailotp;
-  int? numberVerified;
+  String? numberVerified;
   int? mailVerified;
-  double? latitude;
-  double? longitude;
+  String? latitude;
+  String? longitude;
   Kyc? kyc;
 
   User(

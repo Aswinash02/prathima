@@ -76,12 +76,13 @@ class _AuthSuccessPageState extends State<AuthSuccessScreen> {
                       child: CustomButton(
                         text: "Continue",
                         onTap: () {
-                          if (Get.find<KycController>().kycStatus!.status !=
-                              0) {
-                            Get.offAllNamed(RouteHelper.initial);
-                          } else {
-                            Get.offAllNamed(RouteHelper.home);
-                          }
+                          Get.offAllNamed(RouteHelper.initial);
+                          // if (Get.find<KycController>().kycStatus!.status !=
+                          //     0) {
+                          //   Get.offAllNamed(RouteHelper.initial);
+                          // } else {
+                          //   Get.offAllNamed(RouteHelper.home);
+                          // }
                         },
                       ),
                     ),
