@@ -14,6 +14,10 @@ class ProfileRepository extends GetxService {
     return await apiClient.getData(AppConstants.userDataUrl);
   }
 
+  Future<Response> getPageData() async {
+    return await apiClient.getData(AppConstants.pageUrl);
+  }
+
   Future<Response> editProfile(Map<String, dynamic> body) async {
     return await apiClient.postData(AppConstants.editProfileUrl, body);
     // if (response.statusCode == 200) {

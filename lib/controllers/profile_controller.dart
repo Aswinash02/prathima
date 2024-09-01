@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/model/edit_profile_model.dart';
+import 'package:prathima_loan_app/data/model/profile_page_model.dart';
 import 'package:prathima_loan_app/data/model/user_data_model.dart';
 import 'package:prathima_loan_app/data/repository/profile_repository.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
@@ -20,6 +21,7 @@ class ProfileController extends GetxController implements GetxService {
   String? _selectedGender;
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
+  final List<PageData> _pageDataList = [];
 
   bool _editProfileLoadingState = false;
   final List<String> _genderType = ["male", "female", "transGender"];
@@ -38,6 +40,8 @@ class ProfileController extends GetxController implements GetxService {
   bool get editProfileLoadingState => _editProfileLoadingState;
 
   List<String> get genderType => _genderType;
+
+  List<PageData> get pageDataList => _pageDataList;
 
   String? get selectedGender => _selectedGender;
 
@@ -61,6 +65,20 @@ class ProfileController extends GetxController implements GetxService {
       districtCon.text = userData!.user!.district ?? '';
       stateCon.text = userData!.user!.state ?? '';
       countryCon.text = userData!.user!.country ?? '';
+    }
+    _loadingState = false;
+    update();
+  }
+
+  Future<void> getPageData() async {
+    _loadingState = true;
+    update();
+    var response = await profileRepository.getPageData();
+    if (response.statusCode == 200) {
+      ProfilePageModel data = ProfilePageModel.fromJson(response.body);
+      _pageDataList.addAll(data.data!);
+    } else {
+      ApiChecker.checkApi(response);
     }
     _loadingState = false;
     update();

@@ -4,7 +4,7 @@ import 'package:prathima_loan_app/screens/auth/otp_verification_page.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
 import 'package:prathima_loan_app/screens/auth/signup_screen.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
-import 'package:prathima_loan_app/screens/initial_screen/initial_screen_page.dart';
+import 'package:prathima_loan_app/screens/initial_screen.dart';
 import 'package:prathima_loan_app/screens/kyc_form/kyc_details_screen.dart';
 import 'package:prathima_loan_app/screens/loan/loan_detail/loan_details_screen.dart';
 import 'package:prathima_loan_app/screens/loan/loan_detail/personal_loan_detail_screen.dart';

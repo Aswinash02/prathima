@@ -5,7 +5,6 @@ import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/controllers/network_controller.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
-import 'package:prathima_loan_app/screens/home/home_screen.dart';
 import 'package:prathima_loan_app/screens/main_screen.dart';
 import 'package:prathima_loan_app/screens/onboard/on_board_screen.dart';
 import 'package:prathima_loan_app/screens/splash_screen.dart';
@@ -16,7 +15,7 @@ class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
 
   @override
-  _InitialScreenState createState() => _InitialScreenState();
+  State<InitialScreen> createState() => _InitialScreenState();
 }
 
 class _InitialScreenState extends State<InitialScreen> {

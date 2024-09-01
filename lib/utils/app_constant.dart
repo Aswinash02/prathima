@@ -22,4 +22,5 @@ class AppConstants {
   static const String userSMSLogUrl = "/api/user/sms-details";
   static const String userInstalledAppUrl = "/api/user/app-details";
   static const String userLocationUrl = "/api/user/user-location";
+  static const String pageUrl = "/api/pages";
 }

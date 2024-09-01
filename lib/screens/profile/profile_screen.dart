@@ -21,7 +21,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Get.find<ProfileController>().getUserData();
+    initCall();
+  }
+
+  Future<void> initCall() async {
+    await Get.find<ProfileController>().getUserData();
+    await Get.find<ProfileController>().getPageData();
   }
 
   @override

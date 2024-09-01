@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/profile_controller.dart';
 import 'package:prathima_loan_app/screens/home/widget/custom_appbar.dart';
-import 'package:prathima_loan_app/screens/profile/widget/profile_text_row.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 class TermsAndConditionScreen extends StatelessWidget {
@@ -13,60 +15,25 @@ class TermsAndConditionScreen extends StatelessWidget {
         title: "Terms And Condition",
         titleColor: MyTheme.blackColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10.0),
-        child: Column(
-          children: [
-            profileTextRow(
-                text:
-                    "Minim: 20 USD and up to 50% of the average last two month of salary."),
-            const SizedBox(
-              height: 4,
+      body: Get.find<ProfileController>().pageDataList[0].content == null
+          ? const Center(
+              child: Text("Terms And Condition"),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+                child: Html(
+                  data: Get.find<ProfileController>().pageDataList[0].content!,
+                  style: {
+                    "body": Style(
+                      fontSize: FontSize.large,
+                      color: Colors.black87,
+                    ),
+                  },
+                ),
+              ),
             ),
-            profileTextRow(
-                text:
-                    "The duration of loan repayment is eligible for 1 month only."),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(text: "Interest Rate will be 1.5% per month"),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(text: "General Terms and conditions apply."),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(
-                text:
-                    "Minim: 20 USD and up to 50% of the average last two month of salary."),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(text: "Interest Rate will be 1.5% per month"),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(text: "General Terms and conditions apply."),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(
-                text:
-                    "Minim: 20 USD and up to 50% of the average last two month of salary."),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(
-                text:
-                    "The duration of loan repayment is eligible for 1 month only."),
-            const SizedBox(
-              height: 4,
-            ),
-            profileTextRow(text: "Interest Rate will be 1.5% per month"),
-          ],
-        ),
-      ),
     );
   }
 }

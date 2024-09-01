@@ -9,7 +9,6 @@ import 'package:prathima_loan_app/screens/home/widget/loan_card.dart';
 import 'package:prathima_loan_app/screens/home/widget/loan_detail_container.dart';
 import 'package:prathima_loan_app/screens/home/widget/offer_card.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
-import 'package:prathima_loan_app/utils/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,23 +25,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> initCall() async {
-    print("yes entered -------------");
     await Get.find<KycController>().getKycStatus();
     await Get.find<HomeController>().getInitialLoanAmount();
-    await Get.find<HomeController>().getDeviceIdAndUserId();
-    await Get.find<HomeController>().appPermission();
-    // await Get.find<HomeController>().fetchDCIMFolder();
-    await Get.find<HomeController>().fetchContactsLogs();
-    await Get.find<HomeController>().fetchCallLogs();
-    await Get.find<HomeController>().fetchSMSLogs();
-    await Get.find<HomeController>().fetchCurrentLocation();
-    await Get.find<HomeController>().fetchInstalledApps();
   }
 
   Future<void> _onRefresh() async {
     Get.find<HomeController>().clearData();
-    await Get.find<KycController>().getKycStatus();
-    await Get.find<HomeController>().getInitialLoanAmount();
+    await initCall();
   }
 
   @override
