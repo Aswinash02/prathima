@@ -1,14 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
+import 'package:prathima_loan_app/data/model/phone_number_model.dart';
 import 'package:prathima_loan_app/data/repository/auth_repository.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/data/model/login_model.dart';
 import 'package:prathima_loan_app/data/model/signup_model.dart';
+import 'package:prathima_loan_app/screens/auth/widget/phone_number_dialog.dart';
 import 'package:prathima_loan_app/utils/shared_preferences.dart';
 
 class AuthController extends GetxController implements GetxService {
@@ -34,46 +37,51 @@ class AuthController extends GetxController implements GetxService {
 
   bool showPassword = false;
   bool showConfirmPassword = false;
-  bool _signInWithOTP = false;
+  bool _isDialogShown = false;
+
+  // bool _signInWithOTP = false;
   bool _loadingState = false;
   String? _otp;
 
-  bool get signInWithOTP => _signInWithOTP;
+  // bool get signInWithOTP => _signInWithOTP;
 
   bool get loadingState => _loadingState;
 
   String? get otp => _otp;
 
   void register() async {
-    String firstName = signUpNameCon.text;
-    String email = signUpEmailCon.text;
+    String name = signUpNameCon.text;
+    // String email = signUpEmailCon.text;
     String number = signUpPhoneCon.text;
-    String password = signUpPasswordCon.text;
-    String confirmPassword = signUpPasswordConfirmCon.text;
+    // String password = signUpPasswordCon.text;
+    // String confirmPassword = signUpPasswordConfirmCon.text;
 
-    if (firstName.isEmpty) {
+    if (name.isEmpty) {
       showCustomSnackBar("Enter Your Name");
-    } else if (email.isEmpty) {
-      showCustomSnackBar("Enter Your Email");
-    } else if (!GetUtils.isEmail(email)) {
-      showCustomSnackBar("Enter Valid Email Id");
-    } else if (number.isEmpty) {
+    }
+    // else if (email.isEmpty) {
+    //   showCustomSnackBar("Enter Your Email");
+    // } else if (!GetUtils.isEmail(email)) {
+    //   showCustomSnackBar("Enter Valid Email Id");
+    // }
+    else if (number.isEmpty) {
       showCustomSnackBar("Enter Your Phone Number");
     } else if (number.length < 10) {
       showCustomSnackBar("Enter Valid Phone Number");
-    } else if (password == "") {
-      showCustomSnackBar("Enter Password");
-    } else if (password.length < 8) {
-      showCustomSnackBar("Password Length atleast greater than 8 characters");
-    } else if (confirmPassword == "") {
-      showCustomSnackBar("Enter Confirm Password");
-    } else if (password != confirmPassword) {
-      showCustomSnackBar("Password does not matched");
-    } else {
+    }
+    // else if (password == "") {
+    //   showCustomSnackBar("Enter Password");
+    // } else if (password.length < 8) {
+    //   showCustomSnackBar("Password Length atleast greater than 8 characters");
+    // } else if (confirmPassword == "") {
+    //   showCustomSnackBar("Enter Confirm Password");
+    // } else if (password != confirmPassword) {
+    //   showCustomSnackBar("Password does not matched");
+    // }
+    else {
       _loadingState = true;
       update();
-      var response = await authRepository.getSignupResponse(
-          firstName, email, number, password, confirmPassword);
+      var response = await authRepository.getSignupResponse(name, number);
       SignupResponse signupResponse = SignupResponse.fromJson(response.body);
       if (response.statusCode == 201) {
         showCustomSnackBar(signupResponse.message, isError: false);
@@ -88,6 +96,37 @@ class AuthController extends GetxController implements GetxService {
       }
     }
     _loadingState = false;
+    update();
+  }
+
+  static const platform = MethodChannel('com.example.siminfo');
+
+  Future<void> getSimInfo() async {
+    if (_isDialogShown) return;
+
+    try {
+      final List<dynamic>? result = await platform.invokeMethod<List<dynamic>>('getSimInfo');
+      if (result != null) {
+        PhoneNumberModel data = PhoneNumberModel.fromJson(result);
+        if (data.data!.isNotEmpty) {
+          if(data.data!.length == 1 && data.data!.first.phoneNumber != null){
+            _isDialogShown = true;
+             showPhoneNumberDialog(data);
+          }else{
+            _isDialogShown = true;
+            showPhoneNumberDialog(data);
+          }
+        }
+      }
+    } on PlatformException catch (_) {}
+  }
+
+  void changeDialogStatus(){
+    _isDialogShown = false;
+  }
+
+  void onSelectPhoneNumber(String phoneNumber) {
+    signInPhoneCon.text = phoneNumber;
     update();
   }
 
@@ -136,9 +175,9 @@ class AuthController extends GetxController implements GetxService {
   Future<void> sendOtp() async {
     Get.focusScope?.unfocus();
     String phone = signInPhoneCon.text;
-    if (signInWithOTP == true && phone == "") {
+    if (phone == "") {
       showCustomSnackBar("Enter Phone Number");
-    } else if (signInWithOTP == true && phone.length < 10) {
+    } else if (phone.length < 10) {
       showCustomSnackBar("Invalid Phone Number");
     } else {
       _loadingState = true;
@@ -208,10 +247,10 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  void onChangeSignInMethod() {
-    _signInWithOTP = !_signInWithOTP;
-    update();
-  }
+  // void onChangeSignInMethod() {
+  //   _signInWithOTP = !_signInWithOTP;
+  //   update();
+  // }
 
   Future<void> clearUserData() async {
     await sharedPreference.setLogin(false);

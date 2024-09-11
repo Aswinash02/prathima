@@ -25,7 +25,8 @@ class PanDetailForm extends StatelessWidget {
             height: 20,
           ),
           const CustomText(
-            text: "Please upload your PAN card below for completing your  KYC.",
+            text:
+                "Please verify your Pan Number And upload your PAN card below for completing your  KYC.",
             fontSize: 13,
             fontWeight: FontWeight.w500,
             maxLines: 3,
@@ -99,13 +100,15 @@ class PanDetailForm extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          DocUploadContainer(
-            textString: 'Upload PAN card Front photo',
-            selectedFile: kycController.pickedPanCard,
-            onTap: () {
-              kycController.pickFiles(PickedFile.panCard);
-            },
-          ),
+          kycController.isPanVerified
+              ? DocUploadContainer(
+                  textString: 'Upload PAN card Front photo',
+                  selectedFile: kycController.pickedPanCard,
+                  onTap: () {
+                    kycController.pickFiles(PickedFile.panCard);
+                  },
+                )
+              : const SizedBox(),
         ],
       );
     });

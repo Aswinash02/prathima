@@ -19,6 +19,7 @@ import 'package:prathima_loan_app/screens/main_screen.dart';
 import 'package:prathima_loan_app/screens/no_internet_screen.dart';
 import 'package:prathima_loan_app/screens/profile/about_us_screen.dart';
 import 'package:prathima_loan_app/screens/profile/edit_profile/edit_profile_screen.dart';
+import 'package:prathima_loan_app/screens/profile/kyc_details/kyc_details_screen.dart';
 import 'package:prathima_loan_app/screens/profile/loan_history.dart';
 import 'package:prathima_loan_app/screens/profile/privacy_policy_screen.dart';
 import 'package:prathima_loan_app/screens/profile/terms_and_condition_screen.dart';
@@ -34,7 +35,7 @@ class RouteHelper {
   static const String authSuccessScreen = '/authSuccessScreen';
   static const String verificationOtp = '/verificationOtp';
   static const String home = '/home';
-  static const String kycDetail = '/kycDetail';
+  static const String kycVerificationScreen = '/kycVerificationScreen';
   static const String loanDetailsForm = '/loanDetailsForm';
   static const String loanApprovedScreen = '/loanApprovedScreen';
   static const String loanAgreementScreen = '/loanAgreementScreen';
@@ -54,6 +55,7 @@ class RouteHelper {
   static const String contactUsScreenScreen = '/contactUsScreenScreen';
   static const String preClosingLoanAmountScreen =
       '/preClosingLoanAmountScreen';
+  static const String kycDetailsScreen = '/kycDetailsScreen';
 
   static String getCreditOrDebitCardFormRoute(String cardType) {
     return '$creditOrDebitCardForm?cardType=$cardType';
@@ -96,8 +98,8 @@ class RouteHelper {
       transition: Transition.rightToLeft,
     ),
     GetPage(
-      name: kycDetail,
-      page: () => const KycDetailScreen(),
+      name: kycVerificationScreen,
+      page: () => const KycVerificationScreen(),
       transition: Transition.rightToLeft,
     ),
     GetPage(
@@ -159,10 +161,7 @@ class RouteHelper {
       page: () => const NoInternetScreen(),
       transition: Transition.rightToLeft,
     ),
-    GetPage(
-      name: splashScreen,
-      page: () => const SplashScreen()
-    ),
+    GetPage(name: splashScreen, page: () => const SplashScreen()),
     GetPage(
       name: personalLoanDetailScreen,
       page: () => const PersonalLoanDetailScreen(),
@@ -189,6 +188,11 @@ class RouteHelper {
     GetPage(
       name: editProfileScreen,
       page: () => const EditProfileScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: kycDetailsScreen,
+      page: () => const KYCDetailsScreen(),
       transition: Transition.rightToLeft,
     ),
   ];

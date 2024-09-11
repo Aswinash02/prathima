@@ -15,25 +15,25 @@ class LoanScreen extends StatelessWidget {
         titleColor: MyTheme.blackColor,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          children: [
-            toggleSwitch(),
-            SizedBox(height: 15,),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: LoanCard(),
-                    );
-                  }),
-            ),
-          ],
-        ),
-      ),
+      // body: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      //   child: Column(
+      //     children: [
+      //       toggleSwitch(),
+      //       SizedBox(height: 15,),
+      //       Expanded(
+      //         child: ListView.builder(
+      //             itemCount: 4,
+      //             itemBuilder: (context, index) {
+      //               return Padding(
+      //                 padding: const EdgeInsets.only(bottom: 10.0),
+      //                 child: LoanCard(),
+      //               );
+      //             }),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

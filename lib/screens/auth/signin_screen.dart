@@ -5,7 +5,9 @@ import 'package:prathima_loan_app/controllers/auth_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/input_decorations.dart';
+import 'package:prathima_loan_app/data/model/phone_number_model.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
+import 'package:prathima_loan_app/screens/auth/widget/phone_number_dialog.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -16,6 +18,18 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initCall();
+  }
+
+  Future<void> initCall() async {
+    await Get.find<AuthController>().getSimInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,166 +72,208 @@ class _SignInScreenState extends State<SignInScreen> {
                     //     ],
                     //   ),
                     // ),
-                    controller.signInWithOTP
-                        ? Wrap(
-                            children: [
-                              const Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.only(bottom: 4.0, top: 40),
-                                    child: Text(
-                                      "Phone Number",
-                                      style: TextStyle(
-                                          color: MyTheme.mainColor,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                ],
+                    Wrap(
+                      children: [
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 4.0, top: 40),
+                              child: Text(
+                                "Phone Number",
+                                style: TextStyle(
+                                    color: MyTheme.mainColor,
+                                    fontWeight: FontWeight.w600),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: SizedBox(
-                                  height: 36,
-                                  child: TextField(
-                                    controller: controller.signInPhoneCon,
-                                    autofocus: false,
-                                    onChanged: (String str) {
-                                      if (str.length == 10) {
-                                        FocusScope.of(context).unfocus();
-                                      }
-                                    },
-                                    keyboardType: TextInputType.number,
-                                    decoration:
-                                        InputDecorations.buildInputDecoration_1(
-                                            hint_text: "Enter Phone Number"),
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(10),
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Wrap(
-                            children: [
-                              const Row(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.only(bottom: 4.0, top: 40),
-                                    child: Text(
-                                      "Mail Id",
-                                      style: TextStyle(
-                                          color: MyTheme.mainColor,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: SizedBox(
-                                  height: 36,
-                                  child: TextField(
-                                    controller: controller.signInEmailCon,
-                                    autofocus: false,
-                                    decoration:
-                                        InputDecorations.buildInputDecoration_1(
-                                            hint_text: "Enter Email"),
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'[a-zA-Z0-9@._-]')),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 4.0),
-                                    child: Text(
-                                      "Password",
-                                      style: TextStyle(
-                                          color: MyTheme.mainColor,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    SizedBox(
-                                      height: 36,
-                                      child: TextField(
-                                        controller:
-                                            controller.signInPasswordCon,
-                                        autofocus: false,
-                                        obscureText: !controller.showPassword,
-                                        enableSuggestions: false,
-                                        autocorrect: false,
-                                        decoration: InputDecorations
-                                                .buildInputDecoration_1(
-                                                    hint_text:
-                                                        "• • • • • • • •")
-                                            .copyWith(
-                                                suffixIcon: InkWell(
-                                          onTap: () {
-                                            controller.showPassword =
-                                                !controller.showPassword;
-                                            setState(() {});
-                                          },
-                                          child: Icon(
-                                            controller.showPassword
-                                                ? Icons.visibility_off_outlined
-                                                : Icons.visibility_outlined,
-                                            color: MyTheme.mainColor,
-                                            size: 15,
-                                          ),
-                                        )),
-                                      ),
-                                    ),
-                                    const Text(
-                                      "Password Must Contain atleast 8 Characters",
-                                      style: TextStyle(
-                                          color: MyTheme.textfield_grey,
-                                          fontStyle: FontStyle.italic),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SizedBox(
+                            height: 36,
+                            child: TextField(
+                              controller: controller.signInPhoneCon,
+                              autofocus: false,
+                              onChanged: (String str) {
+                                if (str.length == 10) {
+                                  FocusScope.of(context).unfocus();
+                                }
+                              },
+                              keyboardType: TextInputType.number,
+                              decoration:
+                                  InputDecorations.buildInputDecoration_1(
+                                      hint_text: "Enter Phone Number"),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(10),
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                            ),
                           ),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () {
-                            controller.onChangeSignInMethod();
-                          },
-                          child: CustomText(
-                            text: controller.signInWithOTP
-                                ? "SignIn With Email"
-                                : "SignIn With OTP",
-                            color: MyTheme.mainColor,
-                          ),
-                        )),
+                        ),
+                      ],
+                    ),
+                    // controller.signInWithOTP
+                    //     ? Wrap(
+                    //         children: [
+                    //           const Row(
+                    //             children: [
+                    //               Padding(
+                    //                 padding:
+                    //                     EdgeInsets.only(bottom: 4.0, top: 40),
+                    //                 child: Text(
+                    //                   "Phone Number",
+                    //                   style: TextStyle(
+                    //                       color: MyTheme.mainColor,
+                    //                       fontWeight: FontWeight.w600),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //           Padding(
+                    //             padding: const EdgeInsets.only(bottom: 8.0),
+                    //             child: SizedBox(
+                    //               height: 36,
+                    //               child: TextField(
+                    //                 controller: controller.signInPhoneCon,
+                    //                 autofocus: false,
+                    //                 onChanged: (String str) {
+                    //                   if (str.length == 10) {
+                    //                     FocusScope.of(context).unfocus();
+                    //                   }
+                    //                 },
+                    //                 keyboardType: TextInputType.number,
+                    //                 decoration:
+                    //                     InputDecorations.buildInputDecoration_1(
+                    //                         hint_text: "Enter Phone Number"),
+                    //                 inputFormatters: [
+                    //                   LengthLimitingTextInputFormatter(10),
+                    //                   FilteringTextInputFormatter.digitsOnly,
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       )
+                    //     : Wrap(
+                    //         children: [
+                    //           const Row(
+                    //             children: [
+                    //               Padding(
+                    //                 padding:
+                    //                     EdgeInsets.only(bottom: 4.0, top: 40),
+                    //                 child: Text(
+                    //                   "Mail Id",
+                    //                   style: TextStyle(
+                    //                       color: MyTheme.mainColor,
+                    //                       fontWeight: FontWeight.w600),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //           Padding(
+                    //             padding: const EdgeInsets.only(bottom: 8.0),
+                    //             child: SizedBox(
+                    //               height: 36,
+                    //               child: TextField(
+                    //                 controller: controller.signInEmailCon,
+                    //                 autofocus: false,
+                    //                 decoration:
+                    //                     InputDecorations.buildInputDecoration_1(
+                    //                         hint_text: "Enter Email"),
+                    //                 inputFormatters: [
+                    //                   FilteringTextInputFormatter.allow(
+                    //                       RegExp(r'[a-zA-Z0-9@._-]')),
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           const Row(
+                    //             children: [
+                    //               Padding(
+                    //                 padding: EdgeInsets.only(bottom: 4.0),
+                    //                 child: Text(
+                    //                   "Password",
+                    //                   style: TextStyle(
+                    //                       color: MyTheme.mainColor,
+                    //                       fontWeight: FontWeight.w600),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //           Padding(
+                    //             padding: const EdgeInsets.only(bottom: 8.0),
+                    //             child: Column(
+                    //               crossAxisAlignment: CrossAxisAlignment.end,
+                    //               children: [
+                    //                 SizedBox(
+                    //                   height: 36,
+                    //                   child: TextField(
+                    //                     controller:
+                    //                         controller.signInPasswordCon,
+                    //                     autofocus: false,
+                    //                     obscureText: !controller.showPassword,
+                    //                     enableSuggestions: false,
+                    //                     autocorrect: false,
+                    //                     decoration: InputDecorations
+                    //                             .buildInputDecoration_1(
+                    //                                 hint_text:
+                    //                                     "• • • • • • • •")
+                    //                         .copyWith(
+                    //                             suffixIcon: InkWell(
+                    //                       onTap: () {
+                    //                         controller.showPassword =
+                    //                             !controller.showPassword;
+                    //                         setState(() {});
+                    //                       },
+                    //                       child: Icon(
+                    //                         controller.showPassword
+                    //                             ? Icons.visibility_off_outlined
+                    //                             : Icons.visibility_outlined,
+                    //                         color: MyTheme.mainColor,
+                    //                         size: 15,
+                    //                       ),
+                    //                     )),
+                    //                   ),
+                    //                 ),
+                    //                 const Text(
+                    //                   "Password Must Contain atleast 8 Characters",
+                    //                   style: TextStyle(
+                    //                       color: MyTheme.textfield_grey,
+                    //                       fontStyle: FontStyle.italic),
+                    //                 )
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    // Align(
+                    //     alignment: Alignment.centerRight,
+                    //     child: GestureDetector(
+                    //       onTap: () {
+                    //         controller.onChangeSignInMethod();
+                    //       },
+                    //       child: CustomText(
+                    //         text: controller.signInWithOTP
+                    //             ? "SignIn With Email"
+                    //             : "SignIn With OTP",
+                    //         color: MyTheme.mainColor,
+                    //       ),
+                    //     )),
                     const SizedBox(
                       height: 20,
                     ),
                     GetBuilder<AuthController>(builder: (controller) {
                       return CustomButton(
-                        text: controller.signInWithOTP ? "Send OTP" : "Sign In",
+                        // text: controller.signInWithOTP ? "Send OTP" : "Sign In",
+                        text: "Send OTP",
                         loading: controller.loadingState,
                         onTap: () {
-                          if (controller.signInWithOTP) {
-                            controller.sendOtp();
-                          } else {
-                            controller.login();
-                          }
+                          controller.sendOtp();
+                          // if (controller.signInWithOTP) {
+                          //   controller.sendOtp();
+                          // } else {
+                          //   controller.login();
+                          // }
                         },
                       );
                     }),

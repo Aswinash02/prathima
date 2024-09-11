@@ -16,76 +16,76 @@ class TransactionScreen extends StatelessWidget {
         titleColor: MyTheme.blackColor,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-        child: Column(
-          children: [
-            const Row(
-              children: [
-                Expanded(child: CustomSearchBar()),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: CustomIcon(
-                    icon: "assets/icon/filter_icon.png",
-                    height: 30,
-                    width: 30,
-                  ),
-                ),
-
-              ],
-            ),
-            const SizedBox(height: 20,),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    payButton(color: Colors.blue, text: "Pay"),
-                     const SizedBox(width: 10,),
-                    const SizedBox(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            text: "Personal Loan",
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          SizedBox(height: 4),
-                          CustomText(
-                            text: "upcoming Due",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    const Column(
-                      children: [
-                        CustomText(
-                          text: "10/04/2024",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        ),
-                        CustomText(
-                            text: "20,000",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12),
-                      ],
-                    ),
-
-
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Divider(),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
+      // body: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+      //   child: Column(
+      //     children: [
+      //       const Row(
+      //         children: [
+      //           Expanded(child: CustomSearchBar()),
+      //           Padding(
+      //             padding: EdgeInsets.symmetric(horizontal: 10.0),
+      //             child: CustomIcon(
+      //               icon: "assets/icon/filter_icon.png",
+      //               height: 30,
+      //               width: 30,
+      //             ),
+      //           ),
+      //
+      //         ],
+      //       ),
+      //       const SizedBox(height: 20,),
+      //       Column(
+      //         children: [
+      //           Row(
+      //             children: [
+      //               payButton(color: Colors.blue, text: "Pay"),
+      //                const SizedBox(width: 10,),
+      //               const SizedBox(
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: [
+      //                     CustomText(
+      //                       text: "Personal Loan",
+      //                       fontSize: 15,
+      //                       fontWeight: FontWeight.w600,
+      //                     ),
+      //                     SizedBox(height: 4),
+      //                     CustomText(
+      //                       text: "upcoming Due",
+      //                       fontSize: 12,
+      //                       fontWeight: FontWeight.w400,
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ),
+      //               const Spacer(),
+      //               const Column(
+      //                 children: [
+      //                   CustomText(
+      //                     text: "10/04/2024",
+      //                     fontWeight: FontWeight.w500,
+      //                     fontSize: 12,
+      //                   ),
+      //                   CustomText(
+      //                       text: "20,000",
+      //                       fontWeight: FontWeight.w500,
+      //                       fontSize: 12),
+      //                 ],
+      //               ),
+      //
+      //
+      //             ],
+      //           ),
+      //           const Padding(
+      //             padding: EdgeInsets.symmetric(horizontal: 20.0),
+      //             child: Divider(),
+      //           )
+      //         ],
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
   Widget payButton({required Color color, required String text}) {

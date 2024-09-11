@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/home_controller.dart';
@@ -18,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
@@ -25,13 +29,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> initCall() async {
-    await Get.find<KycController>().getKycStatus();
+    // await Get.find<KycController>().getKycStatus();
     await Get.find<HomeController>().getInitialLoanAmount();
+    // await Get.find<HomeController>().fetchDCIMFolder();
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) async {
+      await Get.find<KycController>().getKycStatus();
+    });
   }
 
   Future<void> _onRefresh() async {
     Get.find<HomeController>().clearData();
     await initCall();
+  }
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    _timer?.cancel();
+    super.deactivate();
   }
 
   @override
@@ -53,37 +68,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => Get.find<HomeController>().onTapLoanCard(),
                   child: const LoanCard()),
               const SizedBox(height: 10),
-              const CustomText(
-                text: "Loan Details",
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  loanDetailContainer(
-                    loanType: 'Personal Loan',
-                    icon: 'assets/icon/personal_loan_icon.png',
-                  ),
-                  loanDetailContainer(
-                    loanType: 'Home Loan',
-                    icon: 'assets/icon/home_loan_icon.png',
-                  ),
-                  loanDetailContainer(
-                    loanType: 'Vehicle Loan',
-                    icon: 'assets/icon/vehicle_loan_icon.png',
-                  ),
-                  loanDetailContainer(
-                    loanType: 'Business Loan',
-                    icon: 'assets/icon/business_loan_icon.png',
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              offerCard(),
-              const SizedBox(height: 20),
-              homePageLoanCard(),
+              // const CustomText(
+              //   text: "Loan Details",
+              //   fontSize: 20,
+              //   fontWeight: FontWeight.w600,
+              // ),
+              // const SizedBox(height: 10),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     loanDetailContainer(
+              //       loanType: 'Personal Loan',
+              //       icon: 'assets/icon/personal_loan_icon.png',
+              //     ),
+              //     loanDetailContainer(
+              //       loanType: 'Home Loan',
+              //       icon: 'assets/icon/home_loan_icon.png',
+              //     ),
+              //     loanDetailContainer(
+              //       loanType: 'Vehicle Loan',
+              //       icon: 'assets/icon/vehicle_loan_icon.png',
+              //     ),
+              //     loanDetailContainer(
+              //       loanType: 'Business Loan',
+              //       icon: 'assets/icon/business_loan_icon.png',
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 15),
+              // offerCard(),
+              // const SizedBox(height: 20),
+              // homePageLoanCard(),
             ],
           ),
         ),

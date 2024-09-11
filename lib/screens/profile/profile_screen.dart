@@ -58,6 +58,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                       ),
                       ProfileOption(
+                        option: "KYC Details",
+                        icon: "assets/icon/contact_us_icon.png",
+                        onTap: () {
+                          Get.toNamed(RouteHelper.kycDetailsScreen);
+                        },
+                      ),
+                      ProfileOption(
                         option: "About Us",
                         icon: "assets/icon/about_us_icon.png",
                         onTap: () {
@@ -80,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       ProfileOption(
                         option: "Contact Us",
-                        icon: "assets/icon/contact_us_icon.png",
+                        icon: "assets/icon/kyc_details.png",
                         onTap: () {
                           Get.toNamed(RouteHelper.contactUsScreenScreen);
                         },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/home_controller.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
@@ -54,20 +55,35 @@ class LoanCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 6),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
-              child: const CustomText(
-                text: 'Get Now',
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 6),
+                  decoration: BoxDecoration(
+                      color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                  child: const CustomText(
+                    text: 'Get Now',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+
+                ),
               ),
-            ),
+              GetBuilder<KycController>(
+                builder: (controller) {
+                  return CustomText(
+                    text: controller.kycText ?? '',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: MyTheme.white,
+                  );
+                }
+              ),
+            ],
           ),
-          const SizedBox(height: 15,),
+          const SizedBox(height: 15),
         ],
       ),
     );

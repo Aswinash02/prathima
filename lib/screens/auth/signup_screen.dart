@@ -114,37 +114,37 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                         ),
-                        const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 4.0, top: 4.0),
-                              child: Text(
-                                "Mail Id",
-                                style: TextStyle(
-                                    color: MyTheme.mainColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: SizedBox(
-                            height: 36,
-                            child: TextField(
-                              controller: authController.signUpEmailCon,
-                              autofocus: false,
-                              decoration:
-                                  InputDecorations.buildInputDecoration_1(
-                                      hint_text: "Enter Email"),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'[a-zA-Z0-9@._-]')),
-                                // Allow letters, digits, '@', '.', '_', and '-'
-                              ],
-                            ),
-                          ),
-                        ),
+                        // const Row(
+                        //   children: [
+                        //     Padding(
+                        //       padding: EdgeInsets.only(bottom: 4.0, top: 4.0),
+                        //       child: Text(
+                        //         "Mail Id",
+                        //         style: TextStyle(
+                        //             color: MyTheme.mainColor,
+                        //             fontWeight: FontWeight.w600),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(bottom: 8.0),
+                        //   child: SizedBox(
+                        //     height: 36,
+                        //     child: TextField(
+                        //       controller: authController.signUpEmailCon,
+                        //       autofocus: false,
+                        //       decoration:
+                        //           InputDecorations.buildInputDecoration_1(
+                        //               hint_text: "Enter Email"),
+                        //       inputFormatters: [
+                        //         FilteringTextInputFormatter.allow(
+                        //             RegExp(r'[a-zA-Z0-9@._-]')),
+                        //         // Allow letters, digits, '@', '.', '_', and '-'
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         const Row(
                           children: [
                             Padding(
@@ -177,106 +177,106 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                         ),
-                        const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 4.0),
-                              child: Text(
-                                "Password",
-                                style: TextStyle(
-                                    color: MyTheme.mainColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                height: 36,
-                                child: TextField(
-                                  controller: authController.signUpPasswordCon,
-                                  autofocus: false,
-                                  obscureText: !authController.showPassword,
-                                  enableSuggestions: false,
-                                  autocorrect: false,
-                                  decoration:
-                                      InputDecorations.buildInputDecoration_1(
-                                              hint_text: "• • • • • • • •")
-                                          .copyWith(
-                                              suffixIcon: InkWell(
-                                    onTap: () {
-                                      authController.showPassword =
-                                          !authController.showPassword;
-                                      setState(() {});
-                                    },
-                                    child: Icon(
-                                      authController.showPassword
-                                          ? Icons.visibility_off_outlined
-                                          : Icons.visibility_outlined,
-                                      color: MyTheme.mainColor,
-                                      size: 15,
-                                    ),
-                                  )),
-                                ),
-                              ),
-                              const Text(
-                                "Password Must Contain atleast 8 Characters",
-                                style: TextStyle(
-                                    color: MyTheme.textfield_grey,
-                                    fontStyle: FontStyle.italic),
-                              )
-                            ],
-                          ),
-                        ),
-                        const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 4.0),
-                              child: Text(
-                                "Confirm Password",
-                                style: TextStyle(
-                                    color: MyTheme.mainColor,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: SizedBox(
-                            height: 36,
-                            child: TextField(
-                              controller:
-                                  authController.signUpPasswordConfirmCon,
-                              autofocus: false,
-                              obscureText: !authController.showConfirmPassword,
-                              enableSuggestions: false,
-                              autocorrect: false,
-                              decoration:
-                                  InputDecorations.buildInputDecoration_1(
-                                          hint_text: "• • • • • • • •")
-                                      .copyWith(
-                                          suffixIcon: InkWell(
-                                onTap: () {
-                                  authController.showConfirmPassword =
-                                      !authController.showConfirmPassword;
-                                  setState(() {});
-                                },
-                                child: Icon(
-                                  authController.showConfirmPassword
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined,
-                                  color: MyTheme.mainColor,
-                                  size: 15,
-                                ),
-                              )),
-                            ),
-                          ),
-                        ),
+                        // const Row(
+                        //   children: [
+                        //     Padding(
+                        //       padding: EdgeInsets.only(bottom: 4.0),
+                        //       child: Text(
+                        //         "Password",
+                        //         style: TextStyle(
+                        //             color: MyTheme.mainColor,
+                        //             fontWeight: FontWeight.w600),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(bottom: 8.0),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.end,
+                        //     children: [
+                        //       SizedBox(
+                        //         height: 36,
+                        //         child: TextField(
+                        //           controller: authController.signUpPasswordCon,
+                        //           autofocus: false,
+                        //           obscureText: !authController.showPassword,
+                        //           enableSuggestions: false,
+                        //           autocorrect: false,
+                        //           decoration:
+                        //               InputDecorations.buildInputDecoration_1(
+                        //                       hint_text: "• • • • • • • •")
+                        //                   .copyWith(
+                        //                       suffixIcon: InkWell(
+                        //             onTap: () {
+                        //               authController.showPassword =
+                        //                   !authController.showPassword;
+                        //               setState(() {});
+                        //             },
+                        //             child: Icon(
+                        //               authController.showPassword
+                        //                   ? Icons.visibility_off_outlined
+                        //                   : Icons.visibility_outlined,
+                        //               color: MyTheme.mainColor,
+                        //               size: 15,
+                        //             ),
+                        //           )),
+                        //         ),
+                        //       ),
+                        //       const Text(
+                        //         "Password Must Contain atleast 8 Characters",
+                        //         style: TextStyle(
+                        //             color: MyTheme.textfield_grey,
+                        //             fontStyle: FontStyle.italic),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                        // const Row(
+                        //   children: [
+                        //     Padding(
+                        //       padding: EdgeInsets.only(bottom: 4.0),
+                        //       child: Text(
+                        //         "Confirm Password",
+                        //         style: TextStyle(
+                        //             color: MyTheme.mainColor,
+                        //             fontWeight: FontWeight.w600),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(bottom: 8.0),
+                        //   child: SizedBox(
+                        //     height: 36,
+                        //     child: TextField(
+                        //       controller:
+                        //           authController.signUpPasswordConfirmCon,
+                        //       autofocus: false,
+                        //       obscureText: !authController.showConfirmPassword,
+                        //       enableSuggestions: false,
+                        //       autocorrect: false,
+                        //       decoration:
+                        //           InputDecorations.buildInputDecoration_1(
+                        //                   hint_text: "• • • • • • • •")
+                        //               .copyWith(
+                        //                   suffixIcon: InkWell(
+                        //         onTap: () {
+                        //           authController.showConfirmPassword =
+                        //               !authController.showConfirmPassword;
+                        //           setState(() {});
+                        //         },
+                        //         child: Icon(
+                        //           authController.showConfirmPassword
+                        //               ? Icons.visibility_off_outlined
+                        //               : Icons.visibility_outlined,
+                        //           color: MyTheme.mainColor,
+                        //           size: 15,
+                        //         ),
+                        //       )),
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 20,
                         ),

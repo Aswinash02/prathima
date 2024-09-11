@@ -79,8 +79,8 @@ class BankDetailForm extends StatelessWidget {
           kycController.bankVerified
               ? const SizedBox()
               : Column(
-                children: [
-                  Align(
+                  children: [
+                    Align(
                       alignment: Alignment.bottomRight,
                       child: GestureDetector(
                         onTap: () async {
@@ -94,9 +94,11 @@ class BankDetailForm extends StatelessWidget {
                         ),
                       ),
                     ),
-                  const SizedBox(height: 350,)
-                ],
-              ),
+                    const SizedBox(
+                      height: 350,
+                    )
+                  ],
+                ),
           kycController.bankVerified
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,12 +141,22 @@ class BankDetailForm extends StatelessWidget {
                       },
                     ),
                     const SizedBox(
+                      height: 10,
+                    ),
+                    const CustomText(
+                      text: "The amount of Rs. 1500 in processing fees. "
+                          "If the loan is granted, the money will be returned.",
+                      maxLines: 4,
+                    ),
+                    const SizedBox(
                       height: 20,
                     ),
                     GetBuilder<KycController>(builder: (controller) {
                       return Center(
                           child: CustomButton(
-                        text: controller.isUpdateKyc ? "Update" : "Submit",
+                        text: controller.isUpdateKyc
+                            ? "Update"
+                            : "PayNow & Submit",
                         loading: controller.kycLoadingState,
                         onTap: controller.kycLoadingState
                             ? null
@@ -152,7 +164,8 @@ class BankDetailForm extends StatelessWidget {
                                 if (controller.isUpdateKyc) {
                                   kycController.onSubmitUpdateKycForm();
                                 } else {
-                                  kycController.onSubmitKycForm();
+                                  kycController.payNowAndSubmit();
+                                  // kycController.onSubmitKycForm();
                                 }
                               },
                       ));

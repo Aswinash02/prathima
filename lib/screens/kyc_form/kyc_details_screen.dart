@@ -15,14 +15,14 @@ import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/shimmer/kyc_shimmer.dart';
 import 'package:prathima_loan_app/utils/ui_widget.dart';
 
-class KycDetailScreen extends StatefulWidget {
-  const KycDetailScreen({super.key});
+class KycVerificationScreen extends StatefulWidget {
+  const KycVerificationScreen({super.key});
 
   @override
-  State<KycDetailScreen> createState() => _KycDetailScreenState();
+  State<KycVerificationScreen> createState() => _KycVerificationScreenState();
 }
 
-class _KycDetailScreenState extends State<KycDetailScreen> {
+class _KycVerificationScreenState extends State<KycVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +48,7 @@ class _KycDetailScreenState extends State<KycDetailScreen> {
           ),
           GetBuilder<KycController>(builder: (controller) {
             return controller.kycDataLoadingState ||
-                controller.setAmount == false
+                    controller.setAmount == false
                 ? const SizedBox()
                 : controller.kycStatus?.status == 0 ||
                         (controller.kycStatus?.status == 2 &&

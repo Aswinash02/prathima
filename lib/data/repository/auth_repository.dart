@@ -15,17 +15,17 @@ class AuthRepository extends GetxService {
 
   Future<Response> getSignupResponse(
     String name,
-    String email,
+    // String email,
     String phone,
-    String password,
-    String confirmPassword,
+    // String password,
+    // String confirmPassword,
   ) async {
     var postBody = {
       "name": name,
-      "email": email,
+      // "email": email,
       "phone_number": phone,
-      "password": password,
-      "password_confirmation": confirmPassword,
+      // "password": password,
+      // "password_confirmation": confirmPassword,
     };
     print('postBody ======== ${postBody}');
     return await apiClient.postData(
@@ -35,7 +35,6 @@ class AuthRepository extends GetxService {
         "Content-Type": "application/json",
       },
     );
-    // return SignupResponse.fromJson(response.body);
   }
 
   Future<LoginResponse> getLoginResponse(String email, String password) async {

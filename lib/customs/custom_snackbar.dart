@@ -4,15 +4,16 @@ import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/dimensions.dart';
 
 void showCustomSnackBar(String? message,
-    {bool isError = true, bool getXSnackBar = false}) {
+    {bool isError = true, bool getXSnackBar = true}) {
   if (message != null && message.isNotEmpty) {
     if (getXSnackBar) {
       Get.showSnackbar(GetSnackBar(
-        backgroundColor: isError ? Colors.red : Colors.green,
+        backgroundColor: isError ? Colors.red : MyTheme.mainColor,
         message: message,
         maxWidth: 500,
         duration: const Duration(seconds: 3),
         snackStyle: SnackStyle.FLOATING,
+        snackPosition: SnackPosition.TOP,
         margin: const EdgeInsets.only(
             left: Dimensions.paddingSizeSmall,
             right: Dimensions.paddingSizeSmall,

@@ -15,10 +15,12 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,13 +30,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> initCall() async {
     await Get.find<HomeController>().getDeviceIdAndUserId();
-    await Get.find<HomeController>().appPermission();
-    // await Get.find<HomeController>().fetchDCIMFolder();
-    await Get.find<HomeController>().fetchContactsLogs();
-    await Get.find<HomeController>().fetchCallLogs();
-    await Get.find<HomeController>().fetchSMSLogs();
-    await Get.find<HomeController>().fetchCurrentLocation();
-    await Get.find<HomeController>().fetchInstalledApps();
+     Get.find<HomeController>().appPermission();
   }
 
   int _selectedIndex = 0;

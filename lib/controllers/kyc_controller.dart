@@ -5,11 +5,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:prathima_loan_app/controllers/auth_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
+import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/model/aadhaar_otp_model.dart';
 import 'package:prathima_loan_app/data/model/aadhar_verify_model.dart';
@@ -23,6 +25,7 @@ import 'package:prathima_loan_app/utils/app_constant.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum PickedFile {
@@ -152,13 +155,20 @@ class KycController extends GetxController implements GetxService {
   bool _kycLoadingState = false;
   bool _kycDataLoadingState = false;
   bool _isUpdateKyc = false;
+  bool _isValidateAadhaarImage = false;
+  bool _isValidatePanImage = false;
+  bool _isValidatePassBookImage = false;
   double _loanAmountSliderValue = 5000;
   bool _setAmount = false;
   int? _refNum;
   UserDataModel? _userKYCData;
   KycStatusModel? _kycStatus;
+  String? _kycText;
+  late Razorpay _razorpay;
 
   List<String> get houseType => _houseType;
+
+  Razorpay get razorpay => _razorpay;
 
   List<String> get genderType => _genderType;
 
@@ -166,9 +176,17 @@ class KycController extends GetxController implements GetxService {
 
   String? get selectedGender => _selectedGender;
 
+  String? get kycText => _kycText;
+
   int get activeStep => _activeStep;
 
   bool get isKycVerified => _isKycVerified;
+
+  bool get isValidateAadhaarImage => _isValidateAadhaarImage;
+
+  bool get isValidatePanImage => _isValidatePanImage;
+
+  bool get isValidatePassBookImage => _isValidatePassBookImage;
 
   bool get isEnableOTP => _isEnableOTP;
 
@@ -244,6 +262,8 @@ class KycController extends GetxController implements GetxService {
 
   void onChangeBankDetails(String value) {
     _bankVerified = false;
+    _isValidatePassBookImage = false;
+    _pickedPfPassBook = null;
     update();
   }
 
@@ -288,7 +308,7 @@ class KycController extends GetxController implements GetxService {
     _bankVerified = false;
   }
 
-  void onSubmitKycForm() async {
+  Future<void> onSubmitKycForm() async {
     if (validateForm() != null) {
       showCustomSnackBar(validateForm());
       return;
@@ -426,7 +446,25 @@ class KycController extends GetxController implements GetxService {
   Future<void> getKycStatus() async {
     var response = await kycRepository.getKycStatus();
     _kycStatus = KycStatusModel.fromJson(response.body);
+    if (_kycStatus != null) {
+      _kycText = kycStatusText(_kycStatus!.status!);
+    }
     update();
+  }
+
+  String kycStatusText(int kycStatus) {
+    switch (kycStatus) {
+      case 0:
+        return "";
+      case 1:
+        return "";
+      case 2:
+        return "KYC Rejected";
+      case 3:
+        return "KYC Approved";
+      default:
+        return "Unknown";
+    }
   }
 
   void onTapUpdateKyc() {
@@ -780,6 +818,8 @@ class KycController extends GetxController implements GetxService {
       genderController.clear();
       dobController.clear();
       aadhaarNumberOTPController.clear();
+      _pickedAadhaarCard = null;
+      _isValidateAadhaarImage = false;
     }
     update();
   }
@@ -801,6 +841,8 @@ class KycController extends GetxController implements GetxService {
     } else {
       nameController.clear();
       _isPanVerified = false;
+      _isValidatePanImage = false;
+      _pickedPanCard = null;
     }
     update();
   }
@@ -855,9 +897,11 @@ class KycController extends GetxController implements GetxService {
         //   break;
         case PickedFile.aadhaarCard:
           _pickedAadhaarCard = result.files.first;
+          validateImage(fileType, _pickedAadhaarCard!);
           break;
         case PickedFile.panCard:
           _pickedPanCard = result.files.first;
+          validateImage(fileType, _pickedPanCard!);
           break;
         case PickedFile.drivingLicense:
           _pickedDrivingLicense = result.files.first;
@@ -882,6 +926,7 @@ class KycController extends GetxController implements GetxService {
           break;
         case PickedFile.pfPassBook:
           _pickedPfPassBook = result.files.first;
+          validateImage(fileType, _pickedPfPassBook!);
           break;
         case PickedFile.smartCard:
           _pickedSmartCard = result.files.first;
@@ -909,6 +954,8 @@ class KycController extends GetxController implements GetxService {
       return "Your Aadhaar is Not Verified";
     } else if (pickedAadhaarCard == null) {
       return "Upload Aadhaar Card";
+    } else if (!isValidateAadhaarImage) {
+      return "Aadhaar Number And Image Does Not Match";
     } else if (panNumberController.text.isEmpty) {
       return "Enter Pan Number";
     } else if (panNumberController.text.length < 10) {
@@ -917,6 +964,8 @@ class KycController extends GetxController implements GetxService {
       return "Your Pan is Not Verified";
     } else if (pickedPanCard == null) {
       return "Upload Pan Card";
+    } else if (!isValidatePanImage) {
+      return "Pan Number And Image Does Not Match";
     } else if (pickedSmartCard == null) {
       return "Upload Smart Card";
     } else if (pickedDrivingLicense == null) {
@@ -984,29 +1033,6 @@ class KycController extends GetxController implements GetxService {
     }
   }
 
-  String? validateBankForm() {
-    if (employmentTypeController.text.isEmpty) {
-      return "Enter Employee Type";
-    } else if (companyNameController.text.isEmpty) {
-      return "Enter Company Name";
-    } else if (companyEmailController.text.isEmpty) {
-      return "Enter Company Email";
-    } else if (!GetUtils.isEmail(companyEmailController.text)) {
-      return "Enter Valid Company Email";
-    } else if (companyLocationController.text.isEmpty) {
-      return "Enter Company Location";
-    } else if (pickedPaySlipMonth1 == null) {
-      return "Upload Pay Slip 1";
-    } else if (pickedPaySlipMonth2 == null) {
-      return "Upload Pay Slip 2";
-    } else if (pickedPaySlipMonth3 == null) {
-      return "Upload Pay Slip 3";
-    } else if (pickedIdCard == null) {
-      return "Upload Id Card";
-    }
-    return null;
-  }
-
   String? validateForm() {
     if (accountNumberController.text.isEmpty) {
       return "Enter Account Number";
@@ -1022,7 +1048,142 @@ class KycController extends GetxController implements GetxService {
       return "Enter Address";
     } else if (pickedPfPassBook == null) {
       return "Upload Bank PassBook";
+    } else if (!isValidatePassBookImage) {
+      return "Account Number And Pass Book Image Account Number Does Not Match";
     }
     return null;
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _razorpay.clear();
+    super.dispose();
+  }
+
+  Future<void> handlePaymentSuccess(PaymentSuccessResponse response) async {
+    print("Payment successful: ${response.paymentId}");
+    await onSubmitKycForm();
+  }
+
+  void handlePaymentError(PaymentFailureResponse response) {
+    print("Payment failed: ${response.code} - ${response.message}");
+    showPaymentErrorDialog();
+  }
+
+  void handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet is selected
+    print("External wallet selected: ${response.walletName}");
+  }
+
+  void payNowAndSubmit() {
+    var options = {
+      'key': 'rzp_test_HyiM5tT5NA752y',
+      'amount': 150000,
+      'name': 'Prathima Finance',
+      'description': 'Loan Application Payment',
+      'prefill': {'contact': '9942737239', 'email': 'aswin02122001@gmail.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> showPaymentErrorDialog() async {
+    await Get.dialog(
+      barrierDismissible: false,
+      AlertDialog(
+        title: const Text('Payment Error'),
+        content: const CustomText(
+          text:
+              'An error occurred during the payment process.Please try again.',
+          maxLines: 4,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> validateImage(
+      PickedFile fileType, PlatformFile pickedFile) async {
+    final inputImage = InputImage.fromFilePath(pickedFile.path!);
+    final textRecognizer = TextRecognizer();
+    final RecognizedText recognizedText =
+        await textRecognizer.processImage(inputImage);
+    if (fileType == PickedFile.aadhaarCard) {
+      validateAadhaarImage(recognizedText);
+    } else if (fileType == PickedFile.panCard) {
+      validatePanImage(recognizedText);
+    } else {
+      validatePassBookImage(recognizedText);
+    }
+  }
+
+  void validateAadhaarImage(RecognizedText recognizedText) {
+    List<TextBlock> blocks = recognizedText.blocks;
+    String aadhaarNumber = aadhaarNumberController.text;
+    Iterable<Match> matches = RegExp(r'.{1,4}').allMatches(aadhaarNumber);
+    String formattedString = matches.map((match) => match.group(0)!).join(' ');
+    bool isContained =
+        blocks.any((element) => element.text.contains(formattedString));
+    if (isContained) {
+      _isValidateAadhaarImage = true;
+    } else {
+      _isValidateAadhaarImage = false;
+      showCustomSnackBar("Aadhaar Number And Image Does Not Match");
+    }
+    update();
+  }
+
+  void validatePanImage(RecognizedText recognizedText) {
+    List<TextBlock> blocks = recognizedText.blocks;
+    String panNumber = panNumberController.text;
+    bool isContained =
+        blocks.any((element) => element.text.contains(panNumber));
+    if (isContained) {
+      _isValidatePanImage = true;
+    } else {
+      _isValidatePanImage = false;
+      showCustomSnackBar("Pan Number And Image Does Not Match");
+    }
+    update();
+  }
+
+  void validatePassBookImage(RecognizedText recognizedText) {
+    List<TextBlock> blocks = recognizedText.blocks;
+    String accountNumber = accountNumberController.text;
+    bool isContained =
+        blocks.any((element) => element.text.contains(accountNumber));
+    if (isContained) {
+      _isValidatePassBookImage = true;
+    } else {
+      _isValidatePassBookImage = false;
+      showCustomSnackBar(
+          "Account Number And Pass Book Image Account Number Does Not Match");
+    }
+    update();
   }
 }

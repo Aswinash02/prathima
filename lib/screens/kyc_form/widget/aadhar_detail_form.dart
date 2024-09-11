@@ -26,7 +26,7 @@ class AadhaarDetailForm extends StatelessWidget {
           ),
           const CustomText(
             text:
-                "Please upload your Aadhaar card below for completing your KYC.",
+                "Please verify your Aadhaar Number and upload your Aadhaar card below for completing your KYC.",
             fontSize: 13,
             fontWeight: FontWeight.w500,
             maxLines: 3,
@@ -161,16 +161,16 @@ class AadhaarDetailForm extends StatelessWidget {
                             ),
                           )
                         : const SizedBox(),
+                    DocUploadContainer(
+                      textString: 'Upload aadhaar card Front photo ',
+                      selectedFile: kycController.pickedAadhaarCard,
+                      onTap: () {
+                        kycController.pickFiles(PickedFile.aadhaarCard);
+                      },
+                    ),
                   ],
                 )
               : const SizedBox(),
-          DocUploadContainer(
-            textString: 'Upload aadhaar card Front photo ',
-            selectedFile: kycController.pickedAadhaarCard,
-            onTap: () {
-              kycController.pickFiles(PickedFile.aadhaarCard);
-            },
-          ),
         ],
       );
     });

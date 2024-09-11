@@ -1,8 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
+import 'package:prathima_loan_app/screens/kyc_form/widget/view_image_dialog.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
 class DocUploadContainer extends StatelessWidget {
@@ -42,26 +41,32 @@ class DocUploadContainer extends StatelessWidget {
             if (selectedFile != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey, width: 0.5)),
-                  child: Row(
-                    children: [
-                      const Image(image: AssetImage("assets/img/pdf_img.png")),
-                      Expanded(
-                        child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 4),
-                              child: CustomText(
-                                text: selectedFile!.name,
-                              ),
-                            )),
-                      ),
-                    ],
+                child: GestureDetector(
+                  onTap: () {
+                    viewImageDialog(selectedFile!);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey, width: 0.5)),
+                    child: Row(
+                      children: [
+                        const Image(
+                            image: AssetImage("assets/img/pdf_img.png")),
+                        Expanded(
+                          child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0, vertical: 4),
+                                child: CustomText(
+                                  text: selectedFile!.name,
+                                ),
+                              )),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

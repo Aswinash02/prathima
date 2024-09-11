@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "494823218724",
+    "project_id": "prathima-91088",
+    "storage_bucket": "prathima-91088.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494823218724:android:7d2c4e7fe46f5bd55102b1",
+        "android_client_info": {
+          "package_name": "com.example.prathima_loan_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmi2OyMtCKXqxZPqTvk1fwj3uINzlE3aE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
