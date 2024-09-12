@@ -122,6 +122,7 @@ class CustomTextField extends StatelessWidget {
       this.maxLines,
       this.onChanged,
       this.suffixIcon,
+      this.hintFontSize,
       this.onTap});
 
   final TextEditingController? controller;
@@ -131,6 +132,7 @@ class CustomTextField extends StatelessWidget {
   final bool? readOnly;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
+  final double? hintFontSize;
   final void Function(String)? onChanged;
   final Widget? suffixIcon;
   final void Function()? onTap;
@@ -155,7 +157,8 @@ class CustomTextField extends StatelessWidget {
           filled: true,
           suffixIcon: suffixIcon,
           hintText: hintText,
-          hintStyle: TextStyle(color: hintTextColor ?? MyTheme.grey_153),
+          hintStyle: TextStyle(
+              color: hintTextColor ?? MyTheme.grey_153, fontSize: hintFontSize),
           contentPadding: const EdgeInsets.only(
             bottom: 6,
             top: -10,

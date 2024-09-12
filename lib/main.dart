@@ -23,7 +23,6 @@ Future<void> main() async {
   firebaseRepo.requestPermission();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   String token = await firebaseRepo.getToken();
-  print('device token ------- $token');
   firebaseRepo.initInfo();
   await dep.init();
   runApp(const MyApp());

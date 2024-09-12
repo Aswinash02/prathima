@@ -23,4 +23,8 @@ class AppConstants {
   static const String userInstalledAppUrl = "/api/user/app-details";
   static const String userLocationUrl = "/api/user/user-location";
   static const String pageUrl = "/api/pages";
+  static const String supportsUrl = "/api/supports";
+  static const String createTicketUrl = "/api/supports/store";
+  static const String viewTicketUrl = "/api/supports/view";
+  static const String messageUrl = "/api/supports/reply/store";
 }

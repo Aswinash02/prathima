@@ -19,12 +19,13 @@ import 'package:prathima_loan_app/screens/main_screen.dart';
 import 'package:prathima_loan_app/screens/no_internet_screen.dart';
 import 'package:prathima_loan_app/screens/profile/about_us_screen.dart';
 import 'package:prathima_loan_app/screens/profile/edit_profile/edit_profile_screen.dart';
+import 'package:prathima_loan_app/screens/profile/help_and_support/view_ticket_screen.dart';
 import 'package:prathima_loan_app/screens/profile/kyc_details/kyc_details_screen.dart';
 import 'package:prathima_loan_app/screens/profile/loan_history.dart';
 import 'package:prathima_loan_app/screens/profile/privacy_policy_screen.dart';
 import 'package:prathima_loan_app/screens/profile/terms_and_condition_screen.dart';
-import 'package:prathima_loan_app/screens/profile/widget/contact_us_screen.dart';
-import 'package:prathima_loan_app/screens/profile/widget/help_and_support_screen.dart';
+import 'package:prathima_loan_app/screens/profile/contact_us_screen.dart';
+import 'package:prathima_loan_app/screens/profile/help_and_support/help_and_support_screen.dart';
 import 'package:prathima_loan_app/screens/splash_screen.dart';
 
 class RouteHelper {
@@ -52,7 +53,8 @@ class RouteHelper {
   static const String noInternetScreen = '/noInternetScreen';
   static const String splashScreen = '/splashScreen';
   static const String helpAndSupportScreen = '/helpAndSupportScreen';
-  static const String contactUsScreenScreen = '/contactUsScreenScreen';
+  static const String contactUsScreen = '/contactUsScreen';
+  static const String viewTicketScreen = '/viewTicketScreen';
   static const String preClosingLoanAmountScreen =
       '/preClosingLoanAmountScreen';
   static const String kycDetailsScreen = '/kycDetailsScreen';
@@ -128,8 +130,13 @@ class RouteHelper {
       transition: Transition.rightToLeft,
     ),
     GetPage(
-      name: contactUsScreenScreen,
+      name: contactUsScreen,
       page: () => const ContactUsScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: viewTicketScreen,
+      page: () => const ViewTicketScreen(),
       transition: Transition.rightToLeft,
     ),
     GetPage(

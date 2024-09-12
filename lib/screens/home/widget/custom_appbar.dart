@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../customs/custom_text.dart';
+import 'package:prathima_loan_app/customs/custom_text.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(

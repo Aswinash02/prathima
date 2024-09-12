@@ -8,8 +8,8 @@ class ProfileSimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: MyTheme.mainColor.withOpacity(0.05),
-      highlightColor: MyTheme.mainColor.withOpacity(0.08),
+      baseColor: MyTheme.grey_153.withOpacity(0.05),
+      highlightColor: MyTheme.grey_153.withOpacity(0.08),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
@@ -20,7 +20,7 @@ class ProfileSimmer extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: 7,
+                  itemCount: 9,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 10.0),

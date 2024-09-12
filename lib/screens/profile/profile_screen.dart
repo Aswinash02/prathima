@@ -27,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> initCall() async {
     await Get.find<ProfileController>().getUserData();
     await Get.find<ProfileController>().getPageData();
+    await Get.find<ProfileController>().getSupportTickets();
   }
 
   @override
@@ -89,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         option: "Contact Us",
                         icon: "assets/icon/kyc_details.png",
                         onTap: () {
-                          Get.toNamed(RouteHelper.contactUsScreenScreen);
+                          Get.toNamed(RouteHelper.contactUsScreen);
                         },
                       ),
                       ProfileOption(

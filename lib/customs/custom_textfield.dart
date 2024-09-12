@@ -12,7 +12,12 @@ class CustomTextField extends StatelessWidget {
       this.hintTextColor,
       this.inputFormatters,
       this.maxLines,
-      this.onChanged, this.suffixIcon, this.onTap});
+      this.onChanged,
+      this.suffixIcon,
+      this.prefixIcon,
+      this.horizontalContentPadding,
+      this.verticalContentPadding,
+      this.onTap});
 
   final TextEditingController? controller;
   final String? hintText;
@@ -23,8 +28,10 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final void Function(String)? onChanged;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final double? horizontalContentPadding;
+  final double? verticalContentPadding;
   final void Function()? onTap;
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +47,13 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
+        prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: TextStyle(color: hintTextColor ?? MyTheme.grey_153),
-        contentPadding: const EdgeInsets.all(12),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: horizontalContentPadding ?? 12,
+            vertical: verticalContentPadding ?? 12),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
           borderSide: const BorderSide(
