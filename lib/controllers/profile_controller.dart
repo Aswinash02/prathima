@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/model/edit_profile_model.dart';
+import 'package:prathima_loan_app/data/model/kyc_info_model.dart';
 import 'package:prathima_loan_app/data/model/profile_page_model.dart';
 import 'package:prathima_loan_app/data/model/support_tickets_model.dart';
 import 'package:prathima_loan_app/data/model/user_data_model.dart';
@@ -22,9 +23,11 @@ class ProfileController extends GetxController implements GetxService {
 
   UserDataModel? _userData;
   TextEditingController searchController = TextEditingController();
+  TextEditingController searchKYCInfoController = TextEditingController();
   TextEditingController subjectController = TextEditingController();
   TextEditingController messageController = TextEditingController();
   bool _loadingState = false;
+  bool _kycInfoLoadingState = false;
   bool _createTicketLoadingState = false;
   bool _messageLoadingState = false;
   bool _viewTicketLoadingState = false;
@@ -35,7 +38,10 @@ class ProfileController extends GetxController implements GetxService {
   File? _selectedImage;
   final List<PageData> _pageDataList = [];
   final List<TicketData> _supportTicketList = [];
+  final List<KYCInfoData> _kycInfoDataList = [];
+  KYCInfoData? _kycData;
   List<TicketData> _searchSupportTicketList = [];
+  List<KYCInfoData> _searchKycInfoDataList = [];
   PlatformFile? _pickedTicketFile;
   PlatformFile? _pickedMessageFile;
   ViewTicketData? _viewTicketData;
@@ -53,6 +59,8 @@ class ProfileController extends GetxController implements GetxService {
 
   UserDataModel? get userData => _userData;
 
+  KYCInfoData? get kycData => _kycData;
+
   bool get loadingState => _loadingState;
 
   bool get createTicketLoadingState => _createTicketLoadingState;
@@ -63,6 +71,8 @@ class ProfileController extends GetxController implements GetxService {
 
   bool get editProfileLoadingState => _editProfileLoadingState;
 
+  bool get kycInfoLoadingState => _kycInfoLoadingState;
+
   List<String> get genderType => _genderType;
 
   List<String> get priorityLevel => _priorityLevel;
@@ -70,6 +80,10 @@ class ProfileController extends GetxController implements GetxService {
   List<PageData> get pageDataList => _pageDataList;
 
   List<TicketData> get supportTicketList => _supportTicketList;
+
+  List<KYCInfoData> get kycInfoDataList => _kycInfoDataList;
+
+  List<KYCInfoData> get searchKycInfoDataList => _searchKycInfoDataList;
 
   List<TicketData> get searchSupportTicketList => _searchSupportTicketList;
 
@@ -136,6 +150,20 @@ class ProfileController extends GetxController implements GetxService {
       ApiChecker.checkApi(response);
     }
     _loadingState = false;
+    update();
+  }
+
+  Future<void> getKYCInfo() async {
+    _kycInfoLoadingState = true;
+    var response = await profileRepository.getKYCInfo();
+    if (response.statusCode == 200) {
+      _kycInfoDataList.clear();
+      KYCInfoModel data = KYCInfoModel.fromJson(response.body);
+      _kycInfoDataList.addAll(data.data!);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _kycInfoLoadingState = false;
     update();
   }
 
@@ -252,6 +280,17 @@ class ProfileController extends GetxController implements GetxService {
     update();
   }
 
+  void searchKYCInfo(String txt) {
+    _searchKycInfoDataList = kycInfoDataList.where((data) {
+      final searchLower = txt.toLowerCase();
+      final loanName = data.loanInformation!.name?.toLowerCase() ?? '';
+      final loanType = data.loanInformation!.loanType?.toLowerCase() ?? '';
+
+      return loanName.contains(searchLower) || loanType.contains(searchLower);
+    }).toList();
+    update();
+  }
+
   Future<void> pickFiles(String destination) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
@@ -326,6 +365,13 @@ class ProfileController extends GetxController implements GetxService {
   void onTapViewTicket(int id) {
     _ticketId = id;
     Get.toNamed(RouteHelper.viewTicketScreen);
+  }
+
+  void onTapViewKYC(int id) {
+    _kycData = kycInfoDataList.firstWhere((element) => element.id == id);
+    print('data ====== > ${_kycData!.id}');
+    // _ticketId = id;
+    Get.toNamed(RouteHelper.kycDetailsScreen);
   }
 
   Future<void> sendMessage() async {

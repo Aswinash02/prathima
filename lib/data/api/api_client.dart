@@ -49,9 +49,10 @@ class ApiClient extends GetxService {
       if (kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
       }
+      Uri fullUri = Uri.parse(appBaseUrl + uri).replace(queryParameters: query);
       http.Response response = await http
           .get(
-            Uri.parse(appBaseUrl + uri),
+            fullUri,
             headers: headers ?? _mainHeaders,
           )
           .timeout(Duration(seconds: timeoutInSeconds));

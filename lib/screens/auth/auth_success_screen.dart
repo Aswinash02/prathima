@@ -19,12 +19,12 @@ class _AuthSuccessPageState extends State<AuthSuccessScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    initCall();
+    // initCall();
   }
 
-  Future<void> initCall() async {
-    await Get.find<KycController>().getKycStatus();
-  }
+  // Future<void> initCall() async {
+  //   await Get.find<KycController>().getKycStatus();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prathima_loan_app/controllers/home_controller.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
+import 'package:prathima_loan_app/screens/home/widget/init_permission_dialog.dart';
 import 'package:prathima_loan_app/screens/loan/loan_screen.dart';
 import 'package:prathima_loan_app/screens/profile/profile_screen.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
@@ -19,18 +20,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    initCall();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initCall();
+    });
   }
 
   Future<void> initCall() async {
-    await Get.find<HomeController>().getDeviceIdAndUserId();
-     Get.find<HomeController>().appPermission();
+    await Get.find<HomeController>().permissionDialog();
+
   }
 
   int _selectedIndex = 0;
@@ -80,8 +81,6 @@ class _MainScreenState extends State<MainScreen> {
                 height: 25,
                 child: CustomIcon(
                   icon: "assets/icon/loan_icon.png",
-                  height: 25,
-                  width: 25,
                   color: _selectedIndex == 1
                       ? MyTheme.mainColor
                       : MyTheme.grey_153,

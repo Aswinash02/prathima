@@ -1,9 +1,10 @@
 class KycResponseModel {
   String? message;
+  String? kycId;
   bool? result;
   List? errors;
 
-  KycResponseModel({this.message, this.result});
+  KycResponseModel({this.message, this.result, this.errors,this.kycId});
 
   KycResponseModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -11,4 +12,3 @@ class KycResponseModel {
     errors = json['errors'];
   }
 }
-

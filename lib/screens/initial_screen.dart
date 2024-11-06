@@ -42,9 +42,9 @@ class _InitialScreenState extends State<InitialScreen> {
 
   Future<void> _checkLoginStatus() async {
     bool isLoggedIn = await SharedPreference().getLogin();
-    if (isLoggedIn == true) {
-      await Get.find<KycController>().getKycStatus();
-    }
+    // if (isLoggedIn == true) {
+    //   await Get.find<KycController>().getKycStatus();
+    // }
     if (mounted) {
       setState(() {
         _isLoggedIn = isLoggedIn;

@@ -19,7 +19,6 @@ class KycRepository extends GetxService {
     LoginResponse decodeUserData = LoginResponse.fromJson(jsonDecode(userData));
     var uri = Uri.parse(AppConstants.baseUrl + AppConstants.userKycUrl);
     var request = http.MultipartRequest('POST', uri);
-
     // Add headers
     request.headers.addAll({
       'Content-Type': 'multipart/form-data',
@@ -28,6 +27,8 @@ class KycRepository extends GetxService {
 
     // Add text fields
     request.fields['aadhar_number'] = kycData.aadhaarNumber;
+    request.fields['loan_details_id'] = kycData.id.toString();
+    request.fields['kyc_payment_details_id'] = kycData.paymentDetailsId.toString();
     request.fields['pan_number'] = kycData.panNumber;
     request.fields['account_number'] = kycData.accountNumber;
     request.fields['ifsc_code'] = kycData.ifscCode;
@@ -76,7 +77,6 @@ class KycRepository extends GetxService {
 
     // Send request
     var response = await request.send();
-
     if (response.statusCode == 200) {
       var responseData = await response.stream.bytesToString();
       var jsonResponse = json.decode(responseData);
@@ -105,6 +105,7 @@ class KycRepository extends GetxService {
 
     // Add text fields
     request.fields['aadhar_number'] = kycData.aadhaarNumber;
+    request.fields['loan_details_id'] = kycData.id.toString();
     request.fields['pan_number'] = kycData.panNumber;
     request.fields['account_number'] = kycData.accountNumber;
     request.fields['ifsc_code'] = kycData.ifscCode;
@@ -173,6 +174,12 @@ class KycRepository extends GetxService {
     );
   }
 
+  Future<Response> getAgreements() async {
+    return await apiClient.getData(
+      AppConstants.agreementUrl,
+    );
+  }
+
   Future<Response> aadhaarVerify(String aadhaarNumber) async {
     return await apiClient.postData(
       AppConstants.aadhaarVerifyUrl,
@@ -194,6 +201,14 @@ class KycRepository extends GetxService {
       "ifsc_code": ifscCode,
       "phone_number": phone
     });
+  }
+
+  Future<Response> kycAmountPaidStatus(Map<String, dynamic> body) async {
+    return await apiClient.postData(AppConstants.kycAmountPaidStatusUrl, body);
+  }
+
+  Future<Response> kycAmountPay(Map<String, dynamic> body) async {
+    return await apiClient.postData(AppConstants.kycAmountPayUrl, body);
   }
 
   Future<Response> panVerify(String panNumber) async {

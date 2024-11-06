@@ -10,12 +10,15 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:prathima_loan_app/controllers/auth_controller.dart';
+import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/customs/custom_snackbar.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/data/api/api_checker.dart';
 import 'package:prathima_loan_app/data/model/aadhaar_otp_model.dart';
 import 'package:prathima_loan_app/data/model/aadhar_verify_model.dart';
+import 'package:prathima_loan_app/data/model/agreement_model.dart';
 import 'package:prathima_loan_app/data/model/bank_verify_model.dart';
+import 'package:prathima_loan_app/data/model/kyc_amount_pay_model.dart';
 import 'package:prathima_loan_app/data/model/kyc_status_model.dart';
 import 'package:prathima_loan_app/data/model/pan_verify_model.dart';
 import 'package:prathima_loan_app/data/model/user_data_model.dart';
@@ -25,7 +28,10 @@ import 'package:prathima_loan_app/utils/app_constant.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:prathima_loan_app/utils/shared_preferences.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:signature/signature.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum PickedFile {
@@ -45,6 +51,8 @@ enum PickedFile {
 }
 
 class KycData {
+  final int id;
+  final int? paymentDetailsId;
   final String aadhaarNumber;
   final String panNumber;
   final String accountNumber;
@@ -73,6 +81,8 @@ class KycData {
   final File pfMemberPassbook;
 
   const KycData({
+    required this.id,
+    this.paymentDetailsId,
     required this.aadhaarNumber,
     required this.panNumber,
     required this.accountNumber,
@@ -125,6 +135,9 @@ class KycController extends GetxController implements GetxService {
   TextEditingController ifscController = TextEditingController();
   TextEditingController accountHolderNameController = TextEditingController();
   TextEditingController bankNameController = TextEditingController();
+  TextEditingController signatureController = TextEditingController();
+  SignatureController signatureImageController =
+      SignatureController(penColor: Colors.white);
   final List<String> _houseType = ["Own House", "Rent House"];
   final List<String> _genderType = ["Male", "Female", "TransGender"];
   PlatformFile? _pickedTaxReceipt;
@@ -153,20 +166,28 @@ class KycController extends GetxController implements GetxService {
   bool _otpLoadingState = false;
   bool _panLoadingState = false;
   bool _kycLoadingState = false;
+  bool _agreementLoadingState = false;
   bool _kycDataLoadingState = false;
   bool _isUpdateKyc = false;
   bool _isValidateAadhaarImage = false;
   bool _isValidatePanImage = false;
   bool _isValidatePassBookImage = false;
   double _loanAmountSliderValue = 5000;
+  Uint8List? _signatureImage;
   bool _setAmount = false;
   int? _refNum;
   UserDataModel? _userKYCData;
   KycStatusModel? _kycStatus;
+  KYCAmountPayResponse? _kycAmountPayResponse;
+  AgreementModel? _agreements;
   String? _kycText;
   late Razorpay _razorpay;
 
   List<String> get houseType => _houseType;
+
+  Uint8List? get signatureImage => _signatureImage;
+
+  AgreementModel? get agreements => _agreements;
 
   Razorpay get razorpay => _razorpay;
 
@@ -210,6 +231,8 @@ class KycController extends GetxController implements GetxService {
 
   bool get kycLoadingState => _kycLoadingState;
 
+  bool get agreementLoadingState => _agreementLoadingState;
+
   bool get kycDataLoadingState => _kycDataLoadingState;
 
   bool get isPanVerified => _isPanVerified;
@@ -243,6 +266,8 @@ class KycController extends GetxController implements GetxService {
   UserDataModel? get userKYCData => _userKYCData;
 
   KycStatusModel? get kycStatus => _kycStatus;
+
+  KYCAmountPayResponse? get kycAmountPayResponse => _kycAmountPayResponse;
 
   void onChangeHouseType(String? value) {
     _selectedAddress = value;
@@ -279,6 +304,7 @@ class KycController extends GetxController implements GetxService {
 
   void clearKycForm() {
     aadhaarNumberController.clear();
+    aadhaarNumberOTPController.clear();
     panNumberController.clear();
     accountNumberController.clear();
     ifscController.clear();
@@ -308,22 +334,65 @@ class KycController extends GetxController implements GetxService {
     _bankVerified = false;
   }
 
-  Future<void> onSubmitKycForm() async {
+  Future<void> kycAmountPaidStatus() async {
     if (validateForm() != null) {
       showCustomSnackBar(validateForm());
       return;
     }
     _kycLoadingState = true;
     update();
+    try {
+      var response = await kycRepository
+          .kycAmountPaidStatus({"loan_id": Get.find<LoanController>().loanId!});
+      if (response.statusCode == 200) {
+        if (response.body['success'] == true) {
+          String kycAmountPayData =
+              await SharedPreference().getKYCAmountPayData();
+          _kycAmountPayResponse =
+              KYCAmountPayResponse.fromJson(jsonDecode(kycAmountPayData));
+          await onSubmitKycForm();
+        } else {
+          payNow();
+        }
+      } else {
+        ApiChecker.checkApi(response);
+      }
+    } catch (_) {}
+  }
 
+  Future<void> kycAmountPay() async {
+    LoginResponse userData = await Get.find<AuthController>().userData();
+    var response = await kycRepository.kycAmountPay({
+      "amount": agreements!.data![4].value,
+      "user_id": userData.user!.id.toString(),
+      "loan_id": Get.find<LoanController>().loanId.toString(),
+      "is_payment_collected": "1"
+    });
+    if (response.statusCode == 200) {
+      _kycAmountPayResponse = KYCAmountPayResponse.fromJson(response.body);
+      if (_kycAmountPayResponse != null &&
+          _kycAmountPayResponse!.result == true) {
+        await SharedPreference()
+            .setKYCAmountPayData(jsonEncode(_kycAmountPayResponse!.toJson()));
+        await onSubmitKycForm();
+      }
+    } else {
+      ApiChecker.checkApi(response);
+    }
+  }
+
+  Future<void> onSubmitKycForm() async {
     KycData kycData = KycData(
+      id: Get.find<LoanController>().loanId!,
+      paymentDetailsId:
+          kycAmountPayResponse != null ? kycAmountPayResponse!.details!.id : 0,
       aadhaarNumber: aadhaarNumberController.text,
       panNumber: panNumberController.text,
       accountNumber: accountNumberController.text,
       ifscCode: ifscController.text,
       bankName: bankNameController.text,
       accountHolderName: accountHolderNameController.text,
-      loanAmount: loanAmountSliderValue.toString(),
+      loanAmount: Get.find<LoanController>().loanAmountSliderValue.toString(),
       panFile: File(pickedPanCard!.path!),
       aadhaarFile: File(pickedAadhaarCard!.path!),
       propertyTaxReceipt: selectedAddress == 'Own House'
@@ -350,6 +419,7 @@ class KycController extends GetxController implements GetxService {
     );
     try {
       var kycResponse = await kycRepository.sendKYCData(kycData);
+
       if (kycResponse.errors == null) {
         _isKycVerified = true;
         showCustomSnackBar(kycResponse.message, isError: false);
@@ -359,89 +429,94 @@ class KycController extends GetxController implements GetxService {
         showCustomSnackBar(kycResponse.errors!.first);
       }
       _activeStep = 0;
-      _kycLoadingState = false;
-      update();
     } catch (e) {
       showCustomSnackBar("Failed to upload KYC");
-      _kycLoadingState = false;
-      update();
     }
-  }
-
-  void onSubmitUpdateKycForm() async {
-    if (validateForm() != null) {
-      showCustomSnackBar(validateForm());
-      return;
-    }
-    _kycLoadingState = true;
-    update();
-
-    final panFile = await downloadFile(_pickedPanCard!.path!, 'pan_file');
-    final taxReceiptFile =
-        await downloadFile(_pickedTaxReceipt!.path!, 'property_tax_receipt');
-    final rentalAgreementFile =
-        await downloadFile(_pickedRentReceipt!.path!, 'rental_agreement');
-    final smartCartFile =
-        await downloadFile(_pickedSmartCard!.path!, 'smart_card_file');
-    final drivingLicenseFile = await downloadFile(
-        _pickedDrivingLicense!.path!, 'driving_license_file');
-    final gasBillFile =
-        await downloadFile(_pickedGasSlip!.path!, 'recent_gas_bill');
-    final broadBandBillFile = await downloadFile(
-        _pickedBroadBandSlip!.path!, 'recent_broadband_bill');
-    final paySlip1File =
-        await downloadFile(_pickedPaySlipMonth1!.path!, 'pay_slip1');
-    final paySlip2File =
-        await downloadFile(_pickedPaySlipMonth2!.path!, 'pay_slip2');
-    final paySlip3File =
-        await downloadFile(_pickedPaySlipMonth3!.path!, 'pay_slip3');
-    final idCardFile = await downloadFile(_pickedIdCard!.path!, 'id_card');
-    final pfPassBookFile =
-        await downloadFile(_pickedPfPassBook!.path!, 'pf_member_passbook');
-    final aadhaarFile =
-        await downloadFile(_pickedAadhaarCard!.path!, 'aadhar_file');
-    KycData kycData = KycData(
-      aadhaarNumber: aadhaarNumberController.text,
-      panNumber: panNumberController.text,
-      accountNumber: accountNumberController.text,
-      ifscCode: ifscController.text,
-      bankName: bankNameController.text,
-      accountHolderName: accountHolderNameController.text,
-      loanAmount: loanAmountSliderValue.toString(),
-      panFile: panFile,
-      aadhaarFile: aadhaarFile,
-      propertyTaxReceipt: taxReceiptFile,
-      rentalAgreement: rentalAgreementFile,
-      smartCardFile: smartCartFile,
-      drivingLicenseFile: drivingLicenseFile,
-      recentGasBill: gasBillFile,
-      recentBroadbandBill: broadBandBillFile,
-      paySlip1: paySlip1File,
-      paySlip2: paySlip2File,
-      paySlip3: paySlip3File,
-      idCard: idCardFile,
-      pfMemberPassbook: pfPassBookFile,
-      houseType: selectedAddress!,
-      companyName: companyNameController.text,
-      companyEmail: companyEmailController.text,
-      companyLocation: companyLocationController.text,
-      address: addressController.text,
-      employmentType: employmentTypeController.text,
-    );
-
-    var kycResponse = await kycRepository.updateKYCData(kycData);
-    if (kycResponse.errors == null) {
-      _isKycVerified = true;
-      showCustomSnackBar(kycResponse.message, isError: false);
-      clearKycForm();
-      await getKycStatus();
-    } else {
-      showCustomSnackBar(kycResponse.errors!.first);
-    }
-    _activeStep = 0;
     _kycLoadingState = false;
     update();
   }
+
+  Future<void> onSaveSignature() async {
+    _signatureImage = await signatureImageController.toPngBytes();
+    Get.back();
+    update();
+  }
+
+  // void onSubmitUpdateKycForm() async {
+  //   if (validateForm() != null) {
+  //     showCustomSnackBar(validateForm());
+  //     return;
+  //   }
+  //   _kycLoadingState = true;
+  //   update();
+  //
+  //   final panFile = await downloadFile(_pickedPanCard!.path!, 'pan_file');
+  //   final taxReceiptFile =
+  //       await downloadFile(_pickedTaxReceipt!.path!, 'property_tax_receipt');
+  //   final rentalAgreementFile =
+  //       await downloadFile(_pickedRentReceipt!.path!, 'rental_agreement');
+  //   final smartCartFile =
+  //       await downloadFile(_pickedSmartCard!.path!, 'smart_card_file');
+  //   final drivingLicenseFile = await downloadFile(
+  //       _pickedDrivingLicense!.path!, 'driving_license_file');
+  //   final gasBillFile =
+  //       await downloadFile(_pickedGasSlip!.path!, 'recent_gas_bill');
+  //   final broadBandBillFile = await downloadFile(
+  //       _pickedBroadBandSlip!.path!, 'recent_broadband_bill');
+  //   final paySlip1File =
+  //       await downloadFile(_pickedPaySlipMonth1!.path!, 'pay_slip1');
+  //   final paySlip2File =
+  //       await downloadFile(_pickedPaySlipMonth2!.path!, 'pay_slip2');
+  //   final paySlip3File =
+  //       await downloadFile(_pickedPaySlipMonth3!.path!, 'pay_slip3');
+  //   final idCardFile = await downloadFile(_pickedIdCard!.path!, 'id_card');
+  //   final pfPassBookFile =
+  //       await downloadFile(_pickedPfPassBook!.path!, 'pf_member_passbook');
+  //   final aadhaarFile =
+  //       await downloadFile(_pickedAadhaarCard!.path!, 'aadhar_file');
+  //   KycData kycData = KycData(
+  //     id: Get.find<LoanController>().loanId!,
+  //     aadhaarNumber: aadhaarNumberController.text,
+  //     panNumber: panNumberController.text,
+  //     accountNumber: accountNumberController.text,
+  //     ifscCode: ifscController.text,
+  //     bankName: bankNameController.text,
+  //     accountHolderName: accountHolderNameController.text,
+  //     loanAmount: Get.find<LoanController>().loanAmountSliderValue.toString(),
+  //     panFile: panFile,
+  //     aadhaarFile: aadhaarFile,
+  //     propertyTaxReceipt: taxReceiptFile,
+  //     rentalAgreement: rentalAgreementFile,
+  //     smartCardFile: smartCartFile,
+  //     drivingLicenseFile: drivingLicenseFile,
+  //     recentGasBill: gasBillFile,
+  //     recentBroadbandBill: broadBandBillFile,
+  //     paySlip1: paySlip1File,
+  //     paySlip2: paySlip2File,
+  //     paySlip3: paySlip3File,
+  //     idCard: idCardFile,
+  //     pfMemberPassbook: pfPassBookFile,
+  //     houseType: selectedAddress!,
+  //     companyName: companyNameController.text,
+  //     companyEmail: companyEmailController.text,
+  //     companyLocation: companyLocationController.text,
+  //     address: addressController.text,
+  //     employmentType: employmentTypeController.text,
+  //   );
+  //
+  //   var kycResponse = await kycRepository.updateKYCData(kycData);
+  //   if (kycResponse.errors == null) {
+  //     _isKycVerified = true;
+  //     showCustomSnackBar(kycResponse.message, isError: false);
+  //     clearKycForm();
+  //     await getKycStatus();
+  //   } else {
+  //     showCustomSnackBar(kycResponse.errors!.first);
+  //   }
+  //   _activeStep = 0;
+  //   _kycLoadingState = false;
+  //   update();
+  // }
 
   Future<void> getKycStatus() async {
     var response = await kycRepository.getKycStatus();
@@ -449,6 +524,18 @@ class KycController extends GetxController implements GetxService {
     if (_kycStatus != null) {
       _kycText = kycStatusText(_kycStatus!.status!);
     }
+    update();
+  }
+
+  Future<void> getAgreements() async {
+    _agreementLoadingState = true;
+    var response = await kycRepository.getAgreements();
+    if (response.statusCode == 200) {
+      _agreements = AgreementModel.fromJson(response.body);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _agreementLoadingState = false;
     update();
   }
 
@@ -467,12 +554,12 @@ class KycController extends GetxController implements GetxService {
     }
   }
 
-  void onTapUpdateKyc() {
-    _setAmount = false;
-    _isUpdateKyc = true;
-    update();
-    getUserKycData();
-  }
+  // void onTapUpdateKyc() {
+  //   _setAmount = false;
+  //   _isUpdateKyc = true;
+  //   update();
+  //   getUserKycData();
+  // }
 
   void onChangeLoanAmountSlider(double value) {
     _loanAmountSliderValue = value;
@@ -523,7 +610,6 @@ class KycController extends GetxController implements GetxService {
         _refNum = responseModel.data?.referenceId;
         showCustomSnackBar(responseModel.data?.message, isError: false);
       } else {
-        // aadhaarNumberController.clear();
         if (responseModel.data != null) {
           showCustomSnackBar(responseModel.data!.message);
         } else {
@@ -531,7 +617,6 @@ class KycController extends GetxController implements GetxService {
         }
       }
     } else {
-      // aadhaarNumberController.clear();
       ApiChecker.checkApi(response);
     }
     _loadingState = false;
@@ -562,14 +647,11 @@ class KycController extends GetxController implements GetxService {
         showCustomSnackBar("Aadhaar Verified Successful ", isError: false);
       } else {
         _aadhaarVerified = false;
-        // aadhaarNumberOTPController.clear();
-        // aadhaarNumberController.clear();
+
         showCustomSnackBar(responseModel.data?.message);
       }
     } else {
       _aadhaarVerified = false;
-      // aadhaarNumberOTPController.clear();
-      // aadhaarNumberController.clear();
       ApiChecker.checkApi(response);
     }
 
@@ -609,12 +691,10 @@ class KycController extends GetxController implements GetxService {
         showCustomSnackBar(responseModel.success?.message, isError: false);
       } else {
         _isPanVerified = false;
-        // panNumberController.clear();
         showCustomSnackBar(responseModel.success?.message);
       }
     } else {
       _isPanVerified = false;
-      // panNumberController.clear();
       ApiChecker.checkApi(response);
     }
 
@@ -1073,7 +1153,7 @@ class KycController extends GetxController implements GetxService {
 
   Future<void> handlePaymentSuccess(PaymentSuccessResponse response) async {
     print("Payment successful: ${response.paymentId}");
-    await onSubmitKycForm();
+    await kycAmountPay();
   }
 
   void handlePaymentError(PaymentFailureResponse response) {
@@ -1086,10 +1166,12 @@ class KycController extends GetxController implements GetxService {
     print("External wallet selected: ${response.walletName}");
   }
 
-  void payNowAndSubmit() {
+  void payNow() {
     var options = {
       'key': 'rzp_test_HyiM5tT5NA752y',
-      'amount': 150000,
+      'amount': agreements != null && agreements!.data![4].value != null
+          ? int.parse('${agreements!.data![4].value}00')
+          : 00,
       'name': 'Prathima Finance',
       'description': 'Loan Application Payment',
       'prefill': {'contact': '9942737239', 'email': 'aswin02122001@gmail.com'},

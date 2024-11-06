@@ -36,7 +36,7 @@ class KycFailureCard extends StatelessWidget {
                   height: 10,
                 ),
                 const CustomText(
-                  text: "Kyc Failed",
+                  text: "Kyc Rejected",
                   fontWeight: FontWeight.w700,
                   fontSize: 17,
                 ),
@@ -55,15 +55,15 @@ class KycFailureCard extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                GetBuilder<KycController>(builder: (kycController) {
-                  return Center(
-                      child: CustomButton(
-                    text: "Update Kyc",
-                    onTap: () {
-                      kycController.onTapUpdateKyc();
-                    },
-                  ));
-                }),
+                // GetBuilder<KycController>(builder: (kycController) {
+                //   return Center(
+                //       child: CustomButton(
+                //     text: "Update Kyc",
+                //     onTap: () {
+                //       kycController.onTapUpdateKyc();
+                //     },
+                //   ));
+                // }),
               ],
             )),
           ),

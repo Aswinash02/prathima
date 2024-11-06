@@ -41,74 +41,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: GetBuilder<ProfileController>(builder: (controller) {
         return controller.loadingState
             ? const ProfileSimmer()
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0, vertical: 10),
-                  child: Column(
-                    children: [
-                      const ProfileCard(),
-                      const SizedBox(
-                        height: 20,
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Column(
+                  children: [
+                    const ProfileCard(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          ProfileOption(
+                            option: "Loan History",
+                            icon: "assets/icon/loan_history_icon.png",
+                            onTap: () {
+                              Get.toNamed(RouteHelper.loanHistoryScreen);
+                            },
+                          ),
+                          ProfileOption(
+                            option: "KYC Details",
+                            icon: "assets/icon/contact_us_icon.png",
+                            onTap: () {
+                              Get.toNamed(RouteHelper.kycCardScreen);
+                            },
+                          ),
+                          ProfileOption(
+                            option: "About Us",
+                            icon: "assets/icon/about_us_icon.png",
+                            onTap: () {
+                              Get.toNamed(RouteHelper.aboutUsScreen);
+                            },
+                          ),
+                          ProfileOption(
+                            option: "Help &  Support",
+                            icon: "assets/icon/help_and_support_icon.png",
+                            onTap: () {
+                              Get.toNamed(RouteHelper.helpAndSupportScreen);
+                            },
+                          ),
+                          ProfileOption(
+                            option: "Terms and Condition",
+                            icon: "assets/icon/terms_and_condition_icon.png",
+                            onTap: () {
+                              Get.toNamed(RouteHelper.termsAndConditionScreen);
+                            },
+                          ),
+                          ProfileOption(
+                            option: "Contact Us",
+                            icon: "assets/icon/kyc_details.png",
+                            onTap: () {
+                              Get.toNamed(RouteHelper.contactUsScreen);
+                            },
+                          ),
+                          ProfileOption(
+                            option: "Privacy Policy",
+                            icon: "assets/icon/privacy_and_policy_icon.png",
+                            onTap: () {
+                              Get.toNamed(RouteHelper.privacyPolicyScreen);
+                            },
+                          ),
+                          ProfileOption(
+                            option: "Log out",
+                            icon: "assets/icon/logout_icon.png",
+                            onTap: () {
+                              showLogoutDialog(context);
+                            },
+                            isShowDivider: false,
+                          ),
+                        ],
                       ),
-                      ProfileOption(
-                        option: "Loan History",
-                        icon: "assets/icon/loan_history_icon.png",
-                        onTap: () {
-                          Get.toNamed(RouteHelper.loanHistoryScreen);
-                        },
-                      ),
-                      ProfileOption(
-                        option: "KYC Details",
-                        icon: "assets/icon/contact_us_icon.png",
-                        onTap: () {
-                          Get.toNamed(RouteHelper.kycDetailsScreen);
-                        },
-                      ),
-                      ProfileOption(
-                        option: "About Us",
-                        icon: "assets/icon/about_us_icon.png",
-                        onTap: () {
-                          Get.toNamed(RouteHelper.aboutUsScreen);
-                        },
-                      ),
-                      ProfileOption(
-                        option: "Help &  Support",
-                        icon: "assets/icon/help_and_support_icon.png",
-                        onTap: () {
-                          Get.toNamed(RouteHelper.helpAndSupportScreen);
-                        },
-                      ),
-                      ProfileOption(
-                        option: "Terms and Condition",
-                        icon: "assets/icon/terms_and_condition_icon.png",
-                        onTap: () {
-                          Get.toNamed(RouteHelper.termsAndConditionScreen);
-                        },
-                      ),
-                      ProfileOption(
-                        option: "Contact Us",
-                        icon: "assets/icon/kyc_details.png",
-                        onTap: () {
-                          Get.toNamed(RouteHelper.contactUsScreen);
-                        },
-                      ),
-                      ProfileOption(
-                        option: "Privacy Policy",
-                        icon: "assets/icon/privacy_and_policy_icon.png",
-                        onTap: () {
-                          Get.toNamed(RouteHelper.privacyPolicyScreen);
-                        },
-                      ),
-                      ProfileOption(
-                        option: "Log out",
-                        icon: "assets/icon/logout_icon.png",
-                        onTap: () {
-                          showLogoutDialog(context);
-                        },
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               );
       }),

@@ -1,35 +1,52 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 Widget toggleSwitch() {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
-    child: ToggleSwitch(
-      minWidth: 160.0,
-      cornerRadius: 8.0,
-      activeBgColors: const [
-        [MyTheme.mainColor],
-        [MyTheme.mainColor],
-        [MyTheme.mainColor],
-      ],
-      activeFgColor: MyTheme.white,
-      inactiveBgColor: MyTheme.mainColor.withOpacity(0.2),
-      inactiveFgColor: MyTheme.blackColor,
-      initialLabelIndex: 0,
-      totalSwitches: 3,
-      fontSize : 13,
-      labels: const ['Personal Loan', 'Business Loan' , 'Home Loan'],
-      // multiLineText : true,
-      centerText : true,
-      borderWidth : 2.0,
-      borderColor: [
-        MyTheme.mainColor.withOpacity(0.2),
-      ],
-      radiusStyle: true,
-      onToggle: (index) {
-        print('switched to: $index');
-      },
-    ),
+    child: GetBuilder<LoanController>(builder: (controller) {
+      return Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: MyTheme.mainColor.withOpacity(0.2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(controller.loanTypesList.length, (index) {
+            bool isSelected = controller.selectedLoanIndex == index;
+            return index == 0
+                ? const SizedBox()
+                : GestureDetector(
+                    onTap: () => controller.onChangeLoanIndex(index),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? MyTheme.mainColor
+                            : MyTheme.mainColor.withOpacity(0.2),
+                        borderRadius: isSelected
+                            ? BorderRadius.circular(4.0)
+                            : BorderRadius.circular(0.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 10.0),
+                      child: Center(
+                        child: Text(
+                          controller.loanTypesList[index].name ?? '',
+                          style: TextStyle(
+                            color:
+                                isSelected ? MyTheme.white : MyTheme.blackColor,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+          }),
+        ),
+      );
+    }),
   );
 }

@@ -10,7 +10,6 @@ import 'package:prathima_loan_app/screens/kyc_form/widget/kyc_success_card.dart'
 import 'package:prathima_loan_app/screens/kyc_form/widget/personal_detail_card.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/custom_stepper.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/work_info_card.dart';
-import 'package:prathima_loan_app/screens/kyc_form/widget/loan_Amount_card.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 import 'package:prathima_loan_app/utils/shimmer/kyc_shimmer.dart';
 import 'package:prathima_loan_app/utils/ui_widget.dart';
@@ -47,8 +46,9 @@ class _KycVerificationScreenState extends State<KycVerificationScreen> {
             ],
           ),
           GetBuilder<KycController>(builder: (controller) {
-            return controller.kycDataLoadingState ||
-                    controller.setAmount == false
+            return controller.kycDataLoadingState
+                // ||
+                //     controller.setAmount == false
                 ? const SizedBox()
                 : controller.kycStatus?.status == 0 ||
                         (controller.kycStatus?.status == 2 &&
@@ -64,18 +64,21 @@ class _KycVerificationScreenState extends State<KycVerificationScreen> {
               builder: (controller) {
                 return controller.kycDataLoadingState
                     ? const KYCShimmerCard()
-                    : controller.kycStatus?.status == 0 ||
+                    :
+                controller.kycStatus?.status == 0 ||
                             (controller.kycStatus?.status == 2 &&
                                 controller.isUpdateKyc)
-                        ? controller.setAmount == false
-                            ? const LoanAmountCard()
-                            : controller.activeStep == 0
-                                ? const AadhaarDetailCard()
-                                : controller.activeStep == 1
-                                    ? const PersonalDetailCard()
-                                    : controller.activeStep == 2
-                                        ? const WorkInfoDetailCard()
-                                        : const BankDetailCard()
+                        ?
+                        // controller.setAmount == false
+                        //             ? const LoanAmountCard()
+                        //             :
+                        controller.activeStep == 0
+                            ? const AadhaarDetailCard()
+                            : controller.activeStep == 1
+                                ? const PersonalDetailCard()
+                                : controller.activeStep == 2
+                                    ? const WorkInfoDetailCard()
+                                    : const BankDetailCard()
                         : controller.kycStatus?.status == 1
                             ? const KycSubmitCard()
                             : controller.kycStatus?.status == 2

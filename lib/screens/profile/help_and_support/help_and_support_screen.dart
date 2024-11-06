@@ -34,11 +34,19 @@ class HelpAndSupportScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Get.find<ProfileController>().supportTicketList.isEmpty
-            ? const Center(
-                child: CustomText(
-                  text: "No Tickets Found",
-                ),
-              )
+            ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                  height: 250,
+                  width: 200,
+                  child: Image.asset("assets/img/no_data_found_image.png"),
+                                ),
+                  const CustomText(text: "No Tickets Found",fontWeight: FontWeight.w800,fontSize: 20,)
+                ],
+              ),
+            )
             : GetBuilder<ProfileController>(builder: (controller) {
                 return Column(
                   children: [
@@ -60,9 +68,17 @@ class HelpAndSupportScreen extends StatelessWidget {
                     Expanded(
                       child: controller.searchController.text.isNotEmpty &&
                               controller.searchSupportTicketList.isEmpty
-                          ? const Center(
-                              child: CustomText(
-                                text: "No Search Ticket Found",
+                          ?  Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 250,
+                                    width: 200,
+                                    child: Image.asset("assets/img/no_data_found_image.png"),
+                                  ),
+                                  const CustomText(text: "No Search Ticket Found",fontWeight: FontWeight.w800,fontSize: 20,)
+                                ],
                               ),
                             )
                           : ListView.builder(

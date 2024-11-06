@@ -3,6 +3,7 @@ class LoginResponse {
   User? user;
   bool? result;
   String? token;
+  String? tokenType;
 
   LoginResponse({this.message, this.user, this.result, this.token});
 
@@ -10,7 +11,8 @@ class LoginResponse {
     message = json['message'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     result = json['result'];
-    token = json['token'];
+    token = json['access_token'];
+    tokenType = json['token_type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,17 +22,23 @@ class LoginResponse {
       data['user'] = user!.toJson();
     }
     data['result'] = result;
-    data['token'] = token;
+    data['access_token'] = token;
+    data['token_type'] = tokenType;
     return data;
   }
 }
 
 class User {
   int? id;
+  String? deviceToken;
+  String? type;
   String? name;
   String? email;
   String? phoneNumber;
   String? emailVerifiedAt;
+  int? aadhaarVerified;
+  int? panVerified;
+  int? bankVerified;
   String? userType;
   String? createdAt;
   String? updatedAt;
@@ -52,6 +60,8 @@ class User {
 
   User(
       {this.id,
+      this.deviceToken,
+      this.type,
       this.name,
       this.email,
       this.phoneNumber,
@@ -77,9 +87,14 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    deviceToken = json['device_token'];
+    type = json['type'];
     name = json['name'];
+    panVerified = json['pan_verified'];
+    bankVerified = json['bank_verified'];
+    aadhaarVerified = json['aadhaar_verified'];
     email = json['email'];
-    phoneNumber = json['phone_number'];
+    phoneNumber = json['phone'];
     emailVerifiedAt = json['email_verified_at'];
     userType = json['user_type'];
     createdAt = json['created_at'];
@@ -105,9 +120,14 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['device_token'] = deviceToken;
+    data['type'] = type;
+    data['pan_verified'] = panVerified;
+    data['bank_verified'] = bankVerified;
+    data['aadhaar_verified'] = aadhaarVerified;
     data['name'] = name;
     data['email'] = email;
-    data['phone_number'] = phoneNumber;
+    data['phone'] = phoneNumber;
     data['email_verified_at'] = emailVerifiedAt;
     data['user_type'] = userType;
     data['created_at'] = createdAt;
@@ -149,21 +169,21 @@ class PanData {
 
   PanData.fromJson(Map<String, dynamic> json) {
     responseStatusId = json['response_status_id'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     responseTypeId = json['response_type_id'];
     message = json['message'];
     status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['response_status_id'] = this.responseStatusId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['response_status_id'] =responseStatusId;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['response_type_id'] = this.responseTypeId;
-    data['message'] = this.message;
-    data['status'] = this.status;
+    data['response_type_id'] = responseTypeId;
+    data['message'] = message;
+    data['status'] = status;
     return data;
   }
 }
@@ -203,16 +223,16 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pan_number'] = this.panNumber;
-    data['aadhaar_seeding_status'] = this.aadhaarSeedingStatus;
-    data['gender'] = this.gender;
-    data['pan_returned_name'] = this.panReturnedName;
-    data['last_name'] = this.lastName;
-    data['aadhaar_seeding_status_code'] = this.aadhaarSeedingStatusCode;
-    data['middle_name'] = this.middleName;
-    data['title'] = this.title;
-    data['first_name'] = this.firstName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['pan_number'] = panNumber;
+    data['aadhaar_seeding_status'] = aadhaarSeedingStatus;
+    data['gender'] = gender;
+    data['pan_returned_name'] = panReturnedName;
+    data['last_name'] = lastName;
+    data['aadhaar_seeding_status_code'] = aadhaarSeedingStatusCode;
+    data['middle_name'] = middleName;
+    data['title'] = title;
+    data['first_name'] = firstName;
     return data;
   }
 }

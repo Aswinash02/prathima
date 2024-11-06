@@ -5,6 +5,7 @@ import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_button.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/customs/custom_textfield.dart';
+import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/doc_upload_container.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
@@ -143,11 +144,41 @@ class BankDetailForm extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    const CustomText(
-                      text: "The amount of Rs. 1500 in processing fees. "
-                          "If the loan is granted, the money will be returned.",
-                      maxLines: 4,
+                    Row(
+                      children: [
+                        const CustomText(
+                          text: "Please sign",
+                        ),
+                        const SizedBox(width: 6),
+                        GestureDetector(
+                          onTap: () =>
+                              Get.toNamed(RouteHelper.promissoryLetter),
+                          child: const CustomText(
+                            text: "Promissory Letter",
+                            decoration: TextDecoration.underline,
+                            color: MyTheme.mainColor,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const CustomText(
+                          text: "to confirm",
+                        ),
+                      ],
                     ),
+                    const CustomText(
+                      text: "your agreement",
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    kycController.agreements != null
+                        ? CustomText(
+                            text:
+                                "The amount of Rs.${kycController.agreements!.data![4].value} in processing fees. "
+                                "If the loan is granted, the money will be returned.",
+                            maxLines: 4,
+                          )
+                        : const SizedBox(),
                     const SizedBox(
                       height: 20,
                     ),
@@ -161,12 +192,13 @@ class BankDetailForm extends StatelessWidget {
                         onTap: controller.kycLoadingState
                             ? null
                             : () {
-                                if (controller.isUpdateKyc) {
-                                  kycController.onSubmitUpdateKycForm();
-                                } else {
-                                  kycController.payNowAndSubmit();
-                                  // kycController.onSubmitKycForm();
-                                }
+                                kycController.kycAmountPaidStatus();
+                                // if (controller.isUpdateKyc) {
+                                //
+                                //   kycController.onSubmitUpdateKycForm();
+                                // } else {
+                                //   kycController.kycAmountPaidStatus();
+                                // }
                               },
                       ));
                     })

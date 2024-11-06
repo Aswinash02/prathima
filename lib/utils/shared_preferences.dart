@@ -20,4 +20,14 @@ class SharedPreference {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("user_data") ?? "";
   }
+
+  Future<void> setKYCAmountPayData(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("kyc_amount_pay_data", value);
+  }
+
+  Future<String> getKYCAmountPayData() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString("kyc_amount_pay_data") ?? "";
+  }
 }

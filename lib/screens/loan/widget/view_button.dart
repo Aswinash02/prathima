@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/loan_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/helpers/route_helper.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
-Widget viewButton() {
+Widget viewButton(int id) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: GestureDetector(
       onTap: () {
-        Get.toNamed(RouteHelper.loanDetailsScreen);
+        Get.toNamed(RouteHelper.getLoanDetailScreenRoute(id));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),

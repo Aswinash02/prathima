@@ -25,6 +25,10 @@ class ProfileRepository extends GetxService {
     return await apiClient.getData(AppConstants.supportsUrl);
   }
 
+  Future<Response> getKYCInfo() async {
+    return await apiClient.getData(AppConstants.kycInfoUrl);
+  }
+
   Future<Response> viewTickets(String id) async {
     return await apiClient.getData("${AppConstants.viewTicketUrl}/$id");
   }

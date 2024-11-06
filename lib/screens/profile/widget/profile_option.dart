@@ -7,12 +7,14 @@ class ProfileOption extends StatelessWidget {
   final String option;
   final String icon;
   final void Function() onTap;
+  final bool isShowDivider;
 
   const ProfileOption(
       {super.key,
       required this.option,
       required this.icon,
-      required this.onTap});
+      required this.onTap,
+      this.isShowDivider = true});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class ProfileOption extends StatelessWidget {
               ),
             ),
           ),
-          const Divider()
+          isShowDivider == true ? const Divider() : const SizedBox()
         ],
       ),
     );

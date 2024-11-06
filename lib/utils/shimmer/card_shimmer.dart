@@ -26,8 +26,8 @@ class CardShimmer extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 30.0),
           child: Shimmer.fromColors(
-            baseColor: MyTheme.mainColor.withOpacity(0.05),
-            highlightColor: MyTheme.mainColor.withOpacity(0.08),
+            baseColor: MyTheme.grey_153.withOpacity(0.4),
+            highlightColor: MyTheme.grey_153.withOpacity(0.08),
             child: Container(
               width: double.infinity,
               margin:

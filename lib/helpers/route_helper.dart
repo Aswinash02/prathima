@@ -2,12 +2,15 @@ import 'package:get/get.dart';
 import 'package:prathima_loan_app/screens/auth/auth_success_screen.dart';
 import 'package:prathima_loan_app/screens/auth/otp_verification_page.dart';
 import 'package:prathima_loan_app/screens/auth/signin_screen.dart';
-import 'package:prathima_loan_app/screens/auth/signup_screen.dart';
+import 'package:prathima_loan_app/screens/cibil_score/cibil_score_screen.dart';
 import 'package:prathima_loan_app/screens/home/home_screen.dart';
 import 'package:prathima_loan_app/screens/initial_screen.dart';
 import 'package:prathima_loan_app/screens/kyc_form/kyc_details_screen.dart';
+import 'package:prathima_loan_app/screens/kyc_form/widget/promissory_letter.dart';
 import 'package:prathima_loan_app/screens/loan/loan_detail/loan_details_screen.dart';
 import 'package:prathima_loan_app/screens/loan/loan_detail/personal_loan_detail_screen.dart';
+import 'package:prathima_loan_app/screens/loan/loan_exists_screen.dart';
+import 'package:prathima_loan_app/screens/loan/loan_screen.dart';
 import 'package:prathima_loan_app/screens/loan/otp_verfication/loan_otp_verification_screen.dart';
 import 'package:prathima_loan_app/screens/loan/payment_mode/credit_or_debit_card_form.dart';
 import 'package:prathima_loan_app/screens/loan/preclosing_loan_amount/pre_close_loan_success_screen.dart';
@@ -20,6 +23,7 @@ import 'package:prathima_loan_app/screens/no_internet_screen.dart';
 import 'package:prathima_loan_app/screens/profile/about_us_screen.dart';
 import 'package:prathima_loan_app/screens/profile/edit_profile/edit_profile_screen.dart';
 import 'package:prathima_loan_app/screens/profile/help_and_support/view_ticket_screen.dart';
+import 'package:prathima_loan_app/screens/profile/kyc_details/kyc_card_screen.dart';
 import 'package:prathima_loan_app/screens/profile/kyc_details/kyc_details_screen.dart';
 import 'package:prathima_loan_app/screens/profile/loan_history.dart';
 import 'package:prathima_loan_app/screens/profile/privacy_policy_screen.dart';
@@ -32,7 +36,8 @@ class RouteHelper {
   static const String initial = '/';
   static const String introductionScreen = '/introductionScreen';
   static const String login = '/login';
-  static const String signUp = '/signUp';
+
+  // static const String signUp = '/signUp';
   static const String authSuccessScreen = '/authSuccessScreen';
   static const String verificationOtp = '/verificationOtp';
   static const String home = '/home';
@@ -45,6 +50,7 @@ class RouteHelper {
   static const String privacyPolicyScreen = '/privacyPolicyScreen';
   static const String termsAndConditionScreen = '/termsAndConditionScreen';
   static const String loanDetailsScreen = '/loanDetailsScreen';
+  static const String loanExistsScreen = '/loanExistsScreen';
   static const String creditOrDebitCardForm = '/creditOrDebitCardForm';
   static const String loanOTPVerificationScreen = '/loanOTPVerificationScreen';
   static const String preCloseLoanSuccessScreen = '/preCloseLoanSuccessScreen';
@@ -55,12 +61,24 @@ class RouteHelper {
   static const String helpAndSupportScreen = '/helpAndSupportScreen';
   static const String contactUsScreen = '/contactUsScreen';
   static const String viewTicketScreen = '/viewTicketScreen';
+  static const String creditScoreScreen = '/creditScoreScreen';
+  static const String promissoryLetter = '/promissoryLetter';
+  static const String loanScreen = '/loanScreen';
   static const String preClosingLoanAmountScreen =
       '/preClosingLoanAmountScreen';
   static const String kycDetailsScreen = '/kycDetailsScreen';
+  static const String kycCardScreen = '/kycCardScreen';
 
   static String getCreditOrDebitCardFormRoute(String cardType) {
     return '$creditOrDebitCardForm?cardType=$cardType';
+  }
+
+  static String getLoanScreenRoute(int index) {
+    return '$loanScreen?index=$index';
+  }
+
+  static String getLoanDetailScreenRoute(int id) {
+    return '$loanDetailsScreen?id=$id';
   }
 
   static List<GetPage> routes = [
@@ -74,14 +92,14 @@ class RouteHelper {
       page: () => const SignInScreen(),
       transition: Transition.rightToLeft,
     ),
-    GetPage(
-      name: signUp,
-      page: () => const SignupScreen(),
-      transition: Transition.rightToLeft,
-    ),
+    // GetPage(
+    //   name: signUp,
+    //   page: () => const SignupScreen(),
+    //   transition: Transition.rightToLeft,
+    // ),
     GetPage(
       name: verificationOtp,
-      page: () => const VerificationOtpPage(),
+      page: () => VerificationOtpPage(),
       transition: Transition.rightToLeft,
     ),
     GetPage(
@@ -92,6 +110,11 @@ class RouteHelper {
     GetPage(
       name: home,
       page: () => const HomeScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: promissoryLetter,
+      page: () => const PromissoryLetter(),
       transition: Transition.rightToLeft,
     ),
     GetPage(
@@ -107,6 +130,11 @@ class RouteHelper {
     GetPage(
       name: loanApprovedScreen,
       page: () => const LoanApprovedScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: creditScoreScreen,
+      page: () => const CreditScoreScreen(),
       transition: Transition.rightToLeft,
     ),
     GetPage(
@@ -141,7 +169,14 @@ class RouteHelper {
     ),
     GetPage(
       name: loanDetailsScreen,
-      page: () => const LoanDetailsScreen(),
+      page: () => LoanDetailsScreen(
+        id: int.parse(Get.parameters['id']!),
+      ),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: loanExistsScreen,
+      page: () => const LoanExistsScreen(),
       transition: Transition.rightToLeft,
     ),
     GetPage(
@@ -183,6 +218,14 @@ class RouteHelper {
         },
         transition: Transition.rightToLeft),
     GetPage(
+        name: loanScreen,
+        page: () {
+          return LoanScreen(
+            index: int.parse(Get.parameters['index']!),
+          );
+        },
+        transition: Transition.rightToLeft),
+    GetPage(
       name: preClosingLoanAmountScreen,
       page: () => const PreClosingLoanAmountScreen(),
       transition: Transition.rightToLeft,
@@ -200,6 +243,11 @@ class RouteHelper {
     GetPage(
       name: kycDetailsScreen,
       page: () => const KYCDetailsScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: kycCardScreen,
+      page: () => const KYCCardScreen(),
       transition: Transition.rightToLeft,
     ),
   ];

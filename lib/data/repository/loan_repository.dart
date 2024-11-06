@@ -22,4 +22,21 @@ class LoanRepository extends GetxService {
       throw Exception(e);
     }
   }
+
+  Future<Response> getLoanType() async {
+    return await apiClient.getData(AppConstants.loanTypeUrl);
+  }
+
+  Future<Response> getLoanDetail(int id) async {
+    return await apiClient.getData("${AppConstants.loanDetailUrl}/$id");
+  }
+
+  Future<Response> getAllLoan(String type) async {
+    return await apiClient
+        .getData(AppConstants.loansUrl, query: {"type": type});
+  }
+
+  Future<Response> checkLoanExistOrNot() async {
+    return await apiClient.getData(AppConstants.checkLoanUrl);
+  }
 }

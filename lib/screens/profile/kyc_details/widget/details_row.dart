@@ -9,35 +9,37 @@ Widget detailsRow({
   double? valueFontSize,
   double? fontPadding,
 }) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(
-        width: titleWidth ?? 100,
-        child: CustomText(
-          text: title,
-          fontWeight: FontWeight.w600,
-          fontSize: fontSize ?? 18,
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: titleWidth ?? 100,
+          child: CustomText(
+            text: title,
+            fontWeight: FontWeight.w600,
+            fontSize: fontSize ?? 18,
+          ),
         ),
-      ),
-      Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: 8.0, vertical: fontPadding ?? 8.0),
-        child: CustomText(
-          text: ':',
-          fontWeight: FontWeight.w600,
-          fontSize: fontSize ?? 18,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: CustomText(
+            text: ':',
+            fontWeight: FontWeight.w600,
+            fontSize: fontSize ?? 18,
+          ),
         ),
-      ),
-      Expanded(
-          child: SizedBox(
-        child: CustomText(
-          text: value,
-          fontWeight: FontWeight.w600,
-          fontSize: valueFontSize ?? 14,
-          maxLines: 100,
-        ),
-      ))
-    ],
+        Expanded(
+            child: SizedBox(
+          child: CustomText(
+            text: value,
+            fontWeight: FontWeight.w600,
+            fontSize: valueFontSize ?? 14,
+            maxLines: 100,
+          ),
+        ))
+      ],
+    ),
   );
 }

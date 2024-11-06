@@ -8,7 +8,7 @@ class ProfileSimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: MyTheme.grey_153.withOpacity(0.05),
+      baseColor: MyTheme.grey_153.withOpacity(0.4),
       highlightColor: MyTheme.grey_153.withOpacity(0.08),
       child: Padding(
         padding: const EdgeInsets.all(15.0),

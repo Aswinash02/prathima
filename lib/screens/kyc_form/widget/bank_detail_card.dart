@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prathima_loan_app/controllers/kyc_controller.dart';
 import 'package:prathima_loan_app/customs/custom_text.dart';
 import 'package:prathima_loan_app/screens/kyc_form/widget/bank_detail_form.dart';
 import 'package:prathima_loan_app/utils/colors.dart';
 
-class BankDetailCard extends StatelessWidget {
+class BankDetailCard extends StatefulWidget {
   const BankDetailCard({super.key});
+
+  @override
+  State<BankDetailCard> createState() => _BankDetailCardState();
+}
+
+class _BankDetailCardState extends State<BankDetailCard> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initCall();
+  }
+
+  Future<void> initCall() async {
+    await Get.find<KycController>().getAgreements();
+  }
 
   @override
   Widget build(BuildContext context) {
